@@ -1,0 +1,26 @@
+import "~/styles/globals.css";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+
+import { type Metadata } from "next";
+
+import { TRPCReactProvider } from "~/trpc/react";
+import { env } from "~/env";
+
+export const metadata: Metadata = {
+  title: `${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME} Halloween ${env.NEXT_PUBLIC_EVENT_YEAR}`,
+  description: `Interactive Halloween trick-or-treating map for ${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME}. Find participating houses, candy availability, and walking directions.`,
+  icons: [{ rel: "icon", url: "/favicon.ico" }],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en">
+      <body className="bg-background text-text-primary font-sans">
+        <TRPCReactProvider>{children}</TRPCReactProvider>
+      </body>
+    </html>
+  );
+}
