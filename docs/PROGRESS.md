@@ -1,12 +1,17 @@
 # Halloween Maps 2025 - Progress Summary
 
-## ✅ Completed (2025-09-30)
+## ✅ Completed (2025-10-01)
 
 ### Setup & Infrastructure
 - T3 App initialized (Next.js 14, TypeScript, Tailwind, tRPC)
-- Supabase database created (project: mxqpktaotzvrwwmixutw)
+- **Two Supabase databases created** (multi-neighborhood architecture):
+  - **Neighborhood 1**: Primary project (dev + production)
+  - **Neighborhood 2**: Secondary project (production)
 - Migration files created in `supabase/migrations/`
-- Environment variables configured
+- **MCP servers configured** for database management:
+  - `supabase-neighborhood1` - Manages first database
+  - `supabase-neighborhood2` - Manages second database
+- Environment variables configured for both neighborhoods
 - Template cleaned (removed T3 examples)
 - System font stack (removed Geist to eliminate warnings)
 
@@ -14,7 +19,13 @@
 - Enums: `location_type`, `route`
 - Table: `locations` (15 columns, RLS enabled)
 - TypeScript types generated
-- Migration files: 3 SQL files in `supabase/migrations/`
+- **Migration files** in `supabase/migrations/`:
+  - `create_enums.sql`
+  - `create_locations_table.sql`
+  - `setup_rls_policies.sql`
+  - `allow_anonymous_example_inserts.sql`
+  - `allow_anonymous_example_deletes.sql`
+- **All migrations applied to both databases**
 
 ### Components Built
 - `Navigation.tsx` - Nav bar with Lucide icons
@@ -37,10 +48,10 @@
 
 ### Documentation
 - `docs/PRD.md` - Full requirements
-- `docs/SETUP.md` - Setup guide
-- `docs/MAP-VIEW-COMPLETE.md` - Phase 1 summary
+- `docs/PRD-SUMMARY.md` - Quick reference guide
+- `docs/ADMIN-SETUP.md` - Admin user creation guide
+- `docs/PROGRESS.md` - This file (current progress)
 - `supabase/README.md` - Migration docs
-- `CLAUDE.md` - Dev notes (updated with all progress)
 
 ## 🎯 Production Ready!
 
@@ -79,24 +90,40 @@
 
 ## 📋 Next Steps
 
-### Deployment
-1. Set up Vercel project
-2. Configure environment variables
-3. Deploy to production
-4. Create admin user(s) in Supabase
-5. Test on production URL
+### Deployment (Two Separate Instances)
+
+**Neighborhood 1 Deployment:**
+1. Create Vercel project for first neighborhood
+2. Configure environment variables (Supabase credentials + coordinates)
+3. Deploy to production with custom domain
+4. Create admin user in Supabase project
+5. Test all features on production URL
+6. Verify mobile functionality
+
+**Neighborhood 2 Deployment:**
+1. Create Vercel project for second neighborhood
+2. Configure environment variables (Supabase credentials + coordinates)
+3. Deploy to production with custom domain
+4. Create admin user in Supabase project
+5. Test all features on production URL
 6. Verify mobile functionality
 
 ## 🔑 Key Info
 
-**Supabase**: your-project-id.supabase.co
-**Port**: localhost:3000
+**Supabase Projects**:
+- Neighborhood 1: Project A (managed via MCP server 1)
+- Neighborhood 2: Project B (managed via MCP server 2)
+
+**Dev Server**: localhost:3000
+
 **Main Files**:
 - Map: `src/components/map/MapView.tsx`
 - Markers: `src/components/map/LocationMarker.tsx`
 - Hooks: `src/lib/hooks/useLocations.ts`, `useUserLocation.ts`
 - Dev Tools: `src/server/api/routers/dev.ts`
+- Admin: `src/components/admin/` (LocationTable, LocationForm, CoordinatePicker)
 - Types: `src/types/database.types.ts`
+- Migrations: `supabase/migrations/` (5 SQL files)
 
 **Commands**:
 ```bash
@@ -107,7 +134,7 @@ npm run build        # Production build
 
 **Add Test Data**:
 Navigate to `http://localhost:3000/dev` and click "Seed Example Locations"
-- Adds 8 example locations around Uitzicht
+- Adds 8 example locations around default coordinates
 - Includes various types (houses, parking, refreshments, activities)
 - All prefixed with "Example - " for easy cleanup
 - Click "Clear Example Locations" to remove them

@@ -26,12 +26,10 @@ Halloween Maps helps neighborhoods coordinate trick-or-treating by displaying:
 
 All project documentation is in the [`docs/`](./docs) folder:
 
-- **[Setup Guide](./docs/SETUP.md)** - Setup instructions and environment configuration
+- **[Progress](./docs/PROGRESS.md)** - Current status, completed features and deployment steps
 - **[PRD](./docs/PRD.md)** - Complete product requirements and specifications
 - **[PRD Summary](./docs/PRD-SUMMARY.md)** - Quick reference and design decisions
 - **[Admin Setup](./docs/ADMIN-SETUP.md)** - Creating admin users with Supabase Auth
-- **[Progress](./docs/PROGRESS.md)** - Completed features and next steps
-- **[Claude Notes](./CLAUDE.md)** - Developer notes and technical details
 
 ## 🏃 Quick Start
 
@@ -68,11 +66,13 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 
 ## 🗄️ Database Setup
 
-See [docs/SETUP.md](./docs/SETUP.md#supabase-setup-instructions) for detailed Supabase setup instructions, including:
-- Creating a Supabase project
-- Running database migrations
-- Configuring Row Level Security (RLS)
-- Generating TypeScript types
+Database migrations are in `supabase/migrations/`. To set up:
+
+1. Create a Supabase project
+2. Run migrations using MCP server or Supabase CLI
+3. Generate TypeScript types: `npx supabase gen types typescript --project-id YOUR_PROJECT_ID > src/types/database.types.ts`
+
+See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration status.
 
 ## 🏗️ Project Status
 
@@ -80,7 +80,8 @@ See [docs/SETUP.md](./docs/SETUP.md#supabase-setup-instructions) for detailed Su
 
 **Core Features:**
 - ✅ T3 App initialized with TypeScript, Tailwind, tRPC
-- ✅ Supabase database with RLS policies
+- ✅ **Multi-neighborhood architecture** with separate Supabase databases
+- ✅ Database migrations (enums, tables, RLS policies)
 - ✅ Interactive map view with Leaflet
 - ✅ Custom location markers with Lucide icons
 - ✅ Walking directions with OSRM
@@ -95,9 +96,9 @@ See [docs/SETUP.md](./docs/SETUP.md#supabase-setup-instructions) for detailed Su
 - ✅ Mobile-first responsive design
 
 **Next Steps:**
-- 🎯 Deploy to Vercel
+- 🎯 Deploy to Vercel (once per neighborhood)
 - 🎯 Configure production environment variables
-- 🎯 Create admin user accounts
+- 🎯 Create admin user accounts in each Supabase project
 
 ## 📦 Commands
 
@@ -122,15 +123,38 @@ Access development tools at `http://localhost:3000/dev` (dev mode only):
 
 All dev endpoints are protected and only work in development mode.
 
-## 🌐 Multi-Instance Deployment
+## 🌐 Multi-Instance Architecture
 
-This application supports multiple neighborhood deployments:
+**This application is designed for multiple independent neighborhood deployments.**
+
+### Key Architecture Decisions
+
+✅ **Complete Data Isolation**
+- Each neighborhood has its own Supabase project
+- Zero shared data between instances
+- Independent admin access and authentication
+
+✅ **Separate Deployments**
 - Each neighborhood gets its own Vercel project
-- Separate Supabase database per neighborhood
-- Configuration via environment variables
 - Custom domain per deployment
+- Independent environment variable configuration
 
-See [docs/PRD.md](./docs/PRD.md#multi-instance-architecture) for details.
+✅ **Scalable Design**
+- Same codebase deployed multiple times
+- Configure via environment variables (coordinates, neighborhood name, Supabase credentials)
+- No code changes needed for new neighborhoods
+
+### Deployment Process
+
+For each neighborhood:
+1. Create a new Supabase project
+2. Run all database migrations
+3. Create a Vercel project
+4. Set environment variables (Supabase credentials + neighborhood config)
+5. Deploy with custom domain
+6. Create admin user in Supabase Auth
+
+See [docs/PROGRESS.md](./docs/PROGRESS.md#deployment-two-separate-instances) for detailed deployment checklist.
 
 ## 🤝 Contributing
 

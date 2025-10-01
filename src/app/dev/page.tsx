@@ -163,7 +163,7 @@ export default function DevPage() {
           <h3 className="font-semibold text-blue-900 mb-2">ℹ️ Information</h3>
           <ul className="text-sm text-blue-800 space-y-1">
             <li>• Example locations are prefixed with "Example - " in the address</li>
-            <li>• Seed action creates 8 test locations around Uitzicht</li>
+            <li>• Seed action creates 8 test locations around default coordinates</li>
             <li>• Clear action only removes example locations (safe for production data)</li>
             <li>• These endpoints are only available in development mode</li>
           </ul>
