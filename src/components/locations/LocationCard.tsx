@@ -56,15 +56,9 @@ export function LocationCard({ location, userLocation }: LocationCardProps) {
             {location.address}
           </h3>
 
-          {/* Type, Route & Distance */}
+          {/* Type & Distance */}
           <div className="flex items-center gap-2 mt-1 flex-wrap">
             <span className="text-sm text-text-secondary">{location.location_type}</span>
-            {location.route && (
-              <>
-                <span className="text-gray-600">•</span>
-                <span className="text-sm text-text-secondary">{location.route}</span>
-              </>
-            )}
             {distance !== null && (
               <>
                 <span className="text-gray-600">•</span>
@@ -80,7 +74,7 @@ export function LocationCard({ location, userLocation }: LocationCardProps) {
           <div className="flex flex-wrap gap-2 mt-2">
             {location.is_start && (
               <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success/20 text-success border border-success/30">
-                ⭐ Starting Point
+                ⭐ Starting point{location.route ? ` for ${location.route}` : ''}
               </span>
             )}
             {location.has_candy ? (

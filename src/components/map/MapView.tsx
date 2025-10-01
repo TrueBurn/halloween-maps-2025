@@ -159,8 +159,7 @@ export function MapView() {
             <h3 class="font-bold text-base mb-2" style="color: #f3f4f6;">${location.address}</h3>
             ${distance !== null ? `<p class="text-sm mb-1" style="color: #6366f1; font-weight: 500;">📍 ${formatDistance(distance)} away</p>` : ''}
             <p class="text-sm mb-1" style="color: #9ca3af;">${location.location_type}</p>
-            ${location.route ? `<p class="text-sm mb-1" style="color: #9ca3af;">Route: ${location.route}</p>` : ''}
-            ${location.is_start ? '<p class="text-sm mb-1" style="color: #10b981;">Starting Point ⭐</p>' : ''}
+            ${location.is_start && location.route ? `<p class="text-sm mb-1" style="color: #10b981;">⭐ Starting point for ${location.route}</p>` : ''}
             ${location.has_candy ?
               '<p class="text-sm mb-1" style="color: #10b981;">Has candy ✓</p>' :
               '<p class="text-sm mb-1" style="color: #ef4444;">No candy</p>'

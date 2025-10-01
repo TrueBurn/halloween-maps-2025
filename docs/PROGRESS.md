@@ -16,7 +16,7 @@
 - System font stack (removed Geist to eliminate warnings)
 
 ### Database
-- Enums: `location_type`, `route`
+- Enums: `location_type`, `route` (age groups for starting points only)
 - Table: `locations` (15 columns, RLS enabled)
 - TypeScript types generated
 - **Migration files** in `supabase/migrations/`:
@@ -26,6 +26,7 @@
   - `allow_anonymous_example_inserts.sql`
   - `allow_anonymous_example_deletes.sql`
 - **All migrations applied to both databases**
+- **Route field usage**: Only assigned to starting points (`is_start = true`) to indicate age group (Over 8, Under 8, Toddlers)
 
 ### Components Built
 - `Navigation.tsx` - Nav bar with Lucide icons + info modal (React Portal)
@@ -46,7 +47,7 @@
 
 ### API Routes (tRPC)
 - `health` - Health check endpoint
-- `dev.seedLocations` - Seed 8 example locations (dev only)
+- `dev.seedLocations` - Seed 10 example locations: 3 starting points (one per age group), 7 regular locations (dev only)
 - `dev.clearExampleLocations` - Clear example locations (dev only)
 - `dev.getStats` - Get location counts (dev only)
 
@@ -65,10 +66,12 @@
 - ✅ OpenStreetMap tiles
 - ✅ Custom Lucide React icons (House, Coffee, Car, Parking, Table)
 - ✅ Status badges (S=start, A=activity, ✕=no candy)
+- ✅ **Starting point markers**: Larger (48px vs 40px) with green borders for easy identification
 - ✅ User GPS location with live tracking
 - ✅ Walking directions with Leaflet Routing Machine (OSRM)
 - ✅ Custom start/end markers for directions (green 🏠 for start, red 📍 for destination)
 - ✅ Distance display in popups (metric: meters/kilometers)
+- ✅ **Popup improvements**: Shows "Starting point for [age group]" for starting locations
 - ✅ Dark theme for routing directions panel
 - ✅ Center on user FAB button
 - ✅ Interactive popups with "Get Directions" buttons
@@ -81,8 +84,10 @@
 ### Phase 3: Location List View ✅
 - ✅ LocationList component with card layout
 - ✅ Distance calculation (Haversine formula)
-- ✅ Filtering by type, route, candy status, participating
+- ✅ Filtering by type, age group, candy status
+- ✅ **"Show Only Starting Points" toggle** for quick filtering
 - ✅ Sorting by distance, address
+- ✅ **Location cards show "Starting point for [age group]"** badge
 - ✅ Link to map with coordinates
 - ✅ Responsive mobile design
 - ✅ Real-time updates
@@ -91,7 +96,9 @@
 - ✅ Admin authentication with Supabase Auth
 - ✅ Admin dashboard with quick actions
 - ✅ LocationTable with search and CRUD operations
+- ✅ **Age group column** shows grayed-out dash for non-starting locations
 - ✅ LocationForm modal for create/edit
+- ✅ **Route/age group field** only enabled when "Starting Point" is checked
 - ✅ CoordinatePicker with interactive Leaflet map
 - ✅ Bulk reset candy functionality
 - ✅ Export to CSV and JSON
@@ -140,6 +147,27 @@
   - `viewport-fit=cover` meta tag enables safe area detection
   - Bottom elements use `env(safe-area-inset-bottom)` for proper spacing
   - Dynamically adapts as browser UI shows/hides during scrolling
+
+### Age Group UX Improvements 🎯 ✅
+- ✅ **Map Enhancements**
+  - Starting point markers 20% larger (48px vs 40px) with green borders
+  - Easier to identify starting locations for different age groups
+  - Popups show "⭐ Starting point for [age group]"
+- ✅ **Location List Improvements**
+  - "Show Only Starting Points" toggle switch for quick filtering
+  - Filter label changed to "Age Group (Starting Points)" for clarity
+  - Location cards display "⭐ Starting point for Over 8/Under 8/Toddlers"
+  - Age group no longer shown separately (integrated into starting point badge)
+- ✅ **Admin Panel Improvements**
+  - Route/age group field disabled unless "Starting Point" checkbox is selected
+  - Helper text: "Check 'Starting Point' to assign an age group"
+  - Table column renamed to "Age Group" for clarity
+  - Non-starting locations show grayed-out italic dash in age group column
+  - Visual distinction makes it clear which locations have age groups
+- ✅ **Data Clarification**
+  - Routes are age group identifiers for starting points ONLY
+  - Regular participating locations do not have routes assigned
+  - Seed data updated: 3 starting points (one per age group), 7 regular locations
 
 ## 📋 Next Steps
 
@@ -190,7 +218,8 @@ npm run build        # Production build
 
 **Add Test Data**:
 Navigate to `http://localhost:3000/dev` and click "Seed Example Locations"
-- Adds 8 example locations around default coordinates
-- Includes various types (houses, parking, refreshments, activities)
+- Adds 10 example locations around default coordinates
+- 3 starting points (one for each age group: Over 8, Under 8, Toddlers)
+- 7 regular locations (houses, parking, refreshments, activities)
 - All prefixed with "Example - " for easy cleanup
 - Click "Clear Example Locations" to remove them

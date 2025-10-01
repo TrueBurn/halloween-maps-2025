@@ -171,21 +171,27 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
             </select>
           </div>
 
-          {/* Route */}
+          {/* Route - Only for starting points */}
           <div>
             <label className="block text-sm font-medium text-text-primary mb-1">
-              Route (Optional)
+              Age Group (Starting Points Only)
             </label>
             <select
               value={formData.route || ''}
               onChange={(e) => setFormData({ ...formData, route: (e.target.value || null) as Location['route'] })}
-              className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary"
+              disabled={!formData.is_start}
+              className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <option value="">No Route</option>
+              <option value="">Select Age Group</option>
               <option value="Over 8">Over 8</option>
               <option value="Under 8">Under 8</option>
               <option value="Toddlers">Toddlers</option>
             </select>
+            {!formData.is_start && (
+              <p className="text-xs text-text-secondary mt-1">
+                Check "Starting Point" to assign an age group
+              </p>
+            )}
           </div>
 
           {/* Checkboxes */}
@@ -194,7 +200,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
               <input
                 type="checkbox"
                 checked={formData.is_start}
-                onChange={(e) => setFormData({ ...formData, is_start: e.target.checked })}
+                onChange={(e) => setFormData({ ...formData, is_start: e.target.checked, route: e.target.checked ? formData.route : null })}
                 className="w-4 h-4 text-primary border-gray-700 rounded focus:ring-primary bg-background"
               />
               <span className="text-sm font-medium text-text-primary">Starting Point</span>

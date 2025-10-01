@@ -25,6 +25,13 @@ function getIconComponent(locationType: Location['location_type']) {
 export function createLocationIcon(location: Location): L.DivIcon {
   const IconComponent = getIconComponent(location.location_type);
 
+  // Starting points get larger icons with green border
+  const isStartingPoint = location.is_start;
+  const iconSize = isStartingPoint ? 48 : 40;
+  const iconInnerSize = isStartingPoint ? 24 : 20;
+  const borderColor = isStartingPoint ? '#10b981' : '#6366f1'; // green for starting points, indigo for others
+  const borderWidth = isStartingPoint ? 4 : 3;
+
   // Render icon with status badges
   const iconHtml = renderToString(
     <div className="relative">
@@ -32,14 +39,14 @@ export function createLocationIcon(location: Location): L.DivIcon {
       <div
         className="flex items-center justify-center rounded-full bg-white shadow-lg"
         style={{
-          width: '40px',
-          height: '40px',
-          border: '3px solid #6366f1'
+          width: `${iconSize}px`,
+          height: `${iconSize}px`,
+          border: `${borderWidth}px solid ${borderColor}`
         }}
       >
         <IconComponent
-          className="text-primary"
-          size={20}
+          className={isStartingPoint ? "text-green-500" : "text-primary"}
+          size={iconInnerSize}
           strokeWidth={2.5}
         />
       </div>
@@ -80,8 +87,8 @@ export function createLocationIcon(location: Location): L.DivIcon {
   return L.divIcon({
     html: iconHtml,
     className: 'custom-location-marker',
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
-    popupAnchor: [0, -20],
+    iconSize: [iconSize, iconSize],
+    iconAnchor: [iconSize / 2, iconSize / 2],
+    popupAnchor: [0, -(iconSize / 2)],
   });
 }

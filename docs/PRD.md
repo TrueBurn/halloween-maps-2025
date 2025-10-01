@@ -136,8 +136,10 @@ CREATE POLICY "Users can update their own locations"
 #### Custom Enums
 ```sql
 CREATE TYPE location_type_enum AS ENUM ('House', 'Table', 'Car', 'Parking', 'Refreshments');
-CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');
+CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');  -- Age groups for starting points
 ```
+
+**Note on Routes**: The `route` field represents age groups and is **only assigned to starting points** (`is_start = true`). Regular participating locations do not have routes assigned. Each age group (Over 8, Under 8, Toddlers) has their own designated starting point.
 
 ---
 
@@ -170,9 +172,10 @@ CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');
 - Sortable/filterable list of all locations
 - Filter by:
   - Location type
-  - Route (age group)
+  - Age group (for finding starting points: Over 8, Under 8, Toddlers)
   - Has candy status
   - Has activity
+  - "Show Only Starting Points" toggle
 - Sort by:
   - Distance from user
   - Address
@@ -182,7 +185,7 @@ CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');
 - Address
 - Location type
 - Distance from user (if location available)
-- Route assignment
+- Age group (for starting points only)
 - Candy availability
 - Activity indicator
 
@@ -191,10 +194,9 @@ CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');
 **Information Displayed:**
 - Address (heading)
 - Location type with icon
-- Route (Over 8 / Under 8 / Toddlers)
 - Distance from user
+- Age group indicator (e.g., "Starting point for Over 8" - only shown for starting points)
 - Candy status (Has candy / No candy)
-- Starting point indicator
 - Activity details (if applicable)
 - "Get Directions" button
 - "Configure" icon (only if admin)

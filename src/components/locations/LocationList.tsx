@@ -19,6 +19,7 @@ export function LocationList() {
   const [filterType, setFilterType] = useState<LocationType | 'All'>('All');
   const [filterRoute, setFilterRoute] = useState<string>('All');
   const [filterCandy, setFilterCandy] = useState<'All' | 'Has' | 'None'>('All');
+  const [showStartingPointsOnly, setShowStartingPointsOnly] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('none');
   const [showFilters, setShowFilters] = useState(false);
 
@@ -26,6 +27,7 @@ export function LocationList() {
   const filteredAndSortedLocations = useMemo(() => {
     // First, filter
     let result = locations.filter((location) => {
+      if (showStartingPointsOnly && !location.is_start) return false;
       if (filterType !== 'All' && location.location_type !== filterType) return false;
       if (filterRoute !== 'All' && filterRoute !== 'None' && location.route !== filterRoute) return false;
       if (filterRoute === 'None' && location.route !== null) return false;
@@ -56,13 +58,14 @@ export function LocationList() {
     }
 
     return result;
-  }, [locations, filterType, filterRoute, filterCandy, sortBy, userLocation]);
+  }, [locations, filterType, filterRoute, filterCandy, showStartingPointsOnly, sortBy, userLocation]);
 
   // Count active filters
   const activeFiltersCount =
     (filterType !== 'All' ? 1 : 0) +
     (filterRoute !== 'All' ? 1 : 0) +
-    (filterCandy !== 'All' ? 1 : 0);
+    (filterCandy !== 'All' ? 1 : 0) +
+    (showStartingPointsOnly ? 1 : 0);
 
   if (loading) {
     return (
@@ -134,6 +137,25 @@ export function LocationList() {
 
           {showFilters && (
             <div className="mt-3 space-y-3">
+              {/* Starting Points Toggle */}
+              <div className="flex items-center justify-between px-3 py-2 bg-gray-900 border border-gray-800 rounded-lg">
+                <label className="text-sm font-medium text-text-primary">
+                  Show Only Starting Points
+                </label>
+                <button
+                  onClick={() => setShowStartingPointsOnly(!showStartingPointsOnly)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    showStartingPointsOnly ? 'bg-primary' : 'bg-gray-700'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      showStartingPointsOnly ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
               {/* Type Filter */}
               <div>
                 <label className="block text-xs font-medium text-text-primary mb-1">
@@ -156,18 +178,18 @@ export function LocationList() {
               {/* Route Filter */}
               <div>
                 <label className="block text-xs font-medium text-text-primary mb-1">
-                  Route
+                  Age Group (Starting Points)
                 </label>
                 <select
                   value={filterRoute}
                   onChange={(e) => setFilterRoute(e.target.value)}
                   className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
-                  <option value="All">All Routes</option>
+                  <option value="All">All Age Groups</option>
                   <option value="Over 8">Over 8</option>
                   <option value="Under 8">Under 8</option>
                   <option value="Toddlers">Toddlers</option>
-                  <option value="None">No Route</option>
+                  <option value="None">No Age Group</option>
                 </select>
               </div>
 
@@ -194,6 +216,7 @@ export function LocationList() {
                     setFilterType('All');
                     setFilterRoute('All');
                     setFilterCandy('All');
+                    setShowStartingPointsOnly(false);
                   }}
                   className="w-full px-3 py-2 text-sm text-primary hover:bg-gray-800 rounded-lg transition-colors"
                 >

@@ -73,7 +73,7 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
                 Type
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
-                Route
+                Age Group
               </th>
               <th className="px-4 py-3 text-center text-xs font-medium text-text-secondary uppercase tracking-wider">
                 Status
@@ -106,8 +106,16 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
                   <td className="px-4 py-3 text-sm text-text-secondary">
                     {location.location_type}
                   </td>
-                  <td className="px-4 py-3 text-sm text-text-secondary">
-                    {location.route || '-'}
+                  <td className="px-4 py-3 text-sm">
+                    {location.is_start ? (
+                      <span className="text-text-primary font-medium">
+                        {location.route || '-'}
+                      </span>
+                    ) : (
+                      <span className="text-gray-600 italic">
+                        -
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col items-center gap-1">
