@@ -81,7 +81,7 @@ export function MapView() {
       addWaypoints: false,
       fitSelectedRoutes: true,
       showAlternatives: false,
-    }).addTo(mapInstance.current);
+    } as any).addTo(mapInstance.current);
   };
 
   // Clear directions
