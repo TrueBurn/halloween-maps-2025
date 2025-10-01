@@ -10,7 +10,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 h-[60px] bg-white shadow-sm">
+    <nav className="sticky top-0 z-50 h-[60px] bg-surface shadow-lg border-b border-gray-800">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4">
         {/* Left: Neighborhood Name */}
         <Link
@@ -24,7 +24,7 @@ export function Navigation() {
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="flex h-12 w-12 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors"
+            className="flex h-12 w-12 items-center justify-center rounded-lg text-text-secondary hover:bg-gray-800 hover:text-primary transition-colors"
             title="Map View"
           >
             <MapPin className="h-5 w-5" />
@@ -32,7 +32,7 @@ export function Navigation() {
 
           <Link
             href="/locations"
-            className="flex h-12 w-12 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors"
+            className="flex h-12 w-12 items-center justify-center rounded-lg text-text-secondary hover:bg-gray-800 hover:text-primary transition-colors"
             title="List View"
           >
             <List className="h-5 w-5" />
@@ -40,14 +40,14 @@ export function Navigation() {
 
           <button
             onClick={handleRefresh}
-            className="flex h-12 w-12 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors"
+            className="flex h-12 w-12 items-center justify-center rounded-lg text-text-secondary hover:bg-gray-800 hover:text-primary transition-colors"
             title="Refresh"
           >
             <RefreshCw className="h-5 w-5" />
           </button>
 
           <button
-            className="flex h-12 w-12 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors"
+            className="flex h-12 w-12 items-center justify-center rounded-lg text-text-secondary hover:bg-gray-800 hover:text-primary transition-colors"
             title="Information"
           >
             <Info className="h-5 w-5" />

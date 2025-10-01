@@ -121,30 +121,32 @@ export function MapView() {
       });
 
       const popupContent = `
-        <div class="p-2">
-          <h3 class="font-bold">${location.address}</h3>
-          <p class="text-sm">${location.location_type}</p>
-          ${location.route ? `<p class="text-sm">Route: ${location.route}</p>` : ''}
-          ${location.is_start ? '<p class="text-sm text-green-600">Starting Point ⭐</p>' : ''}
+        <div class="p-3" style="background: #1a1a1a; color: #f3f4f6; border-radius: 0.5rem; min-width: 200px;">
+          <h3 class="font-bold text-base mb-2" style="color: #f3f4f6;">${location.address}</h3>
+          <p class="text-sm mb-1" style="color: #9ca3af;">${location.location_type}</p>
+          ${location.route ? `<p class="text-sm mb-1" style="color: #9ca3af;">Route: ${location.route}</p>` : ''}
+          ${location.is_start ? '<p class="text-sm mb-1" style="color: #10b981;">Starting Point ⭐</p>' : ''}
           ${location.has_candy ?
-            '<p class="text-sm text-green-600">Has candy ✓</p>' :
-            '<p class="text-sm text-red-600">No candy</p>'
+            '<p class="text-sm mb-1" style="color: #10b981;">Has candy ✓</p>' :
+            '<p class="text-sm mb-1" style="color: #ef4444;">No candy</p>'
           }
           ${location.has_activity ?
-            `<p class="text-sm text-amber-600">Activity: ${location.activity_details || 'Yes'}</p>` :
+            `<p class="text-sm mb-2" style="color: #f59e0b;">Activity: ${location.activity_details || 'Yes'}</p>` :
             ''
           }
-          <div class="mt-2 flex gap-2">
+          <div class="mt-3 flex gap-2">
             <button
               onclick="window.showDirections(${location.latitude}, ${location.longitude})"
-              class="flex-1 px-3 py-1.5 bg-primary text-white text-sm rounded hover:bg-primary/90 transition-colors"
-              ${!userLocation ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}
+              class="flex-1 px-3 py-2 text-sm rounded transition-colors"
+              style="background: #6366f1; color: white; font-weight: 500; ${!userLocation ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
+              ${!userLocation ? 'disabled' : ''}
             >
               Get Directions
             </button>
             <button
               onclick="window.clearDirections()"
-              class="px-3 py-1.5 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300 transition-colors"
+              class="px-3 py-2 text-sm rounded transition-colors"
+              style="background: #374151; color: #f3f4f6; font-weight: 500;"
             >
               Clear
             </button>
@@ -211,7 +213,7 @@ export function MapView() {
 
       {/* Loading overlay */}
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-[1000]">
+        <div className="absolute inset-0 flex items-center justify-center bg-background/90 z-[1000]">
           <div className="flex flex-col items-center gap-2">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="text-sm text-text-secondary">Loading locations...</p>
@@ -228,10 +230,10 @@ export function MapView() {
 
       {/* Location count badge */}
       {!loading && locations.length > 0 && (
-        <div className="absolute bottom-4 left-4 bg-white px-3 py-2 rounded-lg shadow-md z-[1000]">
+        <div className="absolute bottom-4 left-4 bg-surface px-3 py-2 rounded-lg shadow-md border border-gray-700 z-[1000]">
           <div className="flex items-center gap-2 text-sm">
             <MapPin className="h-4 w-4 text-primary" />
-            <span className="font-medium">{locations.length} locations</span>
+            <span className="font-medium text-text-primary">{locations.length} locations</span>
           </div>
         </div>
       )}

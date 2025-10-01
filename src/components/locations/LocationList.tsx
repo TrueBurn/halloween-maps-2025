@@ -80,7 +80,7 @@ export function LocationList() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <p className="text-error font-medium">Error loading locations</p>
-          <p className="text-sm text-gray-600 mt-1">{error.message}</p>
+          <p className="text-sm text-text-secondary mt-1">{error.message}</p>
         </div>
       </div>
     );
@@ -90,8 +90,8 @@ export function LocationList() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-gray-900 font-medium">No locations yet</p>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-text-primary font-medium">No locations yet</p>
+          <p className="text-sm text-text-secondary mt-1">
             Add some locations to get started
           </p>
         </div>
@@ -102,12 +102,12 @@ export function LocationList() {
   return (
     <div className="w-full">
       {/* Filter & Sort Bar */}
-      <div className="bg-white border-b border-gray-200 sticky top-[60px] z-40">
+      <div className="bg-surface border-b border-gray-800 sticky top-[60px] z-40">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between mb-3">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-text-primary hover:text-primary transition-colors"
             >
               <Filter className="h-4 w-4" />
               Filters
@@ -122,7 +122,7 @@ export function LocationList() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              className="px-3 py-1.5 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="none">Default</option>
               <option value="distance" disabled={!userLocation}>
@@ -136,13 +136,13 @@ export function LocationList() {
             <div className="mt-3 space-y-3">
               {/* Type Filter */}
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-text-primary mb-1">
                   Location Type
                 </label>
                 <select
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value as LocationType | 'All')}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
                   <option value="All">All Types</option>
                   <option value="House">House</option>
@@ -155,13 +155,13 @@ export function LocationList() {
 
               {/* Route Filter */}
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-text-primary mb-1">
                   Route
                 </label>
                 <select
                   value={filterRoute}
                   onChange={(e) => setFilterRoute(e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
                   <option value="All">All Routes</option>
                   <option value="Over 8">Over 8</option>
@@ -173,13 +173,13 @@ export function LocationList() {
 
               {/* Candy Filter */}
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-text-primary mb-1">
                   Candy Available
                 </label>
                 <select
                   value={filterCandy}
                   onChange={(e) => setFilterCandy(e.target.value as 'All' | 'Has' | 'None')}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
                   <option value="All">All</option>
                   <option value="Has">Has Candy</option>
@@ -195,7 +195,7 @@ export function LocationList() {
                     setFilterRoute('All');
                     setFilterCandy('All');
                   }}
-                  className="w-full px-3 py-2 text-sm text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                  className="w-full px-3 py-2 text-sm text-primary hover:bg-gray-800 rounded-lg transition-colors"
                 >
                   Clear All Filters
                 </button>
@@ -206,8 +206,8 @@ export function LocationList() {
       </div>
 
       {/* Results Count */}
-      <div className="px-4 py-3 bg-gray-50">
-        <p className="text-sm text-gray-600">
+      <div className="px-4 py-3 bg-background">
+        <p className="text-sm text-text-secondary">
           Showing {filteredAndSortedLocations.length} of {locations.length} locations
         </p>
       </div>
@@ -216,8 +216,8 @@ export function LocationList() {
       {filteredAndSortedLocations.length === 0 ? (
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <p className="text-gray-900 font-medium">No locations match your filters</p>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-text-primary font-medium">No locations match your filters</p>
+            <p className="text-sm text-text-secondary mt-1">
               Try adjusting your filter settings
             </p>
           </div>

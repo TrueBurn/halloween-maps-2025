@@ -88,6 +88,21 @@
 - ✅ Export to CSV and JSON
 - ✅ Protected routes with RLS policies
 
+### Dark Halloween Theme 🎃 ✅
+- ✅ Dark color scheme applied to entire app
+- ✅ Near-black backgrounds (#0f0f0f)
+- ✅ Dark surfaces (#1a1a1a) for cards/panels
+- ✅ Light text (#f3f4f6) on dark backgrounds
+- ✅ All components updated:
+  - Navigation bar
+  - Map view (including Leaflet popups)
+  - Location list page
+  - Admin panel (dashboard, table, forms)
+  - Dev tools page
+  - Login page
+- ✅ Custom Leaflet CSS overrides for dark popups
+- ✅ Vibrant accent colors maintained (indigo, pink, green, amber, red)
+
 ## 📋 Next Steps
 
 ### Deployment (Two Separate Instances)

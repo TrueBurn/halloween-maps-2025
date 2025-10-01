@@ -134,17 +134,17 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-surface border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
+            <h1 className="text-xl font-bold text-text-primary">Admin Panel</h1>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">{user?.email}</span>
+              <span className="text-sm text-text-secondary">{user?.email}</span>
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-gray-800 rounded-lg transition-colors"
               >
                 <LogOut className="h-4 w-4" />
                 Sign Out
@@ -160,56 +160,56 @@ export default function AdminPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <button
             onClick={handleCreate}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow text-left"
+            className="bg-surface p-6 rounded-lg shadow-lg border border-gray-800 hover:shadow-xl transition-shadow text-left"
           >
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-primary/10 rounded-lg">
                 <Plus className="h-5 w-5 text-primary" />
               </div>
-              <h3 className="font-semibold text-gray-900">Add Location</h3>
+              <h3 className="font-semibold text-text-primary">Add Location</h3>
             </div>
-            <p className="text-sm text-gray-600">Create a new trick-or-treat location</p>
+            <p className="text-sm text-text-secondary">Create a new trick-or-treat location</p>
           </button>
 
           <button
             onClick={handleResetCandy}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow text-left"
+            className="bg-surface p-6 rounded-lg shadow-lg border border-gray-800 hover:shadow-xl transition-shadow text-left"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <RefreshCw className="h-5 w-5 text-green-600" />
+              <div className="p-2 bg-success/20 rounded-lg">
+                <RefreshCw className="h-5 w-5 text-success" />
               </div>
-              <h3 className="font-semibold text-gray-900">Reset Candy</h3>
+              <h3 className="font-semibold text-text-primary">Reset Candy</h3>
             </div>
-            <p className="text-sm text-gray-600">Reset all candy status to available</p>
+            <p className="text-sm text-text-secondary">Reset all candy status to available</p>
           </button>
 
           <div className="relative">
             <button
               onClick={() => setShowExportMenu(!showExportMenu)}
-              className="w-full bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow text-left"
+              className="w-full bg-surface p-6 rounded-lg shadow-lg border border-gray-800 hover:shadow-xl transition-shadow text-left"
             >
               <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-amber-100 rounded-lg">
-                  <Download className="h-5 w-5 text-amber-600" />
+                <div className="p-2 bg-warning/20 rounded-lg">
+                  <Download className="h-5 w-5 text-warning" />
                 </div>
-                <h3 className="font-semibold text-gray-900">Export Data</h3>
+                <h3 className="font-semibold text-text-primary">Export Data</h3>
               </div>
-              <p className="text-sm text-gray-600">Download locations as CSV or JSON</p>
+              <p className="text-sm text-text-secondary">Download locations as CSV or JSON</p>
             </button>
 
             {/* Export Menu */}
             {showExportMenu && (
-              <div className="absolute top-full mt-2 left-0 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
+              <div className="absolute top-full mt-2 left-0 right-0 bg-surface rounded-lg shadow-xl border border-gray-800 py-2 z-10">
                 <button
                   onClick={() => handleExport('csv')}
-                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="w-full px-4 py-2 text-left text-sm text-text-secondary hover:bg-gray-800 hover:text-text-primary transition-colors"
                 >
                   Export as CSV
                 </button>
                 <button
                   onClick={() => handleExport('json')}
-                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="w-full px-4 py-2 text-left text-sm text-text-secondary hover:bg-gray-800 hover:text-text-primary transition-colors"
                 >
                   Export as JSON
                 </button>
@@ -219,23 +219,23 @@ export default function AdminPage() {
 
           <a
             href="/"
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow text-left block"
+            className="bg-surface p-6 rounded-lg shadow-lg border border-gray-800 hover:shadow-xl transition-shadow text-left block"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <svg className="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 bg-primary/20 rounded-lg">
+                <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-gray-900">View Site</h3>
+              <h3 className="font-semibold text-text-primary">View Site</h3>
             </div>
-            <p className="text-sm text-gray-600">Go to public map view</p>
+            <p className="text-sm text-text-secondary">Go to public map view</p>
           </a>
         </div>
 
         {/* Location Management */}
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Location Management</h2>
+          <h2 className="text-lg font-semibold text-text-primary mb-4">Location Management</h2>
           <LocationTable
             key={refreshKey}
             onCreate={handleCreate}

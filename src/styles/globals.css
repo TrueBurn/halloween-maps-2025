@@ -12,11 +12,37 @@
   --color-warning: #f59e0b;
   --color-error: #ef4444;
 
-  /* Surfaces */
-  --color-background: #ffffff;
-  --color-surface: #f9fafb;
+  /* Surfaces - Dark Halloween Theme */
+  --color-background: #0f0f0f;
+  --color-surface: #1a1a1a;
 
-  /* Text */
-  --color-text-primary: #111827;
-  --color-text-secondary: #6b7280;
+  /* Text - Light for dark backgrounds */
+  --color-text-primary: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+}
+
+/* Leaflet Popup Dark Theme Overrides */
+.leaflet-popup-content-wrapper {
+  background: #1a1a1a !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 0.5rem !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-tip {
+  background: #1a1a1a !important;
+  border-left: 1px solid #374151 !important;
+  border-bottom: 1px solid #374151 !important;
+}
+
+.leaflet-popup-close-button {
+  color: #9ca3af !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  padding: 4px 8px !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #f3f4f6 !important;
 }

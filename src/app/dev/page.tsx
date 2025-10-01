@@ -49,24 +49,24 @@ export default function DevPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-2xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Development Tools</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-text-primary">Development Tools</h1>
+          <p className="mt-2 text-text-secondary">
             Manage example locations for testing (dev mode only)
           </p>
         </div>
 
         {/* Stats Card */}
-        <div className="mb-6 rounded-lg bg-white p-6 shadow">
+        <div className="mb-6 rounded-lg bg-surface p-6 shadow-lg border border-gray-800">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-semibold">Database Statistics</h2>
+            <h2 className="text-lg font-semibold text-text-primary">Database Statistics</h2>
             <button
               onClick={() => statsQuery.refetch()}
               disabled={statsQuery.isRefetching}
-              className="ml-auto text-gray-500 hover:text-primary transition-colors"
+              className="ml-auto text-text-secondary hover:text-primary transition-colors"
             >
               <RefreshCw
                 className={`h-4 w-4 ${statsQuery.isRefetching ? 'animate-spin' : ''}`}
@@ -75,36 +75,36 @@ export default function DevPage() {
           </div>
 
           {statsQuery.isLoading ? (
-            <div className="text-gray-500">Loading stats...</div>
+            <div className="text-text-secondary">Loading stats...</div>
           ) : statsQuery.error ? (
-            <div className="text-red-600">Error loading stats</div>
+            <div className="text-red-500">Error loading stats</div>
           ) : (
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-2xl font-bold text-text-primary">
                   {statsQuery.data?.total || 0}
                 </div>
-                <div className="text-sm text-gray-600">Total Locations</div>
+                <div className="text-sm text-text-secondary">Total Locations</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-amber-600">
+                <div className="text-2xl font-bold text-warning">
                   {statsQuery.data?.examples || 0}
                 </div>
-                <div className="text-sm text-gray-600">Example Locations</div>
+                <div className="text-sm text-text-secondary">Example Locations</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-success">
                   {statsQuery.data?.real || 0}
                 </div>
-                <div className="text-sm text-gray-600">Real Locations</div>
+                <div className="text-sm text-text-secondary">Real Locations</div>
               </div>
             </div>
           )}
         </div>
 
         {/* Actions Card */}
-        <div className="rounded-lg bg-white p-6 shadow">
-          <h2 className="mb-4 text-lg font-semibold">Actions</h2>
+        <div className="rounded-lg bg-surface p-6 shadow-lg border border-gray-800">
+          <h2 className="mb-4 text-lg font-semibold text-text-primary">Actions</h2>
 
           <div className="space-y-4">
             <button
@@ -149,8 +149,8 @@ export default function DevPage() {
             <div
               className={`mt-4 rounded-lg px-4 py-3 ${
                 messageType === 'success'
-                  ? 'bg-green-50 text-green-800 border border-green-200'
-                  : 'bg-red-50 text-red-800 border border-red-200'
+                  ? 'bg-green-950/30 text-green-400 border border-green-800'
+                  : 'bg-red-950/30 text-red-400 border border-red-800'
               }`}
             >
               {message}
@@ -159,9 +159,9 @@ export default function DevPage() {
         </div>
 
         {/* Info Card */}
-        <div className="mt-6 rounded-lg bg-blue-50 p-4 border border-blue-200">
-          <h3 className="font-semibold text-blue-900 mb-2">ℹ️ Information</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
+        <div className="mt-6 rounded-lg bg-blue-950/30 p-4 border border-blue-800">
+          <h3 className="font-semibold text-blue-400 mb-2">ℹ️ Information</h3>
+          <ul className="text-sm text-blue-300 space-y-1">
             <li>• Example locations are prefixed with "Example - " in the address</li>
             <li>• Seed action creates 8 test locations around default coordinates</li>
             <li>• Clear action only removes example locations (safe for production data)</li>

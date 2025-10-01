@@ -79,16 +79,16 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="bg-surface rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-800">
+          <h2 className="text-xl font-bold text-text-primary">
             {location ? 'Edit Location' : 'Add New Location'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-2 text-text-secondary hover:text-text-primary rounded-lg hover:bg-gray-800 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -98,7 +98,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Address */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-text-primary mb-1">
               Address *
             </label>
             <input
@@ -106,7 +106,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
               required
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary placeholder:text-text-secondary"
               placeholder="123 Main Street"
             />
           </div>
@@ -114,7 +114,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
           {/* Coordinates */}
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-text-primary">
                 Coordinates *
               </label>
               <button
@@ -134,7 +134,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
                   required
                   value={formData.latitude}
                   onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary placeholder:text-text-secondary"
                   placeholder="Latitude"
                 />
               </div>
@@ -145,7 +145,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
                   required
                   value={formData.longitude}
                   onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary placeholder:text-text-secondary"
                   placeholder="Longitude"
                 />
               </div>
@@ -154,14 +154,14 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
 
           {/* Location Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-text-primary mb-1">
               Location Type *
             </label>
             <select
               required
               value={formData.location_type}
               onChange={(e) => setFormData({ ...formData, location_type: e.target.value as Location['location_type'] })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary"
             >
               <option value="House">House</option>
               <option value="Table">Table</option>
@@ -173,13 +173,13 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
 
           {/* Route */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-text-primary mb-1">
               Route (Optional)
             </label>
             <select
               value={formData.route || ''}
               onChange={(e) => setFormData({ ...formData, route: (e.target.value || null) as Location['route'] })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary"
             >
               <option value="">No Route</option>
               <option value="Over 8">Over 8</option>
@@ -195,9 +195,9 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
                 type="checkbox"
                 checked={formData.is_start}
                 onChange={(e) => setFormData({ ...formData, is_start: e.target.checked })}
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                className="w-4 h-4 text-primary border-gray-700 rounded focus:ring-primary bg-background"
               />
-              <span className="text-sm font-medium text-gray-700">Starting Point</span>
+              <span className="text-sm font-medium text-text-primary">Starting Point</span>
             </label>
 
             <label className="flex items-center gap-2">
@@ -205,9 +205,9 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
                 type="checkbox"
                 checked={formData.is_participating}
                 onChange={(e) => setFormData({ ...formData, is_participating: e.target.checked })}
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                className="w-4 h-4 text-primary border-gray-700 rounded focus:ring-primary bg-background"
               />
-              <span className="text-sm font-medium text-gray-700">Participating</span>
+              <span className="text-sm font-medium text-text-primary">Participating</span>
             </label>
 
             <label className="flex items-center gap-2">
@@ -215,9 +215,9 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
                 type="checkbox"
                 checked={formData.has_candy}
                 onChange={(e) => setFormData({ ...formData, has_candy: e.target.checked })}
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                className="w-4 h-4 text-primary border-gray-700 rounded focus:ring-primary bg-background"
               />
-              <span className="text-sm font-medium text-gray-700">Has Candy</span>
+              <span className="text-sm font-medium text-text-primary">Has Candy</span>
             </label>
 
             <label className="flex items-center gap-2">
@@ -225,22 +225,22 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
                 type="checkbox"
                 checked={formData.has_activity}
                 onChange={(e) => setFormData({ ...formData, has_activity: e.target.checked })}
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                className="w-4 h-4 text-primary border-gray-700 rounded focus:ring-primary bg-background"
               />
-              <span className="text-sm font-medium text-gray-700">Has Activity</span>
+              <span className="text-sm font-medium text-text-primary">Has Activity</span>
             </label>
           </div>
 
           {/* Activity Details */}
           {formData.has_activity && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-primary mb-1">
                 Activity Details
               </label>
               <textarea
                 value={formData.activity_details || ''}
                 onChange={(e) => setFormData({ ...formData, activity_details: e.target.value || null })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary placeholder:text-text-secondary"
                 rows={3}
                 placeholder="Describe the activity..."
               />
@@ -249,17 +249,17 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-950/30 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              className="px-4 py-2 text-text-primary hover:bg-gray-800 rounded-lg transition-colors"
             >
               Cancel
             </button>

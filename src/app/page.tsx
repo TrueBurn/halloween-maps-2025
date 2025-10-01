@@ -8,7 +8,7 @@ const MapView = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center bg-background">
         <div className="text-text-secondary">Loading map...</div>
       </div>
     ),
@@ -17,10 +17,10 @@ const MapView = dynamic(
 
 export default function Home() {
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col bg-background">
       <Navigation />
 
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full bg-background">
         <MapView />
       </main>
     </div>

@@ -85,16 +85,16 @@ export function CoordinatePicker({ initialLat, initialLng, onSelect, onClose }: 
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+      <div className="bg-surface rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-gray-800">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Pick Coordinates</h2>
-            <p className="text-sm text-gray-600 mt-1">Click or drag the marker to select a location</p>
+            <h2 className="text-xl font-bold text-text-primary">Pick Coordinates</h2>
+            <p className="text-sm text-text-secondary mt-1">Click or drag the marker to select a location</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -106,23 +106,23 @@ export function CoordinatePicker({ initialLat, initialLng, onSelect, onClose }: 
         </div>
 
         {/* Footer with coordinates and actions */}
-        <div className="p-4 border-t border-gray-200 space-y-3">
+        <div className="p-4 border-t border-gray-800 space-y-3">
           <div className="flex items-center gap-3">
-            <div className="flex-1 bg-gray-50 rounded-lg p-3">
+            <div className="flex-1 bg-background rounded-lg p-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs text-gray-500 mb-1">Selected Coordinates</div>
-                  <div className="font-mono text-sm font-medium text-gray-900">
+                  <div className="text-xs text-text-secondary mb-1">Selected Coordinates</div>
+                  <div className="font-mono text-sm font-medium text-text-primary">
                     {coordinates.lat.toFixed(7)}, {coordinates.lng.toFixed(7)}
                   </div>
                 </div>
                 <button
                   onClick={handleCopy}
-                  className="p-2 text-gray-600 hover:bg-white rounded-lg transition-colors"
+                  className="p-2 text-text-secondary hover:bg-gray-800 rounded-lg transition-colors"
                   title="Copy coordinates"
                 >
                   {copied ? (
-                    <Check className="h-4 w-4 text-green-600" />
+                    <Check className="h-4 w-4 text-green-500" />
                   ) : (
                     <Copy className="h-4 w-4" />
                   )}
@@ -134,7 +134,7 @@ export function CoordinatePicker({ initialLat, initialLng, onSelect, onClose }: 
           <div className="flex items-center justify-end gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              className="px-4 py-2 text-text-primary hover:bg-gray-800 rounded-lg transition-colors"
             >
               Cancel
             </button>

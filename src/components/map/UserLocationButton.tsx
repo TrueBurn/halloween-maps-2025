@@ -17,7 +17,7 @@ export function UserLocationButton({ onClick, disabled = false }: UserLocationBu
         transition-all duration-200
         ${
           disabled
-            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
             : 'bg-primary text-white hover:bg-primary/90 hover:shadow-xl active:scale-95'
         }
       `}

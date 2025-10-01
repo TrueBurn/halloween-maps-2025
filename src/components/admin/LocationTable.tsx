@@ -38,9 +38,9 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-surface rounded-lg shadow-lg border border-gray-800">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-800">
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1">
             <input
@@ -48,7 +48,7 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
               placeholder="Search by address..."
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg text-text-primary placeholder:text-text-secondary focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
           <button
@@ -64,69 +64,69 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-gray-900/50">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                 Address
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                 Type
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                 Route
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-center text-xs font-medium text-text-secondary uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-right text-xs font-medium text-text-secondary uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-800">
             {filteredLocations.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={5} className="px-4 py-8 text-center text-text-secondary">
                   {filter ? 'No locations match your search' : 'No locations yet'}
                 </td>
               </tr>
             ) : (
               filteredLocations.map((location) => (
-                <tr key={location.id} className="hover:bg-gray-50">
+                <tr key={location.id} className="hover:bg-gray-900/30">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       {location.is_start && (
-                        <span className="text-green-600" title="Starting Point">
+                        <span className="text-success" title="Starting Point">
                           ⭐
                         </span>
                       )}
-                      <span className="font-medium text-gray-900">{location.address}</span>
+                      <span className="font-medium text-text-primary">{location.address}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">
+                  <td className="px-4 py-3 text-sm text-text-secondary">
                     {location.location_type}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">
+                  <td className="px-4 py-3 text-sm text-text-secondary">
                     {location.route || '-'}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col items-center gap-1">
                       {location.has_candy ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success/20 text-success border border-success/30">
                           Has Candy
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-error/20 text-error border border-error/30">
                           No Candy
                         </span>
                       )}
                       {location.has_activity && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-warning/20 text-warning border border-warning/30">
                           Activity
                         </span>
                       )}
                       {!location.is_participating && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-800 text-text-secondary border border-gray-700">
                           Not Participating
                         </span>
                       )}
@@ -138,21 +138,21 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
                         href={`/?lat=${location.latitude}&lng=${location.longitude}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        className="p-2 text-primary hover:bg-primary/20 rounded transition-colors"
                         title="View on map"
                       >
                         <MapPin className="h-4 w-4" />
                       </a>
                       <button
                         onClick={() => onEdit(location)}
-                        className="p-2 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                        className="p-2 text-text-secondary hover:bg-gray-800 hover:text-text-primary rounded transition-colors"
                         title="Edit"
                       >
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => onDelete(location)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                        className="p-2 text-error hover:bg-error/20 rounded transition-colors"
                         title="Delete"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -167,8 +167,8 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-        <p className="text-sm text-gray-600">
+      <div className="px-4 py-3 border-t border-gray-800 bg-gray-900/50">
+        <p className="text-sm text-text-secondary">
           Showing {filteredLocations.length} of {locations.length} locations
         </p>
       </div>
