@@ -4,8 +4,23 @@ import type { Tables } from '~/types/database.types';
 
 type Location = Tables<'locations'>;
 
+const LOCATIONS_CACHE_KEY = 'halloween-maps-locations';
+
 export function useLocations() {
-  const [locations, setLocations] = useState<Location[]>([]);
+  const [locations, setLocations] = useState<Location[]>(() => {
+    // Try to load cached locations from localStorage
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem(LOCATIONS_CACHE_KEY);
+      if (cached) {
+        try {
+          return JSON.parse(cached) as Location[];
+        } catch {
+          return [];
+        }
+      }
+    }
+    return [];
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -24,8 +39,12 @@ export function useLocations() {
 
         if (fetchError) throw fetchError;
 
-        setLocations(data || []);
+        const newLocations = data || [];
+        setLocations(newLocations);
         setError(null);
+
+        // Cache locations in localStorage
+        localStorage.setItem(LOCATIONS_CACHE_KEY, JSON.stringify(newLocations));
       } catch (err) {
         console.error('Error fetching locations:', err);
         setError(err instanceof Error ? err : new Error('Failed to fetch locations'));

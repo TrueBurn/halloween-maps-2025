@@ -6,8 +6,23 @@ export interface UserLocation {
   accuracy: number;
 }
 
+const USER_LOCATION_KEY = 'halloween-maps-user-location';
+
 export function useUserLocation() {
-  const [location, setLocation] = useState<UserLocation | null>(null);
+  const [location, setLocation] = useState<UserLocation | null>(() => {
+    // Try to load cached location from localStorage
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem(USER_LOCATION_KEY);
+      if (cached) {
+        try {
+          return JSON.parse(cached) as UserLocation;
+        } catch {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,13 +36,17 @@ export function useUserLocation() {
 
     // Success callback
     const handleSuccess = (position: GeolocationPosition) => {
-      setLocation({
+      const newLocation = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
         accuracy: position.coords.accuracy,
-      });
+      };
+      setLocation(newLocation);
       setError(null);
       setLoading(false);
+
+      // Cache location in localStorage
+      localStorage.setItem(USER_LOCATION_KEY, JSON.stringify(newLocation));
     };
 
     // Error callback
@@ -57,7 +76,7 @@ export function useUserLocation() {
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 0,
+        maximumAge: 60000, // Allow cached position up to 60 seconds old
       }
     );
 

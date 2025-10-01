@@ -51,26 +51,27 @@ export function LocationCard({ location, userLocation }: LocationCardProps) {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          {/* Address & Distance */}
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="text-base font-semibold text-text-primary truncate">
-              {location.address}
-            </h3>
-            {distance !== null && (
-              <div className="flex-shrink-0 flex items-center gap-1 text-sm text-text-secondary">
-                <Navigation className="h-3 w-3" />
-                {formatDistance(distance)}
-              </div>
-            )}
-          </div>
+          {/* Address */}
+          <h3 className="text-base font-semibold text-text-primary">
+            {location.address}
+          </h3>
 
-          {/* Type & Route */}
-          <div className="flex items-center gap-2 mt-1">
+          {/* Type, Route & Distance */}
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
             <span className="text-sm text-text-secondary">{location.location_type}</span>
             {location.route && (
               <>
                 <span className="text-gray-600">•</span>
                 <span className="text-sm text-text-secondary">{location.route}</span>
+              </>
+            )}
+            {distance !== null && (
+              <>
+                <span className="text-gray-600">•</span>
+                <div className="flex items-center gap-1 text-sm text-text-secondary">
+                  <Navigation className="h-3 w-3" />
+                  {formatDistance(distance)}
+                </div>
               </>
             )}
           </div>

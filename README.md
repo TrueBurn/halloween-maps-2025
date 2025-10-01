@@ -94,6 +94,8 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ Bulk actions (reset candy status)
 - ✅ Real-time updates across all views
 - ✅ Mobile-first responsive design
+- ✅ Dark Halloween theme 🎃
+- ✅ **Performance optimizations** (localStorage caching, smart map updates)
 
 **Next Steps:**
 - 🎯 Deploy to Vercel (once per neighborhood)

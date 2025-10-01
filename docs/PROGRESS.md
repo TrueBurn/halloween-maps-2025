@@ -29,16 +29,20 @@
 
 ### Components Built
 - `Navigation.tsx` - Nav bar with Lucide icons + info modal (React Portal)
-- `MapView.tsx` - Full Leaflet map with markers, user location, popups, routing
+- `MapView.tsx` - Full Leaflet map with smart updates, dynamic popups, routing, bounds calculation
 - `LocationMarker.tsx` - Custom Lucide icons with status badges
 - `UserLocationButton.tsx` - FAB to center on user location
-- `useLocations` - Supabase data hook with real-time updates
-- `useUserLocation` - GPS tracking hook with watchPosition
+- `LocationList.tsx` - Filterable/sortable list view
+- `LocationCard.tsx` - Card component with distance on line 2
+- `useLocations` - Supabase data hook with real-time updates + localStorage cache
+- `useUserLocation` - GPS tracking hook with watchPosition + localStorage cache + 60s caching
 
 ### Pages
-- `/` - Map view (fully functional with dynamic import)
-- `/locations` - List view (placeholder)
-- `/dev` - Development tools UI (seed/clear/stats)
+- `/` - Map view (fully functional with dynamic import, localStorage cache)
+- `/locations` - List view (filtering, sorting, distance calculation)
+- `/admin` - Admin dashboard with CRUD operations
+- `/admin/login` - Admin authentication
+- `/dev` - Development tools UI (seed/clear/stats, dev only)
 
 ### API Routes (tRPC)
 - `health` - Health check endpoint
@@ -109,6 +113,28 @@
   - Login page
 - ✅ Custom Leaflet CSS overrides for dark popups
 - ✅ Vibrant accent colors maintained (indigo, pink, green, amber, red)
+- ✅ Routing control collapsed state styled (🧭 compass button, indigo theme)
+
+### Performance Optimizations ⚡ ✅
+- ✅ **localStorage Caching** - Instant page loads
+  - User location cached (key: `halloween-maps-user-location`)
+  - Locations data cached (key: `halloween-maps-locations`)
+  - Data loads instantly from cache while fresh data fetches in background
+  - Persists across browser sessions
+- ✅ **Smart Map Updates** - Prevents unnecessary re-renders
+  - Map only re-centers when locations change (not on GPS updates)
+  - Popups stay open when switching tabs
+  - User location updates don't recreate markers
+  - Dynamic popup content generated on open with latest distance calculation
+- ✅ **Intelligent Bounds Calculation** - Better initial map view
+  - User location included in bounds only if within 5km of locations
+  - Prevents excessive zoom-out for distant users
+- ✅ **GPS Optimization** - Better permission handling
+  - 60-second cached position (`maximumAge: 60000`)
+  - Prevents permission re-prompts on tab switching
+- ✅ **UI Improvements**
+  - Location card distance moved to line 2 (no address truncation)
+  - Transparent routing collapse button (no grey box)
 
 ## 📋 Next Steps
 
@@ -139,11 +165,13 @@
 **Dev Server**: localhost:3000
 
 **Main Files**:
-- Map: `src/components/map/MapView.tsx`
+- Map: `src/components/map/MapView.tsx` (smart updates, bounds calculation)
 - Markers: `src/components/map/LocationMarker.tsx`
-- Hooks: `src/lib/hooks/useLocations.ts`, `useUserLocation.ts`
+- Location List: `src/components/locations/LocationCard.tsx` (distance on line 2)
+- Hooks: `src/lib/hooks/useLocations.ts` (localStorage cache), `useUserLocation.ts` (localStorage cache + GPS optimization)
 - Dev Tools: `src/server/api/routers/dev.ts`
 - Admin: `src/components/admin/` (LocationTable, LocationForm, CoordinatePicker)
+- Styles: `src/styles/globals.css` (dark theme + Leaflet overrides + routing control)
 - Types: `src/types/database.types.ts`
 - Migrations: `supabase/migrations/` (5 SQL files)
 

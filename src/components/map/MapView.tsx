@@ -141,62 +141,87 @@ export function MapView() {
         icon: createLocationIcon(location),
       });
 
-      // Calculate distance from user location
-      const distance = userLocation
-        ? calculateDistance(
-            userLocation.latitude,
-            userLocation.longitude,
-            location.latitude,
-            location.longitude
-          )
-        : null;
+      // Create popup with dynamic content that updates when opened
+      const popup = L.popup();
 
-      const popupContent = `
-        <div class="p-3" style="background: #1a1a1a; color: #f3f4f6; border-radius: 0.5rem; min-width: 200px;">
-          <h3 class="font-bold text-base mb-2" style="color: #f3f4f6;">${location.address}</h3>
-          ${distance !== null ? `<p class="text-sm mb-1" style="color: #6366f1; font-weight: 500;">📍 ${formatDistance(distance)} away</p>` : ''}
-          <p class="text-sm mb-1" style="color: #9ca3af;">${location.location_type}</p>
-          ${location.route ? `<p class="text-sm mb-1" style="color: #9ca3af;">Route: ${location.route}</p>` : ''}
-          ${location.is_start ? '<p class="text-sm mb-1" style="color: #10b981;">Starting Point ⭐</p>' : ''}
-          ${location.has_candy ?
-            '<p class="text-sm mb-1" style="color: #10b981;">Has candy ✓</p>' :
-            '<p class="text-sm mb-1" style="color: #ef4444;">No candy</p>'
-          }
-          ${location.has_activity ?
-            `<p class="text-sm mb-2" style="color: #f59e0b;">Activity: ${location.activity_details || 'Yes'}</p>` :
-            ''
-          }
-          <div class="mt-3 flex gap-2">
-            <button
-              onclick="window.showDirections(${location.latitude}, ${location.longitude})"
-              class="flex-1 px-3 py-2 text-sm rounded transition-colors"
-              style="background: #6366f1; color: white; font-weight: 500;"
-            >
-              Get Directions
-            </button>
-            <button
-              onclick="window.clearDirections()"
-              class="px-3 py-2 text-sm rounded transition-colors"
-              style="background: #374151; color: #f3f4f6; font-weight: 500;"
-            >
-              Clear
-            </button>
+      popup.on('add', () => {
+        const distance = userLocation
+          ? calculateDistance(
+              userLocation.latitude,
+              userLocation.longitude,
+              location.latitude,
+              location.longitude
+            )
+          : null;
+
+        const popupContent = `
+          <div class="p-3" style="background: #1a1a1a; color: #f3f4f6; border-radius: 0.5rem; min-width: 200px;">
+            <h3 class="font-bold text-base mb-2" style="color: #f3f4f6;">${location.address}</h3>
+            ${distance !== null ? `<p class="text-sm mb-1" style="color: #6366f1; font-weight: 500;">📍 ${formatDistance(distance)} away</p>` : ''}
+            <p class="text-sm mb-1" style="color: #9ca3af;">${location.location_type}</p>
+            ${location.route ? `<p class="text-sm mb-1" style="color: #9ca3af;">Route: ${location.route}</p>` : ''}
+            ${location.is_start ? '<p class="text-sm mb-1" style="color: #10b981;">Starting Point ⭐</p>' : ''}
+            ${location.has_candy ?
+              '<p class="text-sm mb-1" style="color: #10b981;">Has candy ✓</p>' :
+              '<p class="text-sm mb-1" style="color: #ef4444;">No candy</p>'
+            }
+            ${location.has_activity ?
+              `<p class="text-sm mb-2" style="color: #f59e0b;">Activity: ${location.activity_details || 'Yes'}</p>` :
+              ''
+            }
+            <div class="mt-3 flex gap-2">
+              <button
+                onclick="window.showDirections(${location.latitude}, ${location.longitude})"
+                class="flex-1 px-3 py-2 text-sm rounded transition-colors"
+                style="background: #6366f1; color: white; font-weight: 500;"
+              >
+                Get Directions
+              </button>
+              <button
+                onclick="window.clearDirections()"
+                class="px-3 py-2 text-sm rounded transition-colors"
+                style="background: #374151; color: #f3f4f6; font-weight: 500;"
+              >
+                Clear
+              </button>
+            </div>
           </div>
-        </div>
-      `;
+        `;
 
-      marker.bindPopup(popupContent);
+        popup.setContent(popupContent);
+      });
+
+      marker.bindPopup(popup);
       marker.addTo(markersLayer.current!);
     });
 
-    // Fit bounds if we have locations
+    // Fit bounds if we have locations (only on initial load/location changes)
     if (locations.length > 0) {
-      const bounds = L.latLngBounds(
-        locations.map((loc) => [loc.latitude, loc.longitude])
-      );
+      const points: [number, number][] = locations.map((loc) => [loc.latitude, loc.longitude]);
+
+      // Include user location in bounds if available and within 5km of locations
+      if (userLocation) {
+        const maxDistance = Math.max(
+          ...locations.map((loc) =>
+            calculateDistance(
+              userLocation.latitude,
+              userLocation.longitude,
+              loc.latitude,
+              loc.longitude
+            )
+          )
+        );
+
+        // Only include if within 5km
+        if (maxDistance <= 5000) {
+          points.push([userLocation.latitude, userLocation.longitude]);
+        }
+      }
+
+      const bounds = L.latLngBounds(points);
       mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
     }
-  }, [locations, loading, userLocation]);
+  }, [locations, loading]);
 
   // Update user location marker
   useEffect(() => {

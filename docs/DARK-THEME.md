@@ -68,6 +68,11 @@ border-gray-700: #374151     /* Form input borders */
   - Light text (`#f3f4f6`)
   - Gray borders (`#374151`)
   - Dark hover states (`#262626`)
+  - **Collapsed state**: Indigo button with 🧭 compass emoji
+    - Background: `#6366f1` (primary indigo)
+    - Border: `2px solid #4f46e5`
+    - Glowing shadow: `0 2px 8px rgba(99, 102, 241, 0.5)`
+    - Transparent collapse button (no grey box)
 - **UserLocationButton**: Dark disabled state
 
 ### Location List
@@ -153,6 +158,30 @@ Added to `globals.css`:
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
 }
 
+/* Collapsed routing control - indigo button with compass */
+.leaflet-routing-container.leaflet-routing-container-hide {
+  background: #6366f1 !important;
+  border: 2px solid #4f46e5 !important;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.5) !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  cursor: pointer !important;
+}
+
+.leaflet-routing-container.leaflet-routing-container-hide::before {
+  content: "🧭" !important;
+  font-size: 24px !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.leaflet-routing-container.leaflet-routing-container-hide:hover {
+  background: #4f46e5 !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.7) !important;
+}
+
 .leaflet-routing-alt {
   background: #1a1a1a !important;
   color: #f3f4f6 !important;
@@ -161,6 +190,22 @@ Added to `globals.css`:
 
 .leaflet-routing-alt:hover {
   background: #262626 !important;
+}
+
+.leaflet-routing-collapse-btn {
+  background: transparent !important;
+  color: #f3f4f6 !important;
+  border: none !important;
+  font-size: 20px !important;
+  padding: 4px 8px !important;
+  cursor: pointer !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.leaflet-routing-collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0.25rem !important;
 }
 ```
 
