@@ -28,7 +28,7 @@
 - **All migrations applied to both databases**
 
 ### Components Built
-- `Navigation.tsx` - Nav bar with Lucide icons
+- `Navigation.tsx` - Nav bar with Lucide icons + info modal (React Portal)
 - `MapView.tsx` - Full Leaflet map with markers, user location, popups, routing
 - `LocationMarker.tsx` - Custom Lucide icons with status badges
 - `UserLocationButton.tsx` - FAB to center on user location
@@ -65,6 +65,7 @@
 - ✅ Walking directions with Leaflet Routing Machine (OSRM)
 - ✅ Center on user FAB button
 - ✅ Interactive popups with "Get Directions" buttons
+- ✅ Info modal with event details and usage instructions (React Portal for z-index control)
 - ✅ Real-time Supabase updates
 - ✅ Loading/error states
 - ✅ Dev tools for seeding test data

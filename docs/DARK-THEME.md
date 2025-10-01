@@ -43,6 +43,7 @@ border-gray-700: #374151     /* Form input borders */
 - Tighter icon spacing (`gap-1`) for compact look
 - Light text with secondary gray icons
 - Hover states with dark gray background
+- **Info modal** (React Portal) with dark surface background, orange title, and sections for event details, usage instructions, and route descriptions
 
 ### Map Components
 - **MapView**:
