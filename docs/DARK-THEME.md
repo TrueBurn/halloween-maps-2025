@@ -46,10 +46,10 @@ border-gray-700: #374151     /* Form input borders */
 
 ### Map Components
 - **MapView**:
-  - **Dark map tiles** from CARTO (`dark_all` theme)
-  - **Brightness filter** for better street name readability (`brightness(1.15) contrast(1.05)`)
+  - **Light map tiles** from OpenStreetMap (for better street name readability)
   - Dark loading overlay
   - Dark location count badge
+  - Note: See `docs/MAP-TILES-GUIDE.md` for how to switch to dark tiles if desired
 - **Leaflet Popups**: Custom CSS overrides for dark backgrounds
   - Dark wrapper with gray borders
   - Light text on dark background
@@ -187,34 +187,32 @@ The app uses the **"Bloody"** font from CDN Fonts for a spooky, dripping blood a
 
 ## Map Tiles
 
-The map uses **CARTO's Dark Matter** tile layer for a seamless dark theme experience:
+The map uses **OpenStreetMap light tiles** for optimal readability:
 
 ```javascript
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '© OpenStreetMap contributors, © CARTO',
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors',
   maxZoom: 19,
 })
 ```
 
-**Benefits:**
-- Consistent dark aesthetic throughout the map
-- High contrast for location markers
-- Retina display support with `{r}` placeholder
-- Free and open source from CARTO
-- Designed specifically for dark UI applications
+**Why Light Tiles?**
+- ✅ Excellent street name readability
+- ✅ High contrast labels for navigation
+- ✅ Familiar map appearance for users
+- ✅ Dark UI elements (nav, popups, markers) still provide Halloween atmosphere
+- ✅ Best balance of aesthetics and functionality
 
-**Readability Enhancement:**
-```css
-.map-tiles {
-  filter: brightness(1.15) contrast(1.05);
-}
-```
-The map tiles are brightened by 15% and have slightly increased contrast to make street names more readable while maintaining the dark theme.
+**Want Dark Map Tiles Instead?**
 
-**Alternative Dark Tile Providers** (if needed):
-- CARTO Dark (no labels): `https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png`
-- Stamen Toner: `https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png`
-- MapBox Dark (requires API key): `https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}`
+See the comprehensive guide: **[`docs/MAP-TILES-GUIDE.md`](./MAP-TILES-GUIDE.md)**
+
+This guide includes:
+- Step-by-step instructions to switch to dark tiles
+- Multiple dark tile provider options (CARTO, Stamen, MapBox)
+- Brightness filter CSS for better dark tile readability
+- Comparison of light vs dark tiles
+- How to add a tile switcher for testing
 
 ## Browser Support
 

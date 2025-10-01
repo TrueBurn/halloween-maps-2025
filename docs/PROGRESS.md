@@ -93,11 +93,11 @@
 - ✅ Near-black backgrounds (#0f0f0f)
 - ✅ Dark surfaces (#1a1a1a) for cards/panels
 - ✅ Light text (#f3f4f6) on dark backgrounds
-- ✅ **Halloween "Bloody" font** for navigation title (dripping blood style)
-- ✅ **Dark map tiles** from CARTO Dark Matter theme
+- ✅ **Halloween "Bloody" font** for navigation title (dripping blood style with red glow)
+- ✅ **Light map tiles** for readability (dark tiles guide available in `docs/MAP-TILES-GUIDE.md`)
 - ✅ All components updated:
-  - Navigation bar (with enhanced contrast and Halloween font)
-  - Map view (including Leaflet popups and dark tiles)
+  - Navigation bar (with enhanced contrast, Halloween font, and red glow effect)
+  - Map view (light tiles with dark popups and UI elements)
   - Location list page (dark cards with hover effects)
   - Admin panel (dashboard, table, forms)
   - Dev tools page

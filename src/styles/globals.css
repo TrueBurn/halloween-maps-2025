@@ -22,11 +22,6 @@
   --color-text-secondary: #9ca3af;
 }
 
-/* Map Tiles - Brighten for better readability */
-.map-tiles {
-  filter: brightness(1.15) contrast(1.05);
-}
-
 /* Leaflet Popup Dark Theme Overrides */
 .leaflet-popup-content-wrapper {
   background: #1a1a1a !important;
