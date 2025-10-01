@@ -135,6 +135,11 @@
 - ✅ **UI Improvements**
   - Location card distance moved to line 2 (no address truncation)
   - Transparent routing collapse button (no grey box)
+- ✅ **Mobile Browser Compatibility**
+  - Safe area insets for bottom browser UI (Chrome URL bar, iOS notches)
+  - `viewport-fit=cover` meta tag enables safe area detection
+  - Bottom elements use `env(safe-area-inset-bottom)` for proper spacing
+  - Dynamically adapts as browser UI shows/hides during scrolling
 
 ## 📋 Next Steps
 
@@ -165,12 +170,13 @@
 **Dev Server**: localhost:3000
 
 **Main Files**:
-- Map: `src/components/map/MapView.tsx` (smart updates, bounds calculation)
+- Map: `src/components/map/MapView.tsx` (smart updates, bounds calculation, safe area insets)
 - Markers: `src/components/map/LocationMarker.tsx`
 - Location List: `src/components/locations/LocationCard.tsx` (distance on line 2)
 - Hooks: `src/lib/hooks/useLocations.ts` (localStorage cache), `useUserLocation.ts` (localStorage cache + GPS optimization)
 - Dev Tools: `src/server/api/routers/dev.ts`
 - Admin: `src/components/admin/` (LocationTable, LocationForm, CoordinatePicker)
+- Layout: `src/app/layout.tsx` (viewport-fit=cover for safe areas)
 - Styles: `src/styles/globals.css` (dark theme + Leaflet overrides + routing control)
 - Types: `src/types/database.types.ts`
 - Migrations: `supabase/migrations/` (5 SQL files)

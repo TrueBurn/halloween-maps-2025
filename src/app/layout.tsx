@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <link rel="preconnect" href="https://fonts.cdnfonts.com" />
         <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/bloody" />
       </head>

@@ -286,7 +286,10 @@ export function MapView() {
 
       {/* Location count badge */}
       {!loading && locations.length > 0 && (
-        <div className="absolute bottom-4 left-4 bg-surface px-3 py-2 rounded-lg shadow-md border border-gray-700 z-[1000]">
+        <div
+          className="absolute left-4 bg-surface px-3 py-2 rounded-lg shadow-md border border-gray-700 z-[1000]"
+          style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
+        >
           <div className="flex items-center gap-2 text-sm">
             <MapPin className="h-4 w-4 text-primary" />
             <span className="font-medium text-text-primary">{locations.length} locations</span>
@@ -295,7 +298,10 @@ export function MapView() {
       )}
 
       {/* Center on user location button */}
-      <div className="absolute bottom-4 right-4 z-[1000]">
+      <div
+        className="absolute right-4 z-[1000]"
+        style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
+      >
         <UserLocationButton onClick={centerOnUser} disabled={!userLocation} />
       </div>
     </div>

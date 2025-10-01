@@ -96,6 +96,7 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ Mobile-first responsive design
 - ✅ Dark Halloween theme 🎃
 - ✅ **Performance optimizations** (localStorage caching, smart map updates)
+- ✅ **Mobile browser compatibility** (safe area insets for bottom UI bars)
 
 **Next Steps:**
 - 🎯 Deploy to Vercel (once per neighborhood)
