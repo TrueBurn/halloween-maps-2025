@@ -18,6 +18,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/bloody" />
+      </head>
       <body className="bg-background text-text-primary font-sans">
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

@@ -32,12 +32,24 @@ border-gray-700: #374151     /* Form input borders */
 
 ### Navigation
 - Dark surface background (`bg-surface`)
-- Gray borders (`border-gray-800`)
+- **Enhanced border** for contrast (`border-b-2 border-gray-700`)
+- **Custom shadow** for separation from map (`shadow-[0_4px_6px_-1px_rgba(0,0,0,0.5)]`)
+- **Halloween font** "Bloody" for neighborhood name (spooky aesthetic)
+- **Orange title color** (`text-orange-500`) - classic Halloween pumpkin color
+- **Red glowing shadow** - Multi-layered red text shadow for blood/horror effect:
+  - Inner glow: `0 0 20px rgba(239, 68, 68, 0.8)`
+  - Outer glow: `0 0 30px rgba(239, 68, 68, 0.5)`
+  - Drop shadow: `0 4px 8px rgba(239, 68, 68, 0.4)`
+- Tighter icon spacing (`gap-1`) for compact look
 - Light text with secondary gray icons
 - Hover states with dark gray background
 
 ### Map Components
-- **MapView**: Dark loading overlay, dark location count badge
+- **MapView**:
+  - **Dark map tiles** from CARTO (`dark_all` theme)
+  - **Brightness filter** for better street name readability (`brightness(1.15) contrast(1.05)`)
+  - Dark loading overlay
+  - Dark location count badge
 - **Leaflet Popups**: Custom CSS overrides for dark backgrounds
   - Dark wrapper with gray borders
   - Light text on dark background
@@ -47,7 +59,11 @@ border-gray-700: #374151     /* Form input borders */
 
 ### Location List
 - Dark background page
-- Dark surface cards
+- **LocationCard**: Dark surface cards with enhanced styling
+  - Background: `bg-surface` with `border-gray-800`
+  - Hover effect: `hover:shadow-xl hover:border-gray-700`
+  - Dark badges with colored borders (success, error, warning)
+  - Light text on dark backgrounds
 - Dark form inputs with proper contrast
 - Dark filter selects and sort dropdown
 
@@ -133,6 +149,7 @@ Added to `globals.css`:
 4. **Location Components**:
    - `src/app/locations/page.tsx` - List page
    - `src/components/locations/LocationList.tsx` - Location list
+   - `src/components/locations/LocationCard.tsx` - Individual location cards
 
 5. **Admin Components**:
    - `src/app/admin/page.tsx` - Admin dashboard
@@ -144,19 +161,67 @@ Added to `globals.css`:
 6. **Dev Tools**:
    - `src/app/dev/page.tsx` - Dev tools page
 
+## Typography
+
+### Halloween Font
+The app uses the **"Bloody"** font from CDN Fonts for a spooky, dripping blood aesthetic:
+
+```css
+@import url('https://fonts.cdnfonts.com/css/bloody');
+```
+
+**Usage:**
+- Neighborhood name in navigation uses `--font-halloween`
+- Creates an authentic Halloween horror vibe
+- Pairs well with the dark theme
+
+**Fallback stack:** `'Bloody', ui-sans-serif, system-ui, sans-serif`
+
 ## Design Philosophy
 
 1. **High Contrast**: Light text on very dark backgrounds for readability
 2. **Vibrant Accents**: Bright colors pop against dark backgrounds
 3. **Consistent Patterns**: Same dark theme treatment across all pages
 4. **Proper Hover States**: Clear visual feedback on dark backgrounds
-5. **Halloween Vibes**: Spooky dark atmosphere perfect for trick-or-treating
+5. **Halloween Vibes**: Spooky dark atmosphere + dripping blood font perfect for trick-or-treating
+
+## Map Tiles
+
+The map uses **CARTO's Dark Matter** tile layer for a seamless dark theme experience:
+
+```javascript
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap contributors, © CARTO',
+  maxZoom: 19,
+})
+```
+
+**Benefits:**
+- Consistent dark aesthetic throughout the map
+- High contrast for location markers
+- Retina display support with `{r}` placeholder
+- Free and open source from CARTO
+- Designed specifically for dark UI applications
+
+**Readability Enhancement:**
+```css
+.map-tiles {
+  filter: brightness(1.15) contrast(1.05);
+}
+```
+The map tiles are brightened by 15% and have slightly increased contrast to make street names more readable while maintaining the dark theme.
+
+**Alternative Dark Tile Providers** (if needed):
+- CARTO Dark (no labels): `https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png`
+- Stamen Toner: `https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png`
+- MapBox Dark (requires API key): `https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}`
 
 ## Browser Support
 
 - Dark theme works in all modern browsers
 - Custom Tailwind CSS variables supported
 - Leaflet popup overrides use `!important` to ensure dark styling
+- Dark map tiles load from CARTO's CDN
 
 ## Future Enhancements
 

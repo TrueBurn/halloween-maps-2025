@@ -4,6 +4,7 @@
   /* Fonts */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-halloween: 'Bloody', ui-sans-serif, system-ui, sans-serif;
 
   /* Custom Colors */
   --color-primary: #6366f1;
@@ -19,6 +20,11 @@
   /* Text - Light for dark backgrounds */
   --color-text-primary: #f3f4f6;
   --color-text-secondary: #9ca3af;
+}
+
+/* Map Tiles - Brighten for better readability */
+.map-tiles {
+  filter: brightness(1.15) contrast(1.05);
 }
 
 /* Leaflet Popup Dark Theme Overrides */
