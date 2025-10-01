@@ -40,7 +40,11 @@ border-gray-700: #374151     /* Form input borders */
   - Inner glow: `0 0 20px rgba(239, 68, 68, 0.8)`
   - Outer glow: `0 0 30px rgba(239, 68, 68, 0.5)`
   - Drop shadow: `0 4px 8px rgba(239, 68, 68, 0.4)`
-- Tighter icon spacing (`gap-1`) for compact look
+- **Responsive design**:
+  - Title: `text-lg sm:text-xl md:text-2xl` (scales from 18px to 24px)
+  - Icons: `h-10 w-10 sm:h-11 sm:w-11` (smaller on mobile)
+  - Spacing: `gap-0.5 sm:gap-1` (tighter on mobile)
+  - Padding: `px-2 sm:px-4` (reduced horizontal padding on mobile)
 - Light text with secondary gray icons
 - Hover states with dark gray background
 - **Info modal** (React Portal) with dark surface background, orange title, and sections for event details, usage instructions, and route descriptions
@@ -50,12 +54,20 @@ border-gray-700: #374151     /* Form input borders */
   - **Light map tiles** from OpenStreetMap (for better street name readability)
   - Dark loading overlay
   - Dark location count badge
+  - **Distance display** in popups (metric: meters/kilometers)
+  - **Custom direction markers**: Green 🏠 for start, red 📍 for destination
   - Note: See `docs/MAP-TILES-GUIDE.md` for how to switch to dark tiles if desired
 - **Leaflet Popups**: Custom CSS overrides for dark backgrounds
   - Dark wrapper with gray borders
   - Light text on dark background
   - Dark popup arrow (tip)
   - Gray close button with hover state
+  - Distance shown in indigo color (`#6366f1`)
+- **Leaflet Routing Machine**: Dark theme for directions panel
+  - Dark container background (`#1a1a1a`)
+  - Light text (`#f3f4f6`)
+  - Gray borders (`#374151`)
+  - Dark hover states (`#262626`)
 - **UserLocationButton**: Dark disabled state
 
 ### Location List
@@ -130,6 +142,25 @@ Added to `globals.css`:
 
 .leaflet-popup-close-button:hover {
   color: #f3f4f6 !important;
+}
+
+/* Leaflet Routing Machine Dark Theme */
+.leaflet-routing-container {
+  background: #1a1a1a !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.leaflet-routing-alt {
+  background: #1a1a1a !important;
+  color: #f3f4f6 !important;
+  border-top: 1px solid #374151 !important;
+}
+
+.leaflet-routing-alt:hover {
+  background: #262626 !important;
 }
 ```
 

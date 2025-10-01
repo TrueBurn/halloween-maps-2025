@@ -10,6 +10,7 @@ import { useLocations } from '~/lib/hooks/useLocations';
 import { useUserLocation } from '~/lib/hooks/useUserLocation';
 import { createLocationIcon } from './LocationMarker';
 import { UserLocationButton } from './UserLocationButton';
+import { calculateDistance, formatDistance } from '~/lib/utils/distance';
 
 export function MapView() {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -42,6 +43,21 @@ export function MapView() {
       routingControl.current = null;
     }
 
+    // Create custom start/end markers
+    const startIcon = L.divIcon({
+      html: '<div style="background: #10b981; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 18px;">🏠</div>',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+      className: 'custom-waypoint-marker',
+    });
+
+    const endIcon = L.divIcon({
+      html: '<div style="background: #ef4444; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 18px;">📍</div>',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+      className: 'custom-waypoint-marker',
+    });
+
     // Create new routing control
     routingControl.current = L.Routing.control({
       waypoints: [
@@ -56,6 +72,11 @@ export function MapView() {
         styles: [{ color: '#6366f1', weight: 4, opacity: 0.7 }],
         extendToWaypoints: true,
         missingRouteTolerance: 0,
+      },
+      createMarker: function(i: number, waypoint: any, n: number) {
+        return L.marker(waypoint.latLng, {
+          icon: i === 0 ? startIcon : endIcon,
+        });
       },
       addWaypoints: false,
       fitSelectedRoutes: true,
@@ -120,9 +141,20 @@ export function MapView() {
         icon: createLocationIcon(location),
       });
 
+      // Calculate distance from user location
+      const distance = userLocation
+        ? calculateDistance(
+            userLocation.latitude,
+            userLocation.longitude,
+            location.latitude,
+            location.longitude
+          )
+        : null;
+
       const popupContent = `
         <div class="p-3" style="background: #1a1a1a; color: #f3f4f6; border-radius: 0.5rem; min-width: 200px;">
           <h3 class="font-bold text-base mb-2" style="color: #f3f4f6;">${location.address}</h3>
+          ${distance !== null ? `<p class="text-sm mb-1" style="color: #6366f1; font-weight: 500;">📍 ${formatDistance(distance)} away</p>` : ''}
           <p class="text-sm mb-1" style="color: #9ca3af;">${location.location_type}</p>
           ${location.route ? `<p class="text-sm mb-1" style="color: #9ca3af;">Route: ${location.route}</p>` : ''}
           ${location.is_start ? '<p class="text-sm mb-1" style="color: #10b981;">Starting Point ⭐</p>' : ''}
@@ -138,8 +170,7 @@ export function MapView() {
             <button
               onclick="window.showDirections(${location.latitude}, ${location.longitude})"
               class="flex-1 px-3 py-2 text-sm rounded transition-colors"
-              style="background: #6366f1; color: white; font-weight: 500; ${!userLocation ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
-              ${!userLocation ? 'disabled' : ''}
+              style="background: #6366f1; color: white; font-weight: 500;"
             >
               Get Directions
             </button>
@@ -165,7 +196,7 @@ export function MapView() {
       );
       mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
     }
-  }, [locations, loading]);
+  }, [locations, loading, userLocation]);
 
   // Update user location marker
   useEffect(() => {

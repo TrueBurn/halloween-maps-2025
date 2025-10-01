@@ -47,3 +47,55 @@
 .leaflet-popup-close-button:hover {
   color: #f3f4f6 !important;
 }
+
+/* Leaflet Routing Machine Dark Theme */
+.leaflet-routing-container {
+  background: #1a1a1a !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.leaflet-routing-alt {
+  background: #1a1a1a !important;
+  color: #f3f4f6 !important;
+  border-top: 1px solid #374151 !important;
+}
+
+.leaflet-routing-alt:hover {
+  background: #262626 !important;
+}
+
+.leaflet-routing-alt-minimized {
+  background: #1a1a1a !important;
+  color: #9ca3af !important;
+}
+
+.leaflet-routing-geocoder {
+  background: #262626 !important;
+  border-bottom: 1px solid #374151 !important;
+}
+
+.leaflet-routing-geocoder input {
+  background: #262626 !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #374151 !important;
+}
+
+.leaflet-routing-error {
+  background: #ef4444 !important;
+  color: white !important;
+  padding: 8px !important;
+  border-radius: 0.25rem !important;
+}
+
+.leaflet-routing-collapse-btn {
+  background: #374151 !important;
+  color: #f3f4f6 !important;
+  border-radius: 0.25rem !important;
+}
+
+.leaflet-routing-collapse-btn:hover {
+  background: #4b5563 !important;
+}

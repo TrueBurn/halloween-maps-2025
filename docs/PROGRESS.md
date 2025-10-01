@@ -63,9 +63,13 @@
 - ✅ Status badges (S=start, A=activity, ✕=no candy)
 - ✅ User GPS location with live tracking
 - ✅ Walking directions with Leaflet Routing Machine (OSRM)
+- ✅ Custom start/end markers for directions (green 🏠 for start, red 📍 for destination)
+- ✅ Distance display in popups (metric: meters/kilometers)
+- ✅ Dark theme for routing directions panel
 - ✅ Center on user FAB button
 - ✅ Interactive popups with "Get Directions" buttons
 - ✅ Info modal with event details and usage instructions (React Portal for z-index control)
+- ✅ Responsive navigation (smaller icons on mobile, scalable title font)
 - ✅ Real-time Supabase updates
 - ✅ Loading/error states
 - ✅ Dev tools for seeding test data
