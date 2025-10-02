@@ -13,9 +13,12 @@ For **both** Supabase projects:
 
 Add these redirect URLs (one per line):
 ```
-http://localhost:3000/admin/reset-password
-https://your-production-domain.com/admin/reset-password
+http://localhost:3000/auth/confirm
+https://*.your-domain.com/auth/confirm
+https://*.your-domain.com/admin/reset-password
 ```
+
+**Note:** Replace `your-domain.com` with your actual domain. The `*` wildcard allows any subdomain.
 
 ### 2. Configure Email Templates
 
@@ -30,7 +33,9 @@ Replace the entire template with:
 <h2>You have been invited</h2>
 
 <p>You have been invited to create a user on {{ .SiteURL }}. Follow this link to accept the invite:</p>
-<p><a href="{{ .SiteURL }}/admin/reset-password?token_hash={{ .TokenHash }}&type=invite">Accept the invite</a></p>
+<p>
+  <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite&next=/admin">Accept the invite</a>
+</p>
 ```
 
 #### Reset Password Template
@@ -39,7 +44,9 @@ Replace the entire template with:
 <h2>Reset Password</h2>
 
 <p>Follow this link to reset the password for your user:</p>
-<p><a href="{{ .SiteURL }}/admin/reset-password?token_hash={{ .TokenHash }}&type=recovery">Reset Password</a></p>
+<p>
+  <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/admin">Reset Password</a>
+</p>
 ```
 
 ---
@@ -58,9 +65,11 @@ Replace the entire template with:
 
 4. Click **"Send invite"**
 
-5. The user will receive an email with a link to set their password at `/admin/reset-password`
+5. The user will receive an email with a link to `/auth/confirm` (verifies token)
 
-6. After setting their password, they can login at `/admin/login`
+6. After verification, they're redirected to `/admin/reset-password` to set their password
+
+7. After setting their password, they can login at `/admin/login`
 
 ### Method 2: Create User with Password (Development Only)
 
@@ -173,9 +182,10 @@ Users can reset their password directly from the login page:
 2. Enter your email address
 3. Click **"Forgot?"** next to the password field
 4. Check email for password reset link
-5. Click the link to be redirected to `/admin/reset-password`
-6. Set a new password
-7. Login with the new password
+5. Click the link → Goes to `/auth/confirm` (verifies token)
+6. Automatically redirected to `/admin/reset-password`
+7. Set a new password
+8. Login with the new password
 
 ## Troubleshooting
 
@@ -188,16 +198,19 @@ Users can reset their password directly from the login page:
 ### Invite link not working
 
 - ✅ Make sure redirect URLs are configured in Supabase (see Prerequisites section)
+  - Must include `/auth/confirm` as primary redirect
 - ✅ Make sure email templates are updated (see Prerequisites section)
-- ✅ Check that the invite link redirects to `/admin/reset-password`
+- ✅ Check that the invite link goes to `/auth/confirm?token_hash=...&type=invite`
 - ✅ Verify the link hasn't expired (invite links expire after 24 hours)
+- ✅ Check for errors at `/error` page if redirected there
 
 ### Password reset not working
 
 - ✅ Ensure email templates are configured correctly (see Prerequisites section)
-- ✅ Check redirect URLs include your domain (see Prerequisites section)
-- ✅ Verify reset link redirects to `/admin/reset-password?token_hash=...`
+- ✅ Check redirect URLs include `/auth/confirm` (see Prerequisites section)
+- ✅ Verify reset link goes to `/auth/confirm?token_hash=...&type=recovery`
 - ✅ Try requesting a new reset link from the login page
+- ✅ Check browser console for errors during token verification
 
 ### User can't access admin panel after login
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { createClient } from '~/lib/supabase/client';
 import { Loader2 } from 'lucide-react';
 
@@ -13,24 +13,11 @@ function ResetPasswordForm() {
   const [success, setSuccess] = useState(false);
   const [validToken, setValidToken] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Check if we have a valid token/session
-    const checkToken = async () => {
+    // Check if we have a valid session (OTP already verified by /auth/confirm route)
+    const checkSession = async () => {
       const supabase = createClient();
-
-      // First check if there's a token_hash in the URL (from Supabase email links)
-      const tokenHash = searchParams.get('token_hash');
-      const type = searchParams.get('type');
-
-      if (tokenHash && type) {
-        // Supabase automatically exchanges the token for a session
-        // Just wait a moment for the auth state to update
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-
-      // Now check for session
       const { data: { session } } = await supabase.auth.getSession();
 
       if (session) {
@@ -40,8 +27,8 @@ function ResetPasswordForm() {
       }
     };
 
-    checkToken();
-  }, [searchParams]);
+    checkSession();
+  }, []);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
