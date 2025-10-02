@@ -19,12 +19,21 @@ function ResetPasswordForm() {
     // Check if we have a valid token/session
     const checkToken = async () => {
       const supabase = createClient();
+
+      // First check if there's a token_hash in the URL (from Supabase email links)
+      const tokenHash = searchParams.get('token_hash');
+      const type = searchParams.get('type');
+
+      if (tokenHash && type) {
+        // Supabase automatically exchanges the token for a session
+        // Just wait a moment for the auth state to update
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      // Now check for session
       const { data: { session } } = await supabase.auth.getSession();
 
-      // Check for token in URL (from email links)
-      const token = searchParams.get('token') || searchParams.get('access_token');
-
-      if (session || token) {
+      if (session) {
         setValidToken(true);
       } else {
         setError('Invalid or expired reset link. Please request a new one.');
