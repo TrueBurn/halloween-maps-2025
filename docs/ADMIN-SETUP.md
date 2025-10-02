@@ -1,35 +1,83 @@
 # Admin Setup Guide
 
+## Prerequisites: Configure Supabase Auth (REQUIRED)
+
+Before inviting admin users, you **must** configure Supabase authentication settings:
+
+### 1. Configure Redirect URLs
+
+For **both** Supabase projects:
+
+1. Go to your Supabase dashboard
+2. Navigate to **Authentication** → **URL Configuration**
+
+Add these redirect URLs (one per line):
+```
+http://localhost:3000/admin/reset-password
+https://your-production-domain.com/admin/reset-password
+```
+
+### 2. Configure Email Templates
+
+For **both** Supabase projects:
+
+1. Go to your Supabase dashboard
+2. Navigate to **Authentication** → **Email Templates**
+
+#### Invite User Template
+Replace the entire template with:
+```html
+<h2>You have been invited</h2>
+
+<p>You have been invited to create a user on {{ .SiteURL }}. Follow this link to accept the invite:</p>
+<p><a href="{{ .SiteURL }}/admin/reset-password?token_hash={{ .TokenHash }}&type=invite">Accept the invite</a></p>
+```
+
+#### Reset Password Template
+Replace the entire template with:
+```html
+<h2>Reset Password</h2>
+
+<p>Follow this link to reset the password for your user:</p>
+<p><a href="{{ .SiteURL }}/admin/reset-password?token_hash={{ .TokenHash }}&type=recovery">Reset Password</a></p>
+```
+
+---
+
 ## Creating an Admin User
 
-### Method 1: Using Supabase Dashboard (Recommended for Development)
+### Method 1: Invite User (Recommended for Production)
 
-1. Go to your Supabase project dashboard:
-   https://supabase.com/dashboard/project/YOUR_PROJECT_ID
+**Best for**: Inviting new admins who will set their own password
 
-2. Navigate to **Authentication** → **Users**
+1. Go to your Supabase dashboard → **Authentication** → **Users**
 
-3. Click **"Add user"** → **"Create new user"**
+2. Click **"Invite user"**
 
-4. Enter:
+3. Enter the admin's email address
+
+4. Click **"Send invite"**
+
+5. The user will receive an email with a link to set their password at `/admin/reset-password`
+
+6. After setting their password, they can login at `/admin/login`
+
+### Method 2: Create User with Password (Development Only)
+
+**Best for**: Quick development setup
+
+1. Go to **Authentication** → **Users**
+
+2. Click **"Add user"** → **"Create new user"**
+
+3. Enter:
    - Email: your-email@example.com
    - Password: (create a secure password)
    - **Auto Confirm User**: ✅ Check this box (important!)
 
-5. Click **"Create user"**
+4. Click **"Create user"**
 
-### Method 2: Disable Email Confirmation (Development Only)
-
-If you want to allow users to sign up without email confirmation during development:
-
-1. Go to **Authentication** → **Settings**
-2. Scroll to **Email Auth**
-3. Toggle **"Enable email confirmations"** to OFF
-4. Click **"Save"**
-
-**⚠️ Important**: Re-enable email confirmation before deploying to production!
-
-### Method 3: Using SQL (Create Admin Directly)
+### Method 3: Using SQL (Create Admin Directly - Advanced)
 
 1. Go to **SQL Editor** in Supabase dashboard
 
@@ -117,13 +165,39 @@ VALUES (
 
 3. You should be redirected to the admin dashboard at: http://localhost:3000/admin
 
+## Password Reset Flow
+
+Users can reset their password directly from the login page:
+
+1. Go to `/admin/login`
+2. Enter your email address
+3. Click **"Forgot?"** next to the password field
+4. Check email for password reset link
+5. Click the link to be redirected to `/admin/reset-password`
+6. Set a new password
+7. Login with the new password
+
 ## Troubleshooting
 
 ### "Invalid login credentials" error
 
 - ✅ Make sure the user's email is confirmed
 - ✅ Check that you're using the correct email and password
-- ✅ Try resetting the password in Supabase dashboard
+- ✅ Use the "Forgot?" link on login page to reset password
+
+### Invite link not working
+
+- ✅ Make sure redirect URLs are configured in Supabase (see Prerequisites section)
+- ✅ Make sure email templates are updated (see Prerequisites section)
+- ✅ Check that the invite link redirects to `/admin/reset-password`
+- ✅ Verify the link hasn't expired (invite links expire after 24 hours)
+
+### Password reset not working
+
+- ✅ Ensure email templates are configured correctly (see Prerequisites section)
+- ✅ Check redirect URLs include your domain (see Prerequisites section)
+- ✅ Verify reset link redirects to `/admin/reset-password?token_hash=...`
+- ✅ Try requesting a new reset link from the login page
 
 ### User can't access admin panel after login
 
@@ -131,12 +205,12 @@ VALUES (
 - Make sure cookies are enabled
 - Try clearing browser cache and cookies
 
-### Need to reset admin password
+### Need to manually reset admin password (Dashboard)
 
 1. Go to **Authentication** → **Users** in Supabase
 2. Click on the user
-3. Click **"Reset password"**
-4. Generate a new password or use the reset email flow
+3. Click **"Send password reset email"**
+4. User will receive email with reset link to `/admin/reset-password`
 
 ## Security Notes
 

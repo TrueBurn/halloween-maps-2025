@@ -10,6 +10,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -31,6 +32,30 @@ export default function AdminLoginPage() {
     }
 
     router.push('/admin');
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError('Please enter your email address first');
+      return;
+    }
+
+    setResetLoading(true);
+    setError('');
+
+    const supabase = createClient();
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/admin/reset-password`,
+    });
+
+    if (resetError) {
+      setError(resetError.message);
+      setResetLoading(false);
+      return;
+    }
+
+    alert('Password reset email sent! Check your inbox.');
+    setResetLoading(false);
   };
 
   return (
@@ -58,9 +83,19 @@ export default function AdminLoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-text-primary mb-1">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label htmlFor="password" className="block text-sm font-medium text-text-primary">
+                  Password
+                </label>
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={resetLoading}
+                  className="text-sm text-primary hover:underline disabled:opacity-50"
+                >
+                  {resetLoading ? 'Sending...' : 'Forgot?'}
+                </button>
+              </div>
               <input
                 id="password"
                 type="password"

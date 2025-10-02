@@ -1,6 +1,6 @@
 # Halloween Maps 2025 - Progress Summary
 
-## ✅ Completed (2025-10-01)
+## ✅ Completed (2025-10-02)
 
 ### Setup & Infrastructure
 - T3 App initialized (Next.js 14, TypeScript, Tailwind, tRPC)
@@ -42,7 +42,8 @@
 - `/` - Map view (fully functional with dynamic import, localStorage cache)
 - `/locations` - List view (filtering, sorting, distance calculation)
 - `/admin` - Admin dashboard with CRUD operations
-- `/admin/login` - Admin authentication
+- `/admin/login` - Admin authentication with forgot password link
+- `/admin/reset-password` - Password reset for invites and password recovery
 - `/dev` - Development tools UI (seed/clear/stats, dev only)
 
 ### API Routes (tRPC)
@@ -94,6 +95,11 @@
 
 ### Phase 4: Admin Panel ✅
 - ✅ Admin authentication with Supabase Auth
+- ✅ **Password reset & user invites** - Complete auth flow
+  - Password reset page (`/admin/reset-password`)
+  - Forgot password link on login page
+  - Support for invite links and password recovery emails
+  - Proper redirect handling after password updates
 - ✅ Admin dashboard with quick actions
 - ✅ LocationTable with search and CRUD operations
 - ✅ **Age group column** shows grayed-out dash for non-starting locations
@@ -174,20 +180,22 @@
 ### Deployment (Two Separate Instances)
 
 **Neighborhood 1 Deployment:**
-1. Create Vercel project for first neighborhood
-2. Configure environment variables (Supabase credentials + coordinates)
-3. Deploy to production with custom domain
-4. Create admin user in Supabase project
-5. Test all features on production URL
-6. Verify mobile functionality
+1. Configure Supabase Auth (redirect URLs + email templates) - see `docs/ADMIN-SETUP.md`
+2. Create Vercel project for first neighborhood
+3. Configure environment variables (Supabase credentials + coordinates)
+4. Deploy to production with custom domain
+5. Invite admin user via Supabase (they'll set password via email link)
+6. Test all features on production URL including password reset flow
+7. Verify mobile functionality
 
 **Neighborhood 2 Deployment:**
-1. Create Vercel project for second neighborhood
-2. Configure environment variables (Supabase credentials + coordinates)
-3. Deploy to production with custom domain
-4. Create admin user in Supabase project
-5. Test all features on production URL
-6. Verify mobile functionality
+1. Configure Supabase Auth (redirect URLs + email templates) - see `docs/ADMIN-SETUP.md`
+2. Create Vercel project for second neighborhood
+3. Configure environment variables (Supabase credentials + coordinates)
+4. Deploy to production with custom domain
+5. Invite admin user via Supabase (they'll set password via email link)
+6. Test all features on production URL including password reset flow
+7. Verify mobile functionality
 
 ## 🔑 Key Info
 
@@ -204,6 +212,7 @@
 - Hooks: `src/lib/hooks/useLocations.ts` (localStorage cache), `useUserLocation.ts` (localStorage cache + GPS optimization)
 - Dev Tools: `src/server/api/routers/dev.ts`
 - Admin: `src/components/admin/` (LocationTable, LocationForm, CoordinatePicker)
+- Auth: `src/app/admin/login/page.tsx`, `src/app/admin/reset-password/page.tsx`
 - Layout: `src/app/layout.tsx` (viewport-fit=cover for safe areas)
 - Styles: `src/styles/globals.css` (dark theme + Leaflet overrides + routing control)
 - Types: `src/types/database.types.ts`
