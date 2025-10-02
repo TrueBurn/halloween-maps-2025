@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL('/error?message=invalid_token', request.url))
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Verify the OTP
   const { error } = await supabase.auth.verifyOtp({
