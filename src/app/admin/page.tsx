@@ -8,7 +8,7 @@ import type { Tables } from '~/types/database.types';
 import { Loader2, LogOut, Plus, RefreshCw, Download } from 'lucide-react';
 import { LocationTable } from '~/components/admin/LocationTable';
 import { LocationForm } from '~/components/admin/LocationForm';
-import { useLocations } from '~/lib/hooks/useLocations';
+import { useAllLocations } from '~/lib/hooks/useAllLocations';
 import { exportToCSV, exportToJSON } from '~/lib/utils/export';
 
 type Location = Tables<'locations'>;
@@ -22,7 +22,7 @@ export default function AdminPage() {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const router = useRouter();
   const supabase = createClient();
-  const { locations } = useLocations();
+  const { locations } = useAllLocations();
 
   useEffect(() => {
     // Check current auth session
