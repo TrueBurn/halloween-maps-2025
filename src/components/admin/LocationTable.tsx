@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useLocations } from '~/lib/hooks/useLocations';
+import { useAllLocations } from '~/lib/hooks/useAllLocations';
 import { Loader2, Edit, Trash2, MapPin, Plus } from 'lucide-react';
 import type { Tables } from '~/types/database.types';
 
@@ -14,7 +14,7 @@ interface LocationTableProps {
 }
 
 export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps) {
-  const { locations, loading, error } = useLocations();
+  const { locations, loading, error } = useAllLocations();
   const [filter, setFilter] = useState('');
 
   const filteredLocations = locations.filter((loc) =>
