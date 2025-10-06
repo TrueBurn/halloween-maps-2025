@@ -14,7 +14,7 @@ interface LocationTableProps {
 }
 
 export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps) {
-  const { locations, loading, error } = useAllLocations();
+  const { locations, loading, error, refreshing, refresh } = useAllLocations();
   const [filter, setFilter] = useState('');
 
   const filteredLocations = locations.filter((loc) =>
@@ -51,6 +51,15 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
               className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg text-text-primary placeholder:text-text-secondary focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
+          <button
+            onClick={refresh}
+            disabled={refreshing}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Refresh locations from database"
+          >
+            <Loader2 className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+            {refreshing ? 'Refreshing...' : 'Refresh'}
+          </button>
           <button
             onClick={onCreate}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
