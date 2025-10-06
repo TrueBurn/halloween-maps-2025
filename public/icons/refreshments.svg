@@ -1,0 +1,35 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Refreshments station - Steaming cauldron/drink cup -->
+  <g filter="url(#shadow)">
+    <!-- Cauldron/cup body -->
+    <path d="M12 16C12 16 11 16 11 17V28C11 30.2 12.8 32 15 32H25C27.2 32 29 30.2 29 28V17C29 16 28 16 28 16" fill="#6366f1" stroke="#312e81" stroke-width="1.5"/>
+
+    <!-- Liquid inside (bubbling potion) -->
+    <ellipse cx="20" cy="24" rx="7" ry="4" fill="#a78bfa"/>
+    <circle cx="18" cy="23" r="1.5" fill="#c4b5fd"/>
+    <circle cx="22" cy="24" r="1" fill="#c4b5fd"/>
+
+    <!-- Handle -->
+    <path d="M29 20C29 20 31 20 32 22C32 22 32 24 30 24" stroke="#312e81" stroke-width="1.5" fill="none"/>
+
+    <!-- Steam wisps -->
+    <path d="M16 14C16 12 17 11 17 11M20 13C20 11 21 10 21 10M24 14C24 12 25 11 25 11" stroke="#ec4899" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Base stand -->
+    <ellipse cx="20" cy="32" rx="6" ry="1.5" fill="#1e1b4b" opacity="0.5"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,35 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Standard participating location with candy - Orange house with pumpkin -->
+  <g filter="url(#shadow)">
+    <!-- House base -->
+    <path d="M20 6L8 16V32C8 33.1 8.9 34 10 34H30C31.1 34 32 33.1 32 32V16L20 6Z" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
+
+    <!-- Roof -->
+    <path d="M20 4L6 16H34L20 4Z" fill="#ea580c" stroke="#78350f" stroke-width="1.5"/>
+
+    <!-- Door -->
+    <rect x="16" y="24" width="8" height="10" rx="1" fill="#78350f"/>
+
+    <!-- Window with glow (jack-o-lantern effect) -->
+    <rect x="12" y="18" width="6" height="5" rx="1" fill="#fbbf24"/>
+    <rect x="22" y="18" width="6" height="5" rx="1" fill="#fbbf24"/>
+
+    <!-- Candy indicator (small pumpkin on roof) -->
+    <circle cx="20" cy="12" r="2.5" fill="#f97316"/>
+    <rect x="19.5" y="10" width="1" height="1.5" fill="#15803d"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

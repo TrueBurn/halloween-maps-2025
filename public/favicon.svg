@@ -1,0 +1,20 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simplified favicon - Just the pumpkin face -->
+
+  <!-- Pumpkin circle -->
+  <circle cx="16" cy="16" r="14" fill="#f59e0b"/>
+  <circle cx="16" cy="16" r="14" stroke="#78350f" stroke-width="2"/>
+
+  <!-- Eyes (triangles) -->
+  <path d="M10 13L13 16L7 16Z" fill="#0f0f0f"/>
+  <path d="M22 13L25 16L19 16Z" fill="#0f0f0f"/>
+
+  <!-- Nose -->
+  <path d="M16 17L17.5 19L14.5 19Z" fill="#0f0f0f"/>
+
+  <!-- Smile -->
+  <path d="M9 21C9 21 11 24 16 24C21 24 23 21 23 21" stroke="#0f0f0f" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Stem -->
+  <rect x="15" y="3" width="2" height="4" rx="1" fill="#15803d"/>
+</svg>

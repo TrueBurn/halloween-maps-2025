@@ -1,0 +1,35 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Location without candy - Purple house with X badge -->
+  <g filter="url(#shadow)">
+    <!-- House base (purple/dark theme) -->
+    <path d="M20 6L8 16V32C8 33.1 8.9 34 10 34H30C31.1 34 32 33.1 32 32V16L20 6Z" fill="#7c3aed" stroke="#4c1d95" stroke-width="1.5"/>
+
+    <!-- Roof -->
+    <path d="M20 4L6 16H34L20 4Z" fill="#6366f1" stroke="#4c1d95" stroke-width="1.5"/>
+
+    <!-- Door -->
+    <rect x="16" y="24" width="8" height="10" rx="1" fill="#4c1d95"/>
+
+    <!-- Windows (darker, no glow) -->
+    <rect x="12" y="18" width="6" height="5" rx="1" fill="#312e81"/>
+    <rect x="22" y="18" width="6" height="5" rx="1" fill="#312e81"/>
+
+    <!-- No candy badge - Red X circle -->
+    <circle cx="30" cy="10" r="5" fill="#ef4444"/>
+    <path d="M28 8L32 12M32 8L28 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

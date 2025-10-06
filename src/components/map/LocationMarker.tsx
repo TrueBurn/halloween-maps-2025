@@ -1,94 +1,55 @@
 import L from 'leaflet';
-import { renderToString } from 'react-dom/server';
-import { Home, Coffee, Car, Square as SquareParking, Table } from 'lucide-react';
 import type { Tables } from '~/types/database.types';
 
 type Location = Tables<'locations'>;
 
-function getIconComponent(locationType: Location['location_type']) {
-  switch (locationType) {
-    case 'House':
-      return Home;
-    case 'Refreshments':
-      return Coffee;
-    case 'Car':
-      return Car;
+function getIconPath(location: Location): string {
+  // Determine base icon type
+  let baseIcon: string;
+
+  switch (location.location_type) {
     case 'Parking':
-      return SquareParking;
+      baseIcon = 'parking';
+      break;
+    case 'Refreshments':
+      baseIcon = 'refreshments';
+      break;
+    case 'Car':
+      baseIcon = 'car';
+      break;
+    case 'House':
     case 'Table':
-      return Table;
     default:
-      return Home;
+      // For House/Table, use location icon with variants
+      // Determine variant based on status
+      if (location.is_start) {
+        baseIcon = 'location-start';
+      } else if (!location.has_candy) {
+        baseIcon = 'location-no-candy';
+      } else if (location.has_activity) {
+        baseIcon = 'location-activity';
+      } else {
+        baseIcon = 'location';
+      }
   }
+
+  return `/icons/${baseIcon}.svg`;
 }
 
-export function createLocationIcon(location: Location): L.DivIcon {
-  const IconComponent = getIconComponent(location.location_type);
+export function createLocationIcon(location: Location): L.Icon {
+  const iconUrl = getIconPath(location);
+  const shadowUrl = '/icons/marker-shadow.svg';
 
-  // Starting points get larger icons with green border
-  const isStartingPoint = location.is_start;
-  const iconSize = isStartingPoint ? 48 : 40;
-  const iconInnerSize = isStartingPoint ? 24 : 20;
-  const borderColor = isStartingPoint ? '#10b981' : '#6366f1'; // green for starting points, indigo for others
-  const borderWidth = isStartingPoint ? 4 : 3;
+  // Starting points get larger icons
+  const iconSize = location.is_start ? 48 : 40;
 
-  // Render icon with status badges
-  const iconHtml = renderToString(
-    <div className="relative">
-      {/* Main icon container */}
-      <div
-        className="flex items-center justify-center rounded-full bg-white shadow-lg"
-        style={{
-          width: `${iconSize}px`,
-          height: `${iconSize}px`,
-          border: `${borderWidth}px solid ${borderColor}`
-        }}
-      >
-        <IconComponent
-          className={isStartingPoint ? "text-green-500" : "text-primary"}
-          size={iconInnerSize}
-          strokeWidth={2.5}
-        />
-      </div>
-
-      {/* Status badges */}
-      <div className="absolute -top-1 -right-1 flex gap-0.5">
-        {location.is_start && (
-          <div
-            className="flex items-center justify-center rounded-full bg-green-500 text-white text-xs font-bold shadow"
-            style={{ width: '16px', height: '16px' }}
-            title="Starting Point"
-          >
-            S
-          </div>
-        )}
-        {location.has_activity && (
-          <div
-            className="flex items-center justify-center rounded-full bg-amber-500 text-white text-xs font-bold shadow"
-            style={{ width: '16px', height: '16px' }}
-            title="Has Activity"
-          >
-            A
-          </div>
-        )}
-        {!location.has_candy && (
-          <div
-            className="flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold shadow"
-            style={{ width: '16px', height: '16px' }}
-            title="No Candy"
-          >
-            ✕
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  return L.divIcon({
-    html: iconHtml,
-    className: 'custom-location-marker',
+  return L.icon({
+    iconUrl,
+    shadowUrl,
     iconSize: [iconSize, iconSize],
     iconAnchor: [iconSize / 2, iconSize / 2],
     popupAnchor: [0, -(iconSize / 2)],
+    shadowSize: [iconSize, iconSize],
+    shadowAnchor: [iconSize / 2, iconSize - 5],
   });
 }

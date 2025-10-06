@@ -10,7 +10,19 @@ import { env } from "~/env";
 export const metadata: Metadata = {
   title: `${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME} Halloween ${env.NEXT_PUBLIC_EVENT_YEAR}`,
   description: `Interactive Halloween trick-or-treating map for ${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME}. Find participating houses, candy availability, and walking directions.`,
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/apple-touch-icon.svg',
+  },
+  openGraph: {
+    title: `${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME} Halloween ${env.NEXT_PUBLIC_EVENT_YEAR}`,
+    description: `Interactive Halloween trick-or-treating map for ${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME}. Find participating houses, candy availability, and walking directions.`,
+    locale: 'en_US',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

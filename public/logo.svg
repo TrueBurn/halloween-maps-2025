@@ -1,0 +1,61 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Halloween Maps Logo - Jack-o-lantern Map Pin -->
+
+  <!-- Map pin background -->
+  <g filter="url(#pin-shadow)">
+    <path d="M256 32C176.471 32 112 96.471 112 176C112 218.928 134.609 260.643 171.314 318.628C207.357 375.566 256 449.778 256 449.778C256 449.778 304.643 375.566 340.686 318.628C377.391 260.643 400 218.928 400 176C400 96.471 335.529 32 256 32Z" fill="#f59e0b"/>
+    <path d="M256 32C176.471 32 112 96.471 112 176C112 218.928 134.609 260.643 171.314 318.628C207.357 375.566 256 449.778 256 449.778C256 449.778 304.643 375.566 340.686 318.628C377.391 260.643 400 218.928 400 176C400 96.471 335.529 32 256 32Z" stroke="#78350f" stroke-width="8"/>
+  </g>
+
+  <!-- Jack-o-lantern face circle -->
+  <circle cx="256" cy="160" r="90" fill="#ea580c"/>
+  <circle cx="256" cy="160" r="90" stroke="#78350f" stroke-width="6"/>
+
+  <!-- Pumpkin ridges -->
+  <path d="M256 70V250M226 75C226 75 220 100 220 160C220 220 226 245 226 245M286 75C286 75 292 100 292 160C292 220 286 245 286 245" stroke="#c2410c" stroke-width="4" opacity="0.5"/>
+
+  <!-- Left eye (triangle) -->
+  <path d="M220 140L235 155L205 155Z" fill="#0f0f0f"/>
+
+  <!-- Right eye (triangle) -->
+  <path d="M292 140L307 155L277 155Z" fill="#0f0f0f"/>
+
+  <!-- Nose (small triangle) -->
+  <path d="M256 165L262 175L250 175Z" fill="#0f0f0f"/>
+
+  <!-- Mouth (jagged grin) -->
+  <path d="M215 190C215 190 225 210 235 210C245 210 245 200 256 200C267 200 267 210 277 210C287 210 297 190 297 190" stroke="#0f0f0f" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+  <!-- Mouth teeth -->
+  <rect x="225" y="190" width="8" height="15" fill="#0f0f0f"/>
+  <rect x="245" y="190" width="8" height="15" fill="#0f0f0f"/>
+  <rect x="265" y="190" width="8" height="15" fill="#0f0f0f"/>
+  <rect x="285" y="190" width="8" height="15" fill="#0f0f0f"/>
+
+  <!-- Stem -->
+  <path d="M256 68C256 68 250 55 245 50C240 45 235 50 240 55C245 60 256 68 256 68Z" fill="#15803d" stroke="#14532d" stroke-width="2"/>
+
+  <!-- Inner glow effect -->
+  <circle cx="256" cy="160" r="88" fill="url(#glow)" opacity="0.3"/>
+
+  <defs>
+    <!-- Shadow filter -->
+    <filter id="pin-shadow" x="100" y="28" width="312" height="445" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dy="4"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.4"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Inner glow gradient -->
+    <radialGradient id="glow" cx="0.5" cy="0.3" r="0.8">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

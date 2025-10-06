@@ -1,0 +1,42 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Apple Touch Icon - Pumpkin on dark background -->
+
+  <!-- Dark background for iOS -->
+  <rect width="180" height="180" fill="#0f0f0f" rx="40"/>
+
+  <!-- Pumpkin circle -->
+  <circle cx="90" cy="90" r="70" fill="#f59e0b"/>
+  <circle cx="90" cy="90" r="70" stroke="#78350f" stroke-width="6"/>
+
+  <!-- Pumpkin ridges -->
+  <path d="M90 20V160M60 25C60 25 50 50 50 90C50 130 60 155 60 155M120 25C120 25 130 50 130 90C130 130 120 155 120 155" stroke="#c2410c" stroke-width="4" opacity="0.4"/>
+
+  <!-- Eyes -->
+  <path d="M60 75L75 90L45 90Z" fill="#0f0f0f"/>
+  <path d="M120 75L135 90L105 90Z" fill="#0f0f0f"/>
+
+  <!-- Nose -->
+  <path d="M90 95L97 105L83 105Z" fill="#0f0f0f"/>
+
+  <!-- Jagged smile -->
+  <path d="M50 115C50 115 60 135 75 135C85 135 85 125 90 125C95 125 95 135 105 135C120 135 130 115 130 115" stroke="#0f0f0f" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Teeth -->
+  <rect x="60" y="115" width="10" height="18" fill="#0f0f0f"/>
+  <rect x="80" y="115" width="10" height="18" fill="#0f0f0f"/>
+  <rect x="100" y="115" width="10" height="18" fill="#0f0f0f"/>
+  <rect x="120" y="115" width="10" height="18" fill="#0f0f0f"/>
+
+  <!-- Stem -->
+  <path d="M90 18C90 18 85 10 82 7C79 4 75 7 78 10C81 13 90 18 90 18Z" fill="#15803d" stroke="#14532d" stroke-width="2"/>
+
+  <!-- Glow effect -->
+  <circle cx="90" cy="90" r="68" fill="url(#glow)" opacity="0.2"/>
+
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.3" r="0.8">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

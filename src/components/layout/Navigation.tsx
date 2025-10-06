@@ -106,24 +106,65 @@ export function Navigation() {
                   📍 How to Use
                 </h3>
                 <ul className="space-y-2 list-disc list-inside">
-                  <li>View the map to see participating locations</li>
-                  <li>Use the list view to filter by route and type</li>
-                  <li>Green markers have candy available</li>
-                  <li>Red markers are out of candy</li>
-                  <li>Purple markers have activities</li>
-                  <li>Tap any marker for more details</li>
+                  <li>View the interactive map to see all participating locations</li>
+                  <li>Use the list view to filter by age group, type, and candy status</li>
+                  <li>Click any marker on the map for details and walking directions</li>
+                  <li>Track your location with the GPS button (bottom-right)</li>
+                  <li>Refresh the page to see real-time updates from admins</li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold text-text-primary mb-2">
-                  🗺️ Routes
+                  🎨 Map Icon Key
                 </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <img src="/icons/location.svg" alt="Regular location" className="w-8 h-8" />
+                    <span><strong>Orange House:</strong> Participating with candy</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <img src="/icons/location-start.svg" alt="Starting point" className="w-9 h-9" />
+                    <span><strong>Green House:</strong> Starting point for age group</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <img src="/icons/location-no-candy.svg" alt="No candy" className="w-8 h-8" />
+                    <span><strong>Purple House:</strong> No candy (activity only)</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <img src="/icons/location-activity.svg" alt="Activity" className="w-8 h-8" />
+                    <span><strong>Pink House:</strong> Special activity available</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <img src="/icons/parking.svg" alt="Parking" className="w-8 h-8" />
+                    <span><strong>Parking:</strong> Designated parking area</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <img src="/icons/refreshments.svg" alt="Refreshments" className="w-8 h-8" />
+                    <span><strong>Refreshments:</strong> Drinks and snacks station</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <img src="/icons/car.svg" alt="Car" className="w-8 h-8" />
+                    <span><strong>Car:</strong> Trunk-or-treat location</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                  🗺️ Age Groups
+                </h3>
+                <p className="mb-2 text-sm">
+                  Different age groups have different starting points (marked with green houses):
+                </p>
                 <ul className="space-y-1 list-disc list-inside">
-                  <li><strong>Over 8:</strong> Full route for older kids</li>
-                  <li><strong>Under 8:</strong> Shorter route for younger kids</li>
+                  <li><strong>Over 8:</strong> Full neighborhood route for older kids</li>
+                  <li><strong>Under 8:</strong> Shorter route for younger children</li>
                   <li><strong>Toddlers:</strong> Brief route for little ones</li>
                 </ul>
+                <p className="mt-2 text-sm italic">
+                  Use the list view to filter locations by your age group.
+                </p>
               </div>
 
               <p className="text-sm text-center border-t-2 border-gray-700 pt-4">
