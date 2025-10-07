@@ -18,7 +18,7 @@ Halloween Maps helps neighborhoods coordinate trick-or-treating by displaying:
 - **Styling**: Tailwind CSS v4
 - **Database**: Supabase (PostgreSQL)
 - **Authentication**: Supabase Auth
-- **Maps**: Leaflet.js + OpenStreetMap
+- **Maps**: Leaflet.js + Leaflet.markercluster + OpenStreetMap
 - **Icons**: Lucide React
 - **State**: TanStack Query + tRPC
 
@@ -97,6 +97,7 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ Dark Halloween theme 🎃
 - ✅ **Performance optimizations** (localStorage caching, smart map updates)
 - ✅ **Mobile browser compatibility** (safe area insets for bottom UI bars)
+- ✅ **Marker clustering** (Halloween-themed with 🦇🕷️👻 emojis)
 
 **Next Steps:**
 - 🎯 Deploy to Vercel (once per neighborhood)

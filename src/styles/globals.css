@@ -129,3 +129,80 @@
   background: rgba(255, 255, 255, 0.1) !important;
   border-radius: 0.25rem !important;
 }
+
+/* Leaflet Marker Cluster Halloween Theme */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%) !important;
+  border: 3px solid #ff4500 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 12px rgba(255, 107, 53, 0.6) !important;
+}
+
+.marker-cluster-small:hover,
+.marker-cluster-medium:hover,
+.marker-cluster-large:hover {
+  background: linear-gradient(135deg, #ff4500 0%, #ff6b35 100%) !important;
+  box-shadow: 0 0 16px rgba(255, 107, 53, 0.8) !important;
+  transform: scale(1.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.marker-cluster div {
+  background: transparent !important;
+  width: 42px !important;
+  height: 42px !important;
+  margin-left: 3px !important;
+  margin-top: 3px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+.marker-cluster .cluster-emoji {
+  font-size: 18px !important;
+  line-height: 1 !important;
+  margin-bottom: -2px !important;
+}
+
+.marker-cluster .cluster-count {
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Different sizes for different cluster counts */
+.marker-cluster-large {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%) !important;
+  border-color: #7c3aed !important;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.6) !important;
+}
+
+.marker-cluster-large:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%) !important;
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.8) !important;
+}
+
+.marker-cluster-medium {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  border-color: #047857 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6) !important;
+}
+
+.marker-cluster-medium:hover {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.8) !important;
+}
+
+/* Spider-fy polylines (lines connecting to clustered markers) */
+.marker-cluster-spider-leg {
+  stroke: #6366f1 !important;
+  stroke-width: 2px !important;
+  stroke-opacity: 0.6 !important;
+}

@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import 'leaflet.markercluster';
 import { MapPin, Loader2 } from 'lucide-react';
 import { env } from '~/env';
 import { useLocations } from '~/lib/hooks/useLocations';
@@ -15,7 +16,7 @@ import { calculateDistance, formatDistance } from '~/lib/utils/distance';
 export function MapView() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<L.Map | null>(null);
-  const markersLayer = useRef<L.LayerGroup | null>(null);
+  const markersLayer = useRef<L.MarkerClusterGroup | null>(null);
   const userMarker = useRef<L.Marker | null>(null);
   const routingControl = useRef<L.Routing.Control | null>(null);
   const searchParams = useSearchParams();
@@ -118,7 +119,35 @@ export function MapView() {
       maxZoom: 19,
     }).addTo(map);
 
-    markersLayer.current = L.layerGroup().addTo(map);
+    // Create marker cluster group with custom options
+    markersLayer.current = L.markerClusterGroup({
+      maxClusterRadius: 15, // Cluster within 20px (less aggressive - only very close markers)
+      spiderfyOnMaxZoom: true, // Spider-fy at max zoom
+      showCoverageOnHover: false, // Cleaner hover
+      zoomToBoundsOnClick: true, // Zoom into cluster on click
+      disableClusteringAtZoom: 17, // Stop clustering earlier when zooming in
+      // Custom cluster icon with Halloween theme
+      iconCreateFunction: function(cluster) {
+        const count = cluster.getChildCount();
+        let className = 'marker-cluster-small';
+        let emoji = '🦇';
+
+        if (count >= 4) {
+          className = 'marker-cluster-large';
+          emoji = '👻';
+        } else if (count === 3) {
+          className = 'marker-cluster-medium';
+          emoji = '🕷️';
+        }
+
+        return L.divIcon({
+          html: `<div><span class="cluster-emoji">${emoji}</span><span class="cluster-count">${count}</span></div>`,
+          className: `marker-cluster ${className}`,
+          iconSize: L.point(48, 48),
+        });
+      },
+    }).addTo(map);
+
     mapInstance.current = map;
 
     return () => {
