@@ -161,10 +161,12 @@
   - Location card distance moved to line 2 (no address truncation)
   - Transparent routing collapse button (no grey box)
 - ✅ **Mobile Browser Compatibility**
-  - Safe area insets for bottom browser UI (Chrome URL bar, iOS notches)
   - `viewport-fit=cover` meta tag enables safe area detection
-  - Bottom elements use `env(safe-area-inset-bottom)` for proper spacing
-  - Dynamically adapts as browser UI shows/hides during scrolling
+  - Safe area insets for bottom-positioned elements (`env(safe-area-inset-bottom)`)
+  - Dynamic viewport height (`100dvh`) with `100vh` fallback for map and list containers
+  - Prevents content cutoff when mobile browser UI shows/hides
+  - Works with Chrome bottom URL bar, iOS notches, and home indicators
+  - Dynamically adapts as browser UI changes during scrolling
 
 ### Age Group UX Improvements 🎯 ✅
 - ✅ **Map Enhancements**
