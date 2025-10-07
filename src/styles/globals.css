@@ -22,6 +22,12 @@
   --color-text-secondary: #9ca3af;
 }
 
+/* Dynamic viewport height utility */
+.h-screen-dynamic {
+  height: 100vh; /* Fallback for older browsers */
+  height: 100dvh; /* Dynamic viewport height for modern browsers */
+}
+
 /* Leaflet Popup Dark Theme Overrides */
 .leaflet-popup-content-wrapper {
   background: #1a1a1a !important;

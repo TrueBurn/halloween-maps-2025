@@ -17,7 +17,7 @@ const MapView = dynamic(
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-background" style={{ height: '100vh', height: '100dvh' } as React.CSSProperties}>
+    <div className="flex h-screen-dynamic flex-col bg-background">
       <Navigation />
 
       <main className="flex-1 w-full bg-background">
