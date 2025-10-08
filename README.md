@@ -30,6 +30,7 @@ All project documentation is in the [`docs/`](./docs) folder:
 - **[PRD](./docs/PRD.md)** - Complete product requirements and specifications
 - **[PRD Summary](./docs/PRD-SUMMARY.md)** - Quick reference and design decisions
 - **[Admin Setup](./docs/ADMIN-SETUP.md)** - Creating admin users with Supabase Auth
+- **[AI Image Prompts](./docs/AI-IMAGE-PROMPTS.md)** - AI-generated image prompts and social media requirements
 
 ## 🏃 Quick Start
 
@@ -98,10 +99,12 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Performance optimizations** (localStorage caching, smart map updates)
 - ✅ **Mobile browser compatibility** (safe area insets, dvh viewport height)
 - ✅ **Marker clustering** (Halloween-themed with 🦇🕷️👻 emojis)
+- ✅ **Social media sharing** (WhatsApp-optimized preview images, Open Graph tags)
 
 **Next Steps:**
 - 🎯 Deploy to Vercel (once per neighborhood)
 - 🎯 Configure production environment variables
+- 🎯 Test WhatsApp sharing with Facebook Sharing Debugger
 - 🎯 Create admin user accounts in each Supabase project
 
 ## 📦 Commands

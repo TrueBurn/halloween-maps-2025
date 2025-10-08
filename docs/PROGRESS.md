@@ -1,6 +1,6 @@
 # Halloween Maps 2025 - Progress Summary
 
-## ✅ Completed (2025-10-07)
+## ✅ Completed (2025-10-08)
 
 ### Setup & Infrastructure
 - T3 App initialized (Next.js 14, TypeScript, Tailwind, tRPC)
@@ -173,6 +173,7 @@
   - Starting point markers 20% larger (48px vs 40px) with green borders
   - Easier to identify starting locations for different age groups
   - Popups show "⭐ Starting point for [age group]"
+  - **Location counter** shows only candy-giving locations (excludes parking, refreshments)
 - ✅ **Location List Improvements**
   - "Show Only Starting Points" toggle switch for quick filtering
   - Filter label changed to "Age Group (Starting Points)" for clarity
@@ -189,6 +190,21 @@
   - Regular participating locations do not have routes assigned
   - Seed data updated: 3 starting points (one per age group), 7 regular locations
 
+### Social Media Sharing 📱 ✅
+- ✅ **WhatsApp-Optimized Preview Image**
+  - Optimized preview image (1200x630px, <250 KB JPEG)
+  - Converted from 1360x768 PNG (1.5 MB) to meet WhatsApp's 300 KB limit
+  - Uses recommended Open Graph dimensions
+- ✅ **Meta Tags Configuration**
+  - Open Graph tags with absolute URLs for Facebook, WhatsApp, LinkedIn, Discord
+  - Twitter Card tags for Twitter/X sharing
+  - Image dimensions (1200x630) and alt text included
+  - Next.js metadata API with structured image object
+- ✅ **Documentation**
+  - AI image prompts and requirements in `docs/AI-IMAGE-PROMPTS.md`
+  - WhatsApp-specific requirements documented (file size, dimensions, format)
+  - Testing instructions with Facebook Sharing Debugger
+
 ## 📋 Next Steps
 
 ### Deployment (Two Separate Instances)
@@ -200,15 +216,19 @@
 2. Create Vercel project for first neighborhood
 3. Configure environment variables (Supabase credentials + coordinates)
 4. Deploy to production with custom domain
-5. Invite admin user via Supabase Dashboard
+5. Test WhatsApp sharing:
+   - Use Facebook Sharing Debugger: https://developers.facebook.com/tools/debug/sharing
+   - Verify preview image loads (should be <250 KB)
+   - Test actual WhatsApp share
+6. Invite admin user via Supabase Dashboard
    - User receives email → Clicks link → Goes to `/auth/confirm`
    - Token verified → Redirects to `/admin/reset-password`
    - Sets password → Redirects to `/admin`
-6. Test full auth flow on production:
+7. Test full auth flow on production:
    - Invite link works and redirects properly
    - Password reset from login page works
    - Login with new password succeeds
-7. Verify mobile functionality
+8. Verify mobile functionality
 
 **Neighborhood 2 Deployment:**
 1. Configure Supabase Auth - see `docs/ADMIN-SETUP.md`
@@ -217,15 +237,19 @@
 2. Create Vercel project for second neighborhood
 3. Configure environment variables (Supabase credentials + coordinates)
 4. Deploy to production with custom domain
-5. Invite admin user via Supabase Dashboard
+5. Test WhatsApp sharing:
+   - Use Facebook Sharing Debugger: https://developers.facebook.com/tools/debug/sharing
+   - Verify preview image loads (should be <250 KB)
+   - Test actual WhatsApp share
+6. Invite admin user via Supabase Dashboard
    - User receives email → Clicks link → Goes to `/auth/confirm`
    - Token verified → Redirects to `/admin/reset-password`
    - Sets password → Redirects to `/admin`
-6. Test full auth flow on production:
+7. Test full auth flow on production:
    - Invite link works and redirects properly
    - Password reset from login page works
    - Login with new password succeeds
-7. Verify mobile functionality
+8. Verify mobile functionality
 
 ## 🔑 Key Info
 
