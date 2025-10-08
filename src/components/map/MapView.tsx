@@ -320,7 +320,7 @@ export function MapView() {
         >
           <div className="flex items-center gap-2 text-sm">
             <MapPin className="h-4 w-4 text-primary" />
-            <span className="font-medium text-text-primary">{locations.length} locations</span>
+            <span className="font-medium text-text-primary">{locations.filter(loc => loc.has_candy).length} locations</span>
           </div>
         </div>
       )}

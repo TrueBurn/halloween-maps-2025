@@ -22,8 +22,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME} Halloween ${env.NEXT_PUBLIC_EVENT_YEAR}`,
     description: `Interactive Halloween trick-or-treating map for ${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME}. Find participating houses, candy availability, and walking directions.`,
+    images: ['/preview.png'],
     locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME} Halloween ${env.NEXT_PUBLIC_EVENT_YEAR}`,
+    description: `Interactive Halloween trick-or-treating map for ${env.NEXT_PUBLIC_NEIGHBORHOOD_NAME}`,
+    images: ['/preview.png'],
   },
 };
 
