@@ -58,6 +58,7 @@
 - `docs/PRD.md` - Full requirements
 - `docs/PRD-SUMMARY.md` - Quick reference guide
 - `docs/ADMIN-SETUP.md` - Admin user creation guide
+- `docs/ANALYTICS.md` - PostHog analytics integration guide
 - `docs/PROGRESS.md` - This file (current progress)
 - `supabase/README.md` - Migration docs
 
@@ -205,6 +206,42 @@
   - WhatsApp-specific requirements documented (file size, dimensions, format)
   - Testing instructions with Facebook Sharing Debugger
 
+### PostHog Analytics (Optional) 📊 ✅
+- ✅ **Real-Time Analytics Dashboard**
+  - Live active users (last 5 minutes, 30-second refresh)
+  - Total visitors today, sessions, average duration
+  - Mobile vs Desktop device breakdown
+  - Top 10 most-clicked locations with view counts
+  - Collapsible dashboard with dark Halloween theme
+- ✅ **Automatic Event Tracking**
+  - Map interactions (marker clicks, directions, GPS, clusters)
+  - Location list (filters, sorting, card clicks)
+  - Admin actions (CRUD operations, bulk actions, exports)
+  - GPS permission status tracking
+- ✅ **Multi-Neighborhood Support**
+  - Single PostHog project for both neighborhoods
+  - Automatic neighborhood property on all events
+  - Auto-filtered queries (Uitzicht admin sees only Uitzicht data)
+  - Free tier compatible (1M events/month)
+- ✅ **Protected API Routes**
+  - `/api/analytics/live` - Active users
+  - `/api/analytics/today` - Daily statistics
+  - `/api/analytics/popular-locations` - Top clicked locations
+  - All routes require admin authentication
+  - 30-second response caching
+- ✅ **Components Created**
+  - `AnalyticsDashboard` - Main container with collapse
+  - `LiveUsersCard` - Real-time active users widget
+  - `StatsGrid` - Daily metrics cards
+  - `PopularLocations` - Top 10 locations list
+  - HogQL query helpers with neighborhood filtering
+- ✅ **Documentation**
+  - `docs/ANALYTICS.md` - Comprehensive analytics guide
+  - Setup instructions with PostHog account creation
+  - Privacy & GDPR considerations
+  - Troubleshooting guide
+  - Free tier limits and usage estimates
+
 ## 📋 Next Steps
 
 ### Deployment (Two Separate Instances)
@@ -213,43 +250,51 @@
 1. Configure Supabase Auth - see `docs/ADMIN-SETUP.md`
    - Redirect URLs: Add `http://localhost:3000/auth/confirm` and production URL
    - Email templates: Update invite and reset password templates
-2. Create Vercel project for first neighborhood
-3. Configure environment variables (Supabase credentials + coordinates)
-4. Deploy to production with custom domain
-5. Test WhatsApp sharing:
+2. (Optional) Set up PostHog analytics - see `docs/ANALYTICS.md`
+   - Create free PostHog account
+   - Add PostHog environment variables to Vercel
+3. Create Vercel project for first neighborhood
+4. Configure environment variables (Supabase credentials + coordinates + PostHog if using)
+5. Deploy to production with custom domain
+6. Test WhatsApp sharing:
    - Use Facebook Sharing Debugger: https://developers.facebook.com/tools/debug/sharing
    - Verify preview image loads (should be <250 KB)
    - Test actual WhatsApp share
-6. Invite admin user via Supabase Dashboard
+7. Invite admin user via Supabase Dashboard
    - User receives email → Clicks link → Goes to `/auth/confirm`
    - Token verified → Redirects to `/admin/reset-password`
    - Sets password → Redirects to `/admin`
-7. Test full auth flow on production:
+8. Test full auth flow on production:
    - Invite link works and redirects properly
    - Password reset from login page works
    - Login with new password succeeds
-8. Verify mobile functionality
+9. (Optional) Verify analytics dashboard if PostHog is configured
+10. Verify mobile functionality
 
 **Neighborhood 2 Deployment:**
 1. Configure Supabase Auth - see `docs/ADMIN-SETUP.md`
    - Redirect URLs: Add `http://localhost:3000/auth/confirm` and production URL
    - Email templates: Update invite and reset password templates
-2. Create Vercel project for second neighborhood
-3. Configure environment variables (Supabase credentials + coordinates)
-4. Deploy to production with custom domain
-5. Test WhatsApp sharing:
+2. (Optional) Use same PostHog project (already set up for Neighborhood 1)
+   - Same PostHog credentials in Vercel environment variables
+   - Data automatically filtered by neighborhood
+3. Create Vercel project for second neighborhood
+4. Configure environment variables (Supabase credentials + coordinates + PostHog if using)
+5. Deploy to production with custom domain
+6. Test WhatsApp sharing:
    - Use Facebook Sharing Debugger: https://developers.facebook.com/tools/debug/sharing
    - Verify preview image loads (should be <250 KB)
    - Test actual WhatsApp share
-6. Invite admin user via Supabase Dashboard
+7. Invite admin user via Supabase Dashboard
    - User receives email → Clicks link → Goes to `/auth/confirm`
    - Token verified → Redirects to `/admin/reset-password`
    - Sets password → Redirects to `/admin`
-7. Test full auth flow on production:
+8. Test full auth flow on production:
    - Invite link works and redirects properly
    - Password reset from login page works
    - Login with new password succeeds
-8. Verify mobile functionality
+9. (Optional) Verify analytics dashboard if PostHog is configured
+10. Verify mobile functionality
 
 ## 🔑 Key Info
 

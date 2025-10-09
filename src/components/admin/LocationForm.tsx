@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { X, Loader2, MapPin } from 'lucide-react';
 import { createClient } from '~/lib/supabase/client';
 import type { Tables } from '~/types/database.types';
+import { usePostHog } from '~/providers/PostHogProvider';
 
 const CoordinatePicker = dynamic(
   () => import('./CoordinatePicker').then((mod) => ({ default: mod.CoordinatePicker })),
@@ -24,6 +25,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPicker, setShowPicker] = useState(false);
+  const posthog = usePostHog();
 
   const [formData, setFormData] = useState<LocationInsert>({
     address: location?.address || '',
@@ -61,6 +63,11 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
           .eq('id', location.id);
 
         if (updateError) throw updateError;
+
+        posthog?.capture('location_updated', {
+          location_id: location.id,
+          location_type: formData.location_type,
+        });
       } else {
         // Create new location
         const { error: insertError } = await supabase
@@ -68,6 +75,10 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
           .insert([formData]);
 
         if (insertError) throw insertError;
+
+        posthog?.capture('location_created', {
+          location_type: formData.location_type,
+        });
       }
 
       onSuccess();

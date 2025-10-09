@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { Tables } from '~/types/database.types';
 import { calculateDistance, formatDistance } from '~/lib/utils/distance';
 import type { UserLocation } from '~/lib/hooks/useUserLocation';
+import { usePostHog } from '~/providers/PostHogProvider';
 
 type Location = Tables<'locations'>;
 
@@ -31,6 +32,8 @@ function getIcon(locationType: Location['location_type']) {
 }
 
 export function LocationCard({ location, userLocation }: LocationCardProps) {
+  const posthog = usePostHog();
+
   // Calculate distance if user location is available
   const distance = userLocation
     ? calculateDistance(
@@ -106,6 +109,14 @@ export function LocationCard({ location, userLocation }: LocationCardProps) {
           href={`/?lat=${location.latitude}&lng=${location.longitude}`}
           className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full text-primary hover:bg-primary/20 transition-colors"
           title="View on map"
+          onClick={() => {
+            posthog?.capture('location_card_clicked', {
+              location_id: location.id,
+              location_type: location.location_type,
+              has_candy: location.has_candy,
+              address: location.address,
+            });
+          }}
         >
           <MapPin className="h-4 w-4" />
         </Link>

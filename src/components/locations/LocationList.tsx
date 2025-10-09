@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { Loader2, Filter } from 'lucide-react';
 import { useLocations } from '~/lib/hooks/useLocations';
 import { useUserLocation } from '~/lib/hooks/useUserLocation';
+import { usePostHog } from '~/providers/PostHogProvider';
 import { LocationCard } from './LocationCard';
 import { calculateDistance } from '~/lib/utils/distance';
 import type { Tables } from '~/types/database.types';
@@ -16,6 +17,7 @@ type SortOption = 'distance' | 'address' | 'none';
 export function LocationList() {
   const { locations, loading, error } = useLocations();
   const { location: userLocation } = useUserLocation();
+  const posthog = usePostHog();
   const [filterType, setFilterType] = useState<LocationType | 'All'>('All');
   const [filterRoute, setFilterRoute] = useState<string>('All');
   const [filterCandy, setFilterCandy] = useState<'All' | 'Has' | 'None'>('All');
@@ -124,7 +126,11 @@ export function LocationList() {
             {/* Sort Dropdown - Always Visible */}
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              onChange={(e) => {
+                const newSort = e.target.value as SortOption;
+                setSortBy(newSort);
+                posthog?.capture('location_sorted', { sort_by: newSort });
+              }}
               className="px-3 py-1.5 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="none">Default</option>
@@ -143,7 +149,14 @@ export function LocationList() {
                   Show Only Starting Points
                 </label>
                 <button
-                  onClick={() => setShowStartingPointsOnly(!showStartingPointsOnly)}
+                  onClick={() => {
+                    const newValue = !showStartingPointsOnly;
+                    setShowStartingPointsOnly(newValue);
+                    posthog?.capture('location_filter_applied', {
+                      filter_type: 'starting_points_only',
+                      filter_value: newValue,
+                    });
+                  }}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                     showStartingPointsOnly ? 'bg-primary' : 'bg-gray-700'
                   }`}
@@ -163,7 +176,14 @@ export function LocationList() {
                 </label>
                 <select
                   value={filterType}
-                  onChange={(e) => setFilterType(e.target.value as LocationType | 'All')}
+                  onChange={(e) => {
+                    const newType = e.target.value as LocationType | 'All';
+                    setFilterType(newType);
+                    posthog?.capture('location_filter_applied', {
+                      filter_type: 'location_type',
+                      filter_value: newType,
+                    });
+                  }}
                   className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
                   <option value="All">All Types</option>
@@ -182,7 +202,14 @@ export function LocationList() {
                 </label>
                 <select
                   value={filterRoute}
-                  onChange={(e) => setFilterRoute(e.target.value)}
+                  onChange={(e) => {
+                    const newRoute = e.target.value;
+                    setFilterRoute(newRoute);
+                    posthog?.capture('location_filter_applied', {
+                      filter_type: 'age_group',
+                      filter_value: newRoute,
+                    });
+                  }}
                   className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
                   <option value="All">All Age Groups</option>
@@ -200,7 +227,14 @@ export function LocationList() {
                 </label>
                 <select
                   value={filterCandy}
-                  onChange={(e) => setFilterCandy(e.target.value as 'All' | 'Has' | 'None')}
+                  onChange={(e) => {
+                    const newCandy = e.target.value as 'All' | 'Has' | 'None';
+                    setFilterCandy(newCandy);
+                    posthog?.capture('location_filter_applied', {
+                      filter_type: 'candy_status',
+                      filter_value: newCandy,
+                    });
+                  }}
                   className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
                   <option value="All">All</option>
@@ -217,6 +251,9 @@ export function LocationList() {
                     setFilterRoute('All');
                     setFilterCandy('All');
                     setShowStartingPointsOnly(false);
+                    posthog?.capture('location_filters_cleared', {
+                      filters_cleared: activeFiltersCount,
+                    });
                   }}
                   className="w-full px-3 py-2 text-sm text-primary hover:bg-gray-800 rounded-lg transition-colors"
                 >

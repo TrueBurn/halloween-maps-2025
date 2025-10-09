@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getPostHogClient } from '~/lib/posthog/client';
 
 export interface UserLocation {
   latitude: number;
@@ -47,6 +48,13 @@ export function useUserLocation() {
 
       // Cache location in localStorage
       localStorage.setItem(USER_LOCATION_KEY, JSON.stringify(newLocation));
+
+      // Track GPS permission granted
+      const posthog = getPostHogClient();
+      posthog?.capture('map_user_location_enabled', {
+        granted: true,
+        accuracy: position.coords.accuracy,
+      });
     };
 
     // Error callback
@@ -67,6 +75,14 @@ export function useUserLocation() {
 
       setError(errorMessage);
       setLoading(false);
+
+      // Track GPS permission denied or error
+      const posthog = getPostHogClient();
+      posthog?.capture('map_user_location_enabled', {
+        granted: false,
+        error_code: err.code,
+        error_message: errorMessage,
+      });
     };
 
     // Watch position for continuous updates

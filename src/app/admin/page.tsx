@@ -8,8 +8,10 @@ import type { Tables } from '~/types/database.types';
 import { Loader2, LogOut, Plus, RefreshCw, Download } from 'lucide-react';
 import { LocationTable } from '~/components/admin/LocationTable';
 import { LocationForm } from '~/components/admin/LocationForm';
+import { AnalyticsDashboard } from '~/components/admin/analytics/AnalyticsDashboard';
 import { useAllLocations } from '~/lib/hooks/useAllLocations';
 import { exportToCSV, exportToJSON } from '~/lib/utils/export';
+import { usePostHog } from '~/providers/PostHogProvider';
 
 type Location = Tables<'locations'>;
 
@@ -23,6 +25,7 @@ export default function AdminPage() {
   const router = useRouter();
   const supabase = createClient();
   const { locations } = useAllLocations();
+  const posthog = usePostHog();
 
   useEffect(() => {
     // Check current auth session
@@ -77,6 +80,11 @@ export default function AdminPage() {
     if (error) {
       alert(`Error deleting location: ${error.message}`);
     } else {
+      posthog?.capture('location_deleted', {
+        location_id: location.id,
+        location_type: location.location_type,
+        address: location.address,
+      });
       setRefreshKey((k) => k + 1); // Trigger refresh
     }
   };
@@ -105,6 +113,10 @@ export default function AdminPage() {
     if (error) {
       alert(`Error resetting candy: ${error.message}`);
     } else {
+      posthog?.capture('bulk_action', {
+        action_type: 'reset_candy',
+        count: locations.length,
+      });
       alert(`Successfully reset candy status for all locations!`);
       setRefreshKey((k) => k + 1);
     }
@@ -121,6 +133,11 @@ export default function AdminPage() {
     } else {
       exportToJSON(locations);
     }
+
+    posthog?.capture('bulk_action', {
+      action_type: `export_${format}`,
+      count: locations.length,
+    });
 
     setShowExportMenu(false);
   };
@@ -232,6 +249,9 @@ export default function AdminPage() {
             <p className="text-sm text-text-secondary">Go to public map view</p>
           </a>
         </div>
+
+        {/* Analytics Dashboard */}
+        <AnalyticsDashboard />
 
         {/* Location Management */}
         <div>

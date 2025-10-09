@@ -9,6 +9,7 @@ import { MapPin, Loader2 } from 'lucide-react';
 import { env } from '~/env';
 import { useLocations } from '~/lib/hooks/useLocations';
 import { useUserLocation } from '~/lib/hooks/useUserLocation';
+import { usePostHog } from '~/providers/PostHogProvider';
 import { createLocationIcon } from './LocationMarker';
 import { UserLocationButton } from './UserLocationButton';
 import { calculateDistance, formatDistance } from '~/lib/utils/distance';
@@ -23,10 +24,12 @@ export function MapView() {
 
   const { locations, loading, error } = useLocations();
   const { location: userLocation } = useUserLocation();
+  const posthog = usePostHog();
 
   // Center map on user location
   const centerOnUser = () => {
     if (mapInstance.current && userLocation) {
+      posthog?.capture('map_center_on_user');
       mapInstance.current.setView([userLocation.latitude, userLocation.longitude], 17, {
         animate: true,
         duration: 0.5,
@@ -37,6 +40,14 @@ export function MapView() {
   // Show walking directions
   const showDirections = (toLat: number, toLng: number) => {
     if (!mapInstance.current || !userLocation) return;
+
+    // Track directions request
+    posthog?.capture('map_directions_requested', {
+      from_lat: userLocation.latitude,
+      from_lng: userLocation.longitude,
+      to_lat: toLat,
+      to_lng: toLng,
+    });
 
     // Remove existing routing control if any
     if (routingControl.current) {
@@ -148,6 +159,15 @@ export function MapView() {
       },
     }).addTo(map);
 
+    // Track cluster clicks
+    markersLayer.current.on('clusterclick', function(e: any) {
+      const cluster = e.layer;
+      const childCount = cluster.getChildCount();
+      posthog?.capture('map_cluster_clicked', {
+        cluster_size: childCount,
+      });
+    });
+
     mapInstance.current = map;
 
     return () => {
@@ -174,6 +194,15 @@ export function MapView() {
       const popup = L.popup();
 
       popup.on('add', () => {
+        // Track marker click
+        posthog?.capture('map_marker_clicked', {
+          location_id: location.id,
+          location_type: location.location_type,
+          has_candy: location.has_candy,
+          is_start: location.is_start,
+          address: location.address,
+        });
+
         const distance = userLocation
           ? calculateDistance(
               userLocation.latitude,

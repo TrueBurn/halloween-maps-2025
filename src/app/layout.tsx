@@ -7,6 +7,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { PostHogProvider } from "~/providers/PostHogProvider";
 import { env } from "~/env";
 
 export const metadata: Metadata = {
@@ -52,7 +53,9 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/bloody" />
       </head>
       <body className="bg-background text-text-primary font-sans">
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <PostHogProvider>{children}</PostHogProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );
