@@ -213,6 +213,7 @@
   - Mobile vs Desktop device breakdown
   - Top 10 most-clicked locations with view counts
   - Collapsible dashboard with dark Halloween theme
+  - **Built-in diagnostics tool** for troubleshooting PostHog configuration
 - ✅ **Automatic Event Tracking**
   - Map interactions (marker clicks, directions, GPS, clusters)
   - Location list (filters, sorting, card clicks)
@@ -231,6 +232,7 @@
   - 30-second response caching
 - ✅ **Components Created**
   - `AnalyticsDashboard` - Main container with collapse
+  - `DiagnosticsPanel` - Configuration troubleshooting tool
   - `LiveUsersCard` - Real-time active users widget
   - `StatsGrid` - Daily metrics cards
   - `PopularLocations` - Top 10 locations list

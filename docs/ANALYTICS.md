@@ -307,11 +307,30 @@ Get most clicked locations today.
 
 ## Troubleshooting
 
+### Using the Built-in Diagnostics Tool
+
+The easiest way to troubleshoot PostHog configuration issues is to use the built-in diagnostics panel:
+
+1. Navigate to `/admin` in your browser
+2. Expand the "Live Analytics" section
+3. Click "Run Diagnostics" in the "PostHog Configuration Diagnostics" panel
+4. Review the results:
+   - ✅ Green checkmarks = Configured correctly
+   - ❌ Red alerts = Missing or incorrect configuration
+   - ⚠️ Warnings = Potential issues (wrong key format, etc.)
+5. Follow the recommendations provided
+
+The diagnostics tool will:
+- Check all environment variables are set
+- Verify API key formats (phc_ for Project Key, phx_ for Personal Key)
+- Test the PostHog API connection
+- Provide specific recommendations for fixing issues
+
 ### Events Not Appearing
 
 **Check:**
 1. Environment variables set correctly in Vercel
-2. PostHog project key is correct
+2. PostHog project key is correct (starts with `phc_`)
 3. `neighborhood` property is set (check PostHog Live Events view)
 4. Browser console for PostHog errors
 
@@ -325,11 +344,13 @@ console.log(process.env.NEXT_PUBLIC_POSTHOG_KEY) // Should output your key
 
 **Check:**
 1. PostHog Personal API Key has "Query Read" permission
-2. Project ID is correct
-3. Admin is authenticated
-4. Browser console for API errors
+2. Personal API Key starts with `phx_` (not `phc_`)
+3. Project ID is correct (numeric ID, not project slug)
+4. Admin is authenticated
+5. Browser console for API errors
 
 **Solution:**
+Use the diagnostics tool at `/admin` or test the API endpoint directly:
 ```bash
 # Test API endpoints directly
 curl https://your-domain.com/api/analytics/live \
@@ -419,7 +440,7 @@ Track user journeys in PostHog dashboard:
 
 ## Files Modified
 
-### New Files (11)
+### New Files (13)
 - `src/lib/posthog/client.ts`
 - `src/lib/posthog/server.ts`
 - `src/lib/posthog/queries.ts`
@@ -427,7 +448,9 @@ Track user journeys in PostHog dashboard:
 - `src/app/api/analytics/live/route.ts`
 - `src/app/api/analytics/today/route.ts`
 - `src/app/api/analytics/popular-locations/route.ts`
+- `src/app/api/analytics/diagnose/route.ts` - **NEW: Diagnostics tool**
 - `src/components/admin/analytics/AnalyticsDashboard.tsx`
+- `src/components/admin/analytics/DiagnosticsPanel.tsx` - **NEW: Diagnostics UI**
 - `src/components/admin/analytics/LiveUsersCard.tsx`
 - `src/components/admin/analytics/StatsGrid.tsx`
 - `src/components/admin/analytics/PopularLocations.tsx`

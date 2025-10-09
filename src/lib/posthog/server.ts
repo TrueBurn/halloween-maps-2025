@@ -30,7 +30,7 @@ export function getPostHogServer() {
  * Query PostHog API for analytics data
  * Automatically includes neighborhood filter
  */
-export async function queryPostHog(query: {
+export async function queryPostHog(queryObj: {
   kind: string;
   query: string;
 }): Promise<any> {
@@ -44,6 +44,11 @@ export async function queryPostHog(query: {
     );
   }
 
+  // PostHog API expects the query to be nested under a "query" key
+  const requestBody = {
+    query: queryObj,
+  };
+
   const response = await fetch(
     `${host}/api/projects/${projectId}/query/`,
     {
@@ -52,7 +57,7 @@ export async function queryPostHog(query: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify(query),
+      body: JSON.stringify(requestBody),
       // Cache for 30 seconds to reduce API calls
       next: { revalidate: 30 },
     }

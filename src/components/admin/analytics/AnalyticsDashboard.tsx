@@ -2,12 +2,15 @@
 
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { DiagnosticsPanel } from './DiagnosticsPanel';
 import { LiveUsersCard } from './LiveUsersCard';
+import { LocationPermissionCard } from './LocationPermissionCard';
 import { StatsGrid } from './StatsGrid';
 import { PopularLocations } from './PopularLocations';
 
 export function AnalyticsDashboard() {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
 
   return (
     <div className="mb-8">
@@ -37,9 +40,33 @@ export function AnalyticsDashboard() {
       {/* Content */}
       {isExpanded && (
         <div className="bg-surface border border-t-0 border-gray-800 rounded-b-lg p-6 space-y-6">
-          {/* Live Users + Quick Stats */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          {/* Diagnostics Toggle */}
+          <div className="flex justify-end">
+            <button
+              onClick={() => setShowDiagnostics(!showDiagnostics)}
+              className="text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2"
+            >
+              {showDiagnostics ? (
+                <>
+                  <ChevronUp className="h-4 w-4" />
+                  Hide Diagnostics
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="h-4 w-4" />
+                  Show Diagnostics
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Diagnostics Panel */}
+          {showDiagnostics && <DiagnosticsPanel />}
+
+          {/* Live Users + Location Permission + Quick Stats */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
             <LiveUsersCard />
+            <LocationPermissionCard />
             <div className="lg:col-span-3">
               <StatsGrid />
             </div>

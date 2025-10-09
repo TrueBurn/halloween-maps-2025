@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '~/lib/supabase/server';
 import { queryPostHog } from '~/lib/posthog/server';
-import { getPopularLocationsQuery } from '~/lib/posthog/queries';
+import { getPopularLocationsQuery, getPopularLocationsAllTimeQuery } from '~/lib/posthog/queries';
 
 export const dynamic = 'force-dynamic';
 
 /**
- * GET /api/analytics/popular-locations
- * Get most clicked locations today
+ * GET /api/analytics/popular-locations?timeframe=today|all-time&limit=10
+ * Get most clicked locations (today or all time)
  * Requires authentication
  */
 export async function GET(request: Request) {
@@ -22,12 +22,17 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get limit from query params (default: 10)
+    // Get params from query string
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '10', 10);
+    const timeframe = searchParams.get('timeframe') || 'today'; // 'today' or 'all-time'
 
-    // Query PostHog
-    const result = await queryPostHog(getPopularLocationsQuery(limit));
+    // Query PostHog for popular locations
+    const query = timeframe === 'all-time'
+      ? getPopularLocationsAllTimeQuery(limit)
+      : getPopularLocationsQuery(limit);
+
+    const result = await queryPostHog(query);
 
     const locations = (result.results || []).map((row: any) => ({
       address: row[0] || 'Unknown',
@@ -38,6 +43,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       locations,
+      timeframe,
       neighborhood: process.env.NEXT_PUBLIC_NEIGHBORHOOD_NAME,
     });
   } catch (error) {

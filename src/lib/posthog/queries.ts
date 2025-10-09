@@ -37,14 +37,15 @@ export function getTodayVisitorsQuery() {
 
 /**
  * Get session metrics for today
+ * Returns duration for each session (API route calculates average)
  */
 export function getTodaySessionMetricsQuery() {
   return {
     kind: 'HogQLQuery',
     query: `
       SELECT
-        count(DISTINCT properties.$session_id) as total_sessions,
-        avg(dateDiff('second', min(timestamp), max(timestamp))) as avg_duration_seconds
+        properties.$session_id as session_id,
+        dateDiff('second', min(timestamp), max(timestamp)) as duration_seconds
       FROM events
       WHERE timestamp >= today()
         AND properties.neighborhood = '${neighborhoodName}'
@@ -75,7 +76,7 @@ export function getDeviceBreakdownQuery() {
 }
 
 /**
- * Get most clicked locations (top N)
+ * Get most clicked locations today (top N)
  */
 export function getPopularLocationsQuery(limit: number = 10) {
   return {
@@ -90,6 +91,28 @@ export function getPopularLocationsQuery(limit: number = 10) {
       WHERE event = 'map_marker_clicked'
         AND properties.neighborhood = '${neighborhoodName}'
         AND timestamp >= today()
+      GROUP BY properties.address, properties.location_type, properties.has_candy
+      ORDER BY clicks DESC
+      LIMIT ${limit}
+    `,
+  };
+}
+
+/**
+ * Get most clicked locations all time (top N)
+ */
+export function getPopularLocationsAllTimeQuery(limit: number = 10) {
+  return {
+    kind: 'HogQLQuery',
+    query: `
+      SELECT
+        properties.address as address,
+        properties.location_type as location_type,
+        properties.has_candy as has_candy,
+        count(*) as clicks
+      FROM events
+      WHERE event = 'map_marker_clicked'
+        AND properties.neighborhood = '${neighborhoodName}'
       GROUP BY properties.address, properties.location_type, properties.has_candy
       ORDER BY clicks DESC
       LIMIT ${limit}
@@ -158,6 +181,25 @@ export function getFilterUsageQuery() {
       GROUP BY properties.filter_type, properties.filter_value
       ORDER BY usage_count DESC
       LIMIT 10
+    `,
+  };
+}
+
+/**
+ * Get GPS permission stats (granted vs denied)
+ */
+export function getGPSPermissionStatsQuery() {
+  return {
+    kind: 'HogQLQuery',
+    query: `
+      SELECT
+        properties.permission_status as status,
+        count(DISTINCT person_id) as users
+      FROM events
+      WHERE event = 'gps_permission'
+        AND properties.neighborhood = '${neighborhoodName}'
+      GROUP BY properties.permission_status
+      ORDER BY users DESC
     `,
   };
 }
