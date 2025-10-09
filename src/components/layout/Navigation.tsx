@@ -3,11 +3,27 @@
 import Link from 'next/link';
 import { MapPin, List, RefreshCw, Info, X } from 'lucide-react';
 import { env } from '~/env';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+
+const INFO_MODAL_STORAGE_KEY = 'halloween-maps-info-modal-seen';
 
 export function Navigation() {
   const [showInfo, setShowInfo] = useState(false);
+
+  // Auto-open modal on first visit
+  useEffect(() => {
+    const hasSeenModal = localStorage.getItem(INFO_MODAL_STORAGE_KEY);
+    if (!hasSeenModal) {
+      setShowInfo(true);
+    }
+  }, []);
+
+  // Close modal and mark as seen
+  const handleCloseModal = () => {
+    localStorage.setItem(INFO_MODAL_STORAGE_KEY, 'true');
+    setShowInfo(false);
+  };
 
   const handleRefresh = () => {
     window.location.reload();
@@ -68,7 +84,7 @@ export function Navigation() {
       {showInfo && typeof document !== 'undefined' && createPortal(
         <div
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
-          onClick={() => setShowInfo(false)}
+          onClick={handleCloseModal}
         >
           <div
             className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-lg bg-surface border-2 border-gray-700 shadow-xl"
@@ -80,7 +96,7 @@ export function Navigation() {
                 🎃 Halloween Maps
               </h2>
               <button
-                onClick={() => setShowInfo(false)}
+                onClick={handleCloseModal}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-text-secondary hover:bg-gray-800 hover:text-error transition-colors"
               >
                 <X className="h-5 w-5" />
@@ -186,6 +202,14 @@ export function Navigation() {
               <p className="text-sm text-center border-t-2 border-gray-700 pt-4">
                 Happy Halloween! 👻🍬
               </p>
+
+              {/* Close Button */}
+              <button
+                onClick={handleCloseModal}
+                className="w-full py-3 mt-2 rounded-lg bg-primary text-white font-semibold hover:bg-indigo-700 transition-colors"
+              >
+                Got it!
+              </button>
             </div>
           </div>
         </div>,

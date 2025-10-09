@@ -29,7 +29,7 @@
 - **Route field usage**: Only assigned to starting points (`is_start = true`) to indicate age group (Over 8, Under 8, Toddlers)
 
 ### Components Built
-- `Navigation.tsx` - Nav bar with Lucide icons + info modal with cluster legend (React Portal)
+- `Navigation.tsx` - Nav bar with Lucide icons + auto-opening info modal with cluster legend (React Portal, localStorage tracking)
 - `MapView.tsx` - Full Leaflet map with smart updates, dynamic popups, routing, marker clustering, bounds calculation
 - `LocationMarker.tsx` - Custom Lucide icons with status badges
 - `UserLocationButton.tsx` - FAB to center on user location
@@ -79,7 +79,11 @@
 - ✅ Dark theme for routing directions panel
 - ✅ Center on user FAB button
 - ✅ Interactive popups with "Get Directions" buttons
-- ✅ Info modal with event details and usage instructions (React Portal for z-index control)
+- ✅ **First-visit info modal** - Auto-opens on first page load with localStorage tracking
+  - Event details, usage instructions, icon key, age group explanations
+  - Multiple close actions: X button, backdrop click, "Got it!" button
+  - Manual Info (ℹ️) button in nav for returning visitors
+  - React Portal for z-index control
 - ✅ Responsive navigation (smaller icons on mobile, scalable title font)
 - ✅ Real-time Supabase updates
 - ✅ Loading/error states
