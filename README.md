@@ -1,5 +1,12 @@
 # Halloween Maps 2025
 
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?logo=tailwind-css)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3fcf8e?logo=supabase)](https://supabase.com/)
+[![License](https://img.shields.io/badge/License-See%20LICENSE-orange)](./LICENSE)
+[![GitHub](https://img.shields.io/github/stars/TrueBurn/halloween-maps-2025?style=social)](https://github.com/TrueBurn/halloween-maps-2025)
+
 A mobile-first interactive mapping application for organizing neighborhood Halloween trick-or-treating events. Built with the [T3 Stack](https://create.t3.gg/).
 
 ## 🎃 Project Overview
@@ -19,8 +26,9 @@ Halloween Maps helps neighborhoods coordinate trick-or-treating by displaying:
 - **Database**: Supabase (PostgreSQL)
 - **Authentication**: Supabase Auth
 - **Maps**: Leaflet.js + Leaflet.markercluster + OpenStreetMap
-- **Icons**: Lucide React
+- **Icons**: Custom SVG (map markers) + Lucide React (UI elements)
 - **State**: TanStack Query + tRPC
+- **Analytics**: PostHog (optional, for visitor insights)
 
 ## 📚 Documentation
 
@@ -30,6 +38,7 @@ All project documentation is in the [`docs/`](./docs) folder:
 - **[PRD](./docs/PRD.md)** - Complete product requirements and specifications
 - **[PRD Summary](./docs/PRD-SUMMARY.md)** - Quick reference and design decisions
 - **[Admin Setup](./docs/ADMIN-SETUP.md)** - Creating admin users with Supabase Auth
+- **[Analytics Guide](./docs/ANALYTICS.md)** - PostHog analytics setup (optional)
 - **[AI Image Prompts](./docs/AI-IMAGE-PROMPTS.md)** - AI-generated image prompts and social media requirements
 
 ## 🏃 Quick Start
@@ -43,7 +52,7 @@ All project documentation is in the [`docs/`](./docs) folder:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/halloween-maps-2025.git
+git clone https://github.com/TrueBurn/halloween-maps-2025.git
 cd halloween-maps-2025
 ```
 
@@ -56,6 +65,7 @@ npm install
 ```bash
 cp .env.example .env
 # Edit .env with your Supabase credentials and configuration
+# Optional: Add PostHog credentials for analytics (see docs/ANALYTICS.md)
 ```
 
 4. Run development server
@@ -84,12 +94,13 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Multi-neighborhood architecture** with separate Supabase databases
 - ✅ Database migrations (enums, tables, RLS policies)
 - ✅ Interactive map view with Leaflet
-- ✅ Custom location markers with Lucide icons
+- ✅ Custom SVG location markers (9 icon variants)
 - ✅ Walking directions with OSRM
 - ✅ GPS user location tracking
 - ✅ Location list with filtering and sorting
 - ✅ Admin panel with full CRUD operations
 - ✅ Admin authentication with Supabase Auth
+- ✅ Password reset & user invites (email-based auth flow)
 - ✅ Coordinate picker (interactive map)
 - ✅ Export to CSV and JSON
 - ✅ Bulk actions (reset candy status)
@@ -100,10 +111,14 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Mobile browser compatibility** (safe area insets, dvh viewport height)
 - ✅ **Marker clustering** (Halloween-themed with 🦇🕷️👻 emojis)
 - ✅ **Social media sharing** (WhatsApp-optimized preview images, Open Graph tags)
+- ✅ **PostHog analytics (optional)** - Live visitor tracking, session stats, location popularity
+- ✅ **First-visit info modal** - Auto-opens event info with localStorage tracking
+- ✅ **Map location counter** - Shows only candy-giving locations (filters out parking/refreshments)
 
 **Next Steps:**
 - 🎯 Deploy to Vercel (once per neighborhood)
 - 🎯 Configure production environment variables
+- 🎯 (Optional) Set up PostHog analytics - see [Analytics Guide](./docs/ANALYTICS.md)
 - 🎯 Test WhatsApp sharing with Facebook Sharing Debugger
 - 🎯 Create admin user accounts in each Supabase project
 
@@ -148,7 +163,7 @@ All dev endpoints are protected and only work in development mode.
 
 ✅ **Scalable Design**
 - Same codebase deployed multiple times
-- Configure via environment variables (coordinates, neighborhood name, Supabase credentials)
+- Configure via environment variables (coordinates, neighborhood name, Supabase credentials, optional PostHog)
 - No code changes needed for new neighborhoods
 
 ### Deployment Process
@@ -157,9 +172,10 @@ For each neighborhood:
 1. Create a new Supabase project
 2. Run all database migrations
 3. Create a Vercel project
-4. Set environment variables (Supabase credentials + neighborhood config)
-5. Deploy with custom domain
-6. Create admin user in Supabase Auth
+4. Set environment variables (Supabase credentials + neighborhood config + optional PostHog)
+5. (Optional) Configure PostHog analytics - see [Analytics Guide](./docs/ANALYTICS.md)
+6. Deploy with custom domain
+7. Create admin user in Supabase Auth
 
 See [docs/PROGRESS.md](./docs/PROGRESS.md#deployment-two-separate-instances) for detailed deployment checklist.
 
@@ -174,5 +190,9 @@ See [LICENSE](./LICENSE) file for details.
 ## 🙏 Acknowledgments
 
 - Built with [Create T3 App](https://create.t3.gg/)
-- Map tiles from [OpenStreetMap](https://www.openstreetmap.org/)
-- Icons from [Lucide](https://lucide.dev/)
+- Maps powered by [Leaflet](https://leafletjs.com/) and [OpenStreetMap](https://www.openstreetmap.org/)
+- Marker clustering by [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
+- Routing via [Leaflet Routing Machine](https://www.liedman.net/leaflet-routing-machine/) and [OSRM](http://project-osrm.org/)
+- UI icons from [Lucide](https://lucide.dev/)
+- Database and authentication by [Supabase](https://supabase.com/)
+- Analytics (optional) by [PostHog](https://posthog.com/)
