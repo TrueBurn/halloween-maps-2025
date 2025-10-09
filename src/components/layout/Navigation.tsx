@@ -148,6 +148,10 @@ export function Navigation() {
                     <span><strong>Car:</strong> Trunk-or-treat location</span>
                   </div>
                   <div className="flex items-center gap-3">
+                    <img src="/icons/store.svg" alt="Store" className="w-8 h-8" />
+                    <span><strong>Store:</strong> Shop or store giving out candy</span>
+                  </div>
+                  <div className="flex items-center gap-3">
                     <span className="text-2xl">🦇</span>
                     <span><strong>Orange Cluster (2):</strong> Nearby locations grouped</span>
                   </div>

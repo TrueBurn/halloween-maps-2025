@@ -135,7 +135,7 @@ CREATE POLICY "Users can update their own locations"
 
 #### Custom Enums
 ```sql
-CREATE TYPE location_type_enum AS ENUM ('House', 'Table', 'Car', 'Parking', 'Refreshments');
+CREATE TYPE location_type_enum AS ENUM ('House', 'Table', 'Car', 'Store', 'Parking', 'Refreshments');
 CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');  -- Age groups for starting points
 ```
 

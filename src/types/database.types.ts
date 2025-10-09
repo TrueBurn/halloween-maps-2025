@@ -76,7 +76,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      location_type: "House" | "Table" | "Car" | "Parking" | "Refreshments"
+      location_type: "House" | "Table" | "Car" | "Parking" | "Refreshments" | "Store"
       route: "Over 8" | "Under 8" | "Toddlers"
     }
     CompositeTypes: {

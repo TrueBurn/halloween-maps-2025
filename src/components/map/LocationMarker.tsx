@@ -17,6 +17,9 @@ function getIconPath(location: Location): string {
     case 'Car':
       baseIcon = 'car';
       break;
+    case 'Store':
+      baseIcon = 'store';
+      break;
     case 'House':
     case 'Table':
     default:
