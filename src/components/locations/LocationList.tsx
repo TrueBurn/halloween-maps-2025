@@ -13,7 +13,7 @@ import { env } from '~/env';
 type Location = Tables<'locations'>;
 type LocationType = Location['location_type'];
 type Route = Location['route'];
-type SortOption = 'distance' | 'address' | 'none';
+type SortOption = 'nearest' | 'furthest' | 'address';
 
 export function LocationList() {
   const { locations, loading, error } = useLocations();
@@ -23,7 +23,9 @@ export function LocationList() {
   const [filterRoute, setFilterRoute] = useState<string>('All');
   const [filterCandy, setFilterCandy] = useState<'All' | 'Has' | 'None'>('All');
   const [showStartingPointsOnly, setShowStartingPointsOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<SortOption>('none');
+  // Default sort: 'nearest' if GPS enabled, 'address' otherwise
+  const defaultSort: SortOption = userLocation ? 'nearest' : 'address';
+  const [sortBy, setSortBy] = useState<SortOption>(defaultSort);
   const [showFilters, setShowFilters] = useState(false);
 
   // Filter and sort locations
@@ -40,7 +42,7 @@ export function LocationList() {
     });
 
     // Then, sort
-    if (sortBy === 'distance' && userLocation) {
+    if (sortBy === 'nearest' && userLocation) {
       result = [...result].sort((a, b) => {
         const distA = calculateDistance(
           userLocation.latitude,
@@ -54,7 +56,23 @@ export function LocationList() {
           b.latitude,
           b.longitude
         );
-        return distA - distB;
+        return distA - distB; // Ascending (nearest first)
+      });
+    } else if (sortBy === 'furthest' && userLocation) {
+      result = [...result].sort((a, b) => {
+        const distA = calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          a.latitude,
+          a.longitude
+        );
+        const distB = calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          b.latitude,
+          b.longitude
+        );
+        return distB - distA; // Descending (furthest first)
       });
     } else if (sortBy === 'address') {
       result = [...result].sort((a, b) => a.address.localeCompare(b.address));
@@ -134,9 +152,11 @@ export function LocationList() {
               }}
               className="px-3 py-1.5 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
             >
-              <option value="none">Default</option>
-              <option value="distance" disabled={!userLocation}>
+              <option value="nearest" disabled={!userLocation}>
                 {userLocation ? 'Nearest' : 'Nearest (GPS needed)'}
+              </option>
+              <option value="furthest" disabled={!userLocation}>
+                {userLocation ? 'Furthest' : 'Furthest (GPS needed)'}
               </option>
               <option value="address">A-Z</option>
             </select>
