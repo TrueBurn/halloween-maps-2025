@@ -94,7 +94,9 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Multi-neighborhood architecture** with separate Supabase databases
 - ✅ Database migrations (enums, tables, RLS policies)
 - ✅ Interactive map view with Leaflet
-- ✅ Custom SVG location markers (9 icon variants)
+- ✅ **Custom SVG location markers** (22 markers: 4 location types × 4 states + 2 static + shadow)
+  - States: Normal (orange), Starting Point (green), Activity (pink), No Candy (purple)
+  - Priority rendering: No candy > Starting point > Activity > Normal
 - ✅ Walking directions with OSRM
 - ✅ GPS user location tracking
 - ✅ Location list with filtering and sorting
@@ -163,7 +165,11 @@ All dev endpoints are protected and only work in development mode.
 
 ✅ **Scalable Design**
 - Same codebase deployed multiple times
-- Configure via environment variables (coordinates, neighborhood name, routes/age groups, Supabase credentials, optional PostHog)
+- Configure via environment variables:
+  - Map coordinates and neighborhood name
+  - **Dynamic routes/age groups** (`NEXT_PUBLIC_ROUTES` - comma-separated, e.g., "All Ages" or "Over 8,Under 8,Toddlers")
+  - Supabase credentials
+  - Optional PostHog analytics
 - No code changes needed for new neighborhoods
 
 ### Deployment Process

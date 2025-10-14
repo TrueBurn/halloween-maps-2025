@@ -134,50 +134,131 @@ export function Navigation() {
                 <h3 className="text-lg font-semibold text-text-primary mb-2">
                   🎨 Map Icon Key
                 </h3>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/location.svg" alt="Regular location" className="w-8 h-8" />
-                    <span><strong>Orange House:</strong> Participating with candy</span>
+                <div className="space-y-3">
+                  {/* Houses */}
+                  <div>
+                    <p className="text-xs font-semibold text-text-secondary mb-1.5">Houses:</p>
+                    <div className="space-y-1.5 ml-2">
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/house.svg" alt="House with candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Orange:</strong> Has candy</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/house-start.svg" alt="House starting point" className="w-8 h-8" />
+                        <span className="text-sm"><strong>Green:</strong> Starting point</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/house-activity.svg" alt="House with activity" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Pink:</strong> Has activity</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/house-no-candy.svg" alt="House no candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Purple:</strong> No candy</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/location-start.svg" alt="Starting point" className="w-9 h-9" />
-                    <span><strong>Green House:</strong> Starting point for age group</span>
+
+                  {/* Tables */}
+                  <div>
+                    <p className="text-xs font-semibold text-text-secondary mb-1.5">Tables:</p>
+                    <div className="space-y-1.5 ml-2">
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/table.svg" alt="Table with candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Orange:</strong> Has candy</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/table-start.svg" alt="Table starting point" className="w-8 h-8" />
+                        <span className="text-sm"><strong>Green:</strong> Starting point</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/table-activity.svg" alt="Table with activity" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Pink:</strong> Has activity</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/table-no-candy.svg" alt="Table no candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Purple:</strong> No candy</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/location-no-candy.svg" alt="No candy" className="w-8 h-8" />
-                    <span><strong>Purple House:</strong> No candy (activity only)</span>
+
+                  {/* Cars */}
+                  <div>
+                    <p className="text-xs font-semibold text-text-secondary mb-1.5">Cars (Trunk-or-Treat):</p>
+                    <div className="space-y-1.5 ml-2">
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/car.svg" alt="Car with candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Orange:</strong> Has candy</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/car-start.svg" alt="Car starting point" className="w-8 h-8" />
+                        <span className="text-sm"><strong>Green:</strong> Starting point</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/car-activity.svg" alt="Car with activity" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Pink:</strong> Has activity</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/car-no-candy.svg" alt="Car no candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Purple:</strong> No candy</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/location-activity.svg" alt="Activity" className="w-8 h-8" />
-                    <span><strong>Pink House:</strong> Special activity available</span>
+
+                  {/* Stores */}
+                  <div>
+                    <p className="text-xs font-semibold text-text-secondary mb-1.5">Stores:</p>
+                    <div className="space-y-1.5 ml-2">
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/store.svg" alt="Store with candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Orange:</strong> Has candy</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/store-start.svg" alt="Store starting point" className="w-8 h-8" />
+                        <span className="text-sm"><strong>Green:</strong> Starting point</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/store-activity.svg" alt="Store with activity" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Pink:</strong> Has activity</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/store-no-candy.svg" alt="Store no candy" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Purple:</strong> No candy</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/parking.svg" alt="Parking" className="w-8 h-8" />
-                    <span><strong>Parking:</strong> Designated parking area</span>
+
+                  {/* Static locations */}
+                  <div>
+                    <p className="text-xs font-semibold text-text-secondary mb-1.5">Other:</p>
+                    <div className="space-y-1.5 ml-2">
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/parking.svg" alt="Parking" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Parking:</strong> Designated parking area</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/refreshments.svg" alt="Refreshments" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Refreshments:</strong> Drinks and snacks</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/refreshments.svg" alt="Refreshments" className="w-8 h-8" />
-                    <span><strong>Refreshments:</strong> Drinks and snacks station</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/car.svg" alt="Car" className="w-8 h-8" />
-                    <span><strong>Car:</strong> Trunk-or-treat location</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <img src="/icons/store.svg" alt="Store" className="w-8 h-8" />
-                    <span><strong>Store:</strong> Shop or store giving out candy</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">🦇</span>
-                    <span><strong>Orange Cluster (2):</strong> Nearby locations grouped</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">🕷️</span>
-                    <span><strong>Green Cluster (3):</strong> Nearby locations grouped</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">👻</span>
-                    <span><strong>Purple Cluster (4+):</strong> Nearby locations grouped</span>
+
+                  {/* Clusters */}
+                  <div>
+                    <p className="text-xs font-semibold text-text-secondary mb-1.5">Clusters:</p>
+                    <div className="space-y-1.5 ml-2">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">🦇</span>
+                        <span className="text-sm"><strong>Orange (2):</strong> Nearby locations</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">🕷️</span>
+                        <span className="text-sm"><strong>Green (3):</strong> Nearby locations</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">👻</span>
+                        <span className="text-sm"><strong>Purple (4+):</strong> Nearby locations</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

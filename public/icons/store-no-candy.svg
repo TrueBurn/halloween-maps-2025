@@ -1,0 +1,43 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Store without candy - Purple store with X badge -->
+  <g filter="url(#shadow)">
+    <!-- Building (purple/dark theme) -->
+    <rect x="10" y="18" width="20" height="14" rx="1" fill="#7c3aed" stroke="#4c1d95" stroke-width="1.5"/>
+
+    <!-- Awning -->
+    <path d="M8 18 L10 14 L30 14 L32 18 Z" fill="#6366f1" stroke="#4c1d95" stroke-width="1.5"/>
+    <path d="M8 18 L32 18 L32 20 L8 20 Z" fill="#5b21b6" stroke="#4c1d95" stroke-width="1"/>
+
+    <!-- Awning stripes (darker) -->
+    <line x1="14" y1="14" x2="14" y2="18" stroke="#312e81" stroke-width="1.5"/>
+    <line x1="20" y1="14" x2="20" y2="18" stroke="#312e81" stroke-width="1.5"/>
+    <line x1="26" y1="14" x2="26" y2="18" stroke="#312e81" stroke-width="1.5"/>
+
+    <!-- Door -->
+    <rect x="15" y="23" width="5" height="9" rx="0.5" fill="#4c1d95" stroke="#1e1b4b" stroke-width="1"/>
+    <circle cx="18" cy="27" r="0.5" fill="#6b7280"/>
+
+    <!-- Window (darker, closed) -->
+    <rect x="22" y="22" width="6" height="5" rx="0.5" fill="#312e81" opacity="0.8" stroke="#4c1d95" stroke-width="1"/>
+    <line x1="25" y1="22" x2="25" y2="27" stroke="#4c1d95" stroke-width="0.5"/>
+    <line x1="22" y1="24.5" x2="28" y2="24.5" stroke="#4c1d95" stroke-width="0.5"/>
+
+    <!-- No candy badge - Red X circle -->
+    <circle cx="30" cy="10" r="5" fill="#ef4444"/>
+    <path d="M28 8L32 12M32 8L28 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

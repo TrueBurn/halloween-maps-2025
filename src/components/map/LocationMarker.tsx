@@ -4,15 +4,22 @@ import type { Tables } from '~/types/database.types';
 type Location = Tables<'locations'>;
 
 function getIconPath(location: Location): string {
-  // Determine base icon type
-  let baseIcon: string;
+  // Parking and Refreshments are always static (no participation)
+  if (location.location_type === 'Parking') {
+    return '/icons/parking.svg';
+  }
+  if (location.location_type === 'Refreshments') {
+    return '/icons/refreshments.svg';
+  }
 
+  // Determine base icon shape by location type
+  let baseIcon: string;
   switch (location.location_type) {
-    case 'Parking':
-      baseIcon = 'parking';
+    case 'House':
+      baseIcon = 'house';
       break;
-    case 'Refreshments':
-      baseIcon = 'refreshments';
+    case 'Table':
+      baseIcon = 'table';
       break;
     case 'Car':
       baseIcon = 'car';
@@ -20,22 +27,24 @@ function getIconPath(location: Location): string {
     case 'Store':
       baseIcon = 'store';
       break;
-    case 'House':
-    case 'Table':
     default:
-      // For House/Table, use location icon with variants
-      // Determine variant based on status
-      if (location.is_start) {
-        baseIcon = 'location-start';
-      } else if (!location.has_candy) {
-        baseIcon = 'location-no-candy';
-      } else if (location.has_activity) {
-        baseIcon = 'location-activity';
-      } else {
-        baseIcon = 'location';
-      }
+      baseIcon = 'house'; // Fallback to house
   }
 
+  // Apply state variant suffix based on location status
+  // Priority: !has_candy > is_start > has_activity > normal
+  // (No candy is most important to show on the day)
+  if (!location.has_candy) {
+    return `/icons/${baseIcon}-no-candy.svg`;
+  }
+  if (location.is_start) {
+    return `/icons/${baseIcon}-start.svg`;
+  }
+  if (location.has_activity) {
+    return `/icons/${baseIcon}-activity.svg`;
+  }
+
+  // Normal state (has candy, no special status)
   return `/icons/${baseIcon}.svg`;
 }
 

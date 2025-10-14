@@ -1,0 +1,32 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Table without candy - Purple table with X badge -->
+  <g filter="url(#shadow)">
+    <!-- Table top (purple/dark theme) -->
+    <rect x="8" y="18" width="24" height="4" rx="1" fill="#7c3aed" stroke="#4c1d95" stroke-width="1.5"/>
+
+    <!-- Table legs -->
+    <rect x="10" y="22" width="3" height="10" rx="0.5" fill="#6366f1" stroke="#4c1d95" stroke-width="1"/>
+    <rect x="27" y="22" width="3" height="10" rx="0.5" fill="#6366f1" stroke="#4c1d95" stroke-width="1"/>
+
+    <!-- Empty bowl (no candy) -->
+    <ellipse cx="20" cy="14" rx="5" ry="3" fill="#312e81" stroke="#4c1d95" stroke-width="1"/>
+
+    <!-- No candy badge - Red X circle -->
+    <circle cx="30" cy="10" r="5" fill="#ef4444"/>
+    <path d="M28 8L32 12M32 8L28 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

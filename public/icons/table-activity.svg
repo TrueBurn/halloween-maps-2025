@@ -1,0 +1,34 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Table with activity - Pink/purple table with activity badge -->
+  <g filter="url(#shadow)">
+    <!-- Table top -->
+    <rect x="8" y="18" width="24" height="4" rx="1" fill="#ec4899" stroke="#831843" stroke-width="1.5"/>
+
+    <!-- Table legs -->
+    <rect x="10" y="22" width="3" height="10" rx="0.5" fill="#db2777" stroke="#831843" stroke-width="1"/>
+    <rect x="27" y="22" width="3" height="10" rx="0.5" fill="#db2777" stroke="#831843" stroke-width="1"/>
+
+    <!-- Activity items on table (games/crafts) -->
+    <rect x="16" y="12" width="8" height="5" rx="0.5" fill="#fde047" stroke="#831843" stroke-width="1"/>
+    <circle cx="18" cy="14" r="1" fill="#a78bfa"/>
+    <circle cx="22" cy="14" r="1" fill="#f97316"/>
+
+    <!-- Activity indicator - Star badge -->
+    <circle cx="30" cy="10" r="5" fill="#fbbf24"/>
+    <path d="M30 7L30.8 9.2L33 10L30.8 10.8L30 13L29.2 10.8L27 10L29.2 9.2L30 7Z" fill="white"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

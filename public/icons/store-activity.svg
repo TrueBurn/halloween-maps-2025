@@ -1,0 +1,47 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Store with activity - Pink/purple store with activity badge -->
+  <g filter="url(#shadow)">
+    <!-- Building -->
+    <rect x="10" y="18" width="20" height="14" rx="1" fill="#ec4899" stroke="#831843" stroke-width="1.5"/>
+
+    <!-- Awning -->
+    <path d="M8 18 L10 14 L30 14 L32 18 Z" fill="#db2777" stroke="#831843" stroke-width="1.5"/>
+    <path d="M8 18 L32 18 L32 20 L8 20 Z" fill="#be185d" stroke="#831843" stroke-width="1"/>
+
+    <!-- Awning stripes (colorful) -->
+    <line x1="14" y1="14" x2="14" y2="18" stroke="#fde047" stroke-width="1.5"/>
+    <line x1="20" y1="14" x2="20" y2="18" stroke="#a78bfa" stroke-width="1.5"/>
+    <line x1="26" y1="14" x2="26" y2="18" stroke="#fde047" stroke-width="1.5"/>
+
+    <!-- Door -->
+    <rect x="15" y="23" width="5" height="9" rx="0.5" fill="#831843" stroke="#500724" stroke-width="1"/>
+    <circle cx="18" cy="27" r="0.5" fill="#fbbf24"/>
+
+    <!-- Window (bright, activity visible) -->
+    <rect x="22" y="22" width="6" height="5" rx="0.5" fill="#fde047" opacity="0.6" stroke="#831843" stroke-width="1"/>
+    <line x1="25" y1="22" x2="25" y2="27" stroke="#831843" stroke-width="0.5"/>
+    <line x1="22" y1="24.5" x2="28" y2="24.5" stroke="#831843" stroke-width="0.5"/>
+
+    <!-- Activity items in window -->
+    <circle cx="23.5" cy="23.5" r="0.8" fill="#a78bfa"/>
+    <circle cx="26.5" cy="25.5" r="0.8" fill="#f97316"/>
+
+    <!-- Activity indicator - Star badge -->
+    <circle cx="30" cy="10" r="5" fill="#fbbf24"/>
+    <path d="M30 7L30.8 9.2L33 10L30.8 10.8L30 13L29.2 10.8L27 10L29.2 9.2L30 7Z" fill="white"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,44 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Car without candy - Purple car with X badge -->
+  <g filter="url(#shadow)">
+    <!-- Car body (purple/dark theme) -->
+    <path d="M8 22H32V28C32 29.1 31.1 30 30 30H10C8.9 30 8 29.1 8 28V22Z" fill="#7c3aed" stroke="#4c1d95" stroke-width="1.5"/>
+
+    <!-- Car cabin/roof -->
+    <path d="M12 22V18C12 17 12.5 16 13 15L15 13H25L27 15C27.5 16 28 17 28 18V22" fill="#6366f1" stroke="#4c1d95" stroke-width="1.5"/>
+
+    <!-- Windshield (darker) -->
+    <rect x="14" y="16" width="12" height="5" rx="1" fill="#312e81" opacity="0.8"/>
+
+    <!-- Wheels -->
+    <circle cx="13" cy="30" r="3" fill="#0f0f0f" stroke="#4c1d95" stroke-width="1"/>
+    <circle cx="27" cy="30" r="3" fill="#0f0f0f" stroke="#4c1d95" stroke-width="1"/>
+    <circle cx="13" cy="30" r="1.5" fill="#6b7280"/>
+    <circle cx="27" cy="30" r="1.5" fill="#6b7280"/>
+
+    <!-- Empty trunk (no candy) -->
+    <rect x="16" y="24" width="8" height="4" rx="1" fill="#312e81"/>
+
+    <!-- Headlights (dim) -->
+    <circle cx="9" cy="23" r="1" fill="#6b7280"/>
+    <circle cx="31" cy="23" r="1" fill="#6b7280"/>
+
+    <!-- No candy badge - Red X circle -->
+    <circle cx="30" cy="10" r="5" fill="#ef4444"/>
+    <path d="M28 8L32 12M32 8L28 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
