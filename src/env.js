@@ -30,6 +30,15 @@ export const env = createEnv({
     NEXT_PUBLIC_EVENT_YEAR: z.string().transform(Number),
     NEXT_PUBLIC_EVENT_DATE: z.string(),
     NEXT_PUBLIC_EVENT_START_TIME: z.string(),
+
+    // Route/Age Group Configuration
+    NEXT_PUBLIC_ROUTES: z
+      .string()
+      .default("All Ages")
+      .transform((str) => str.split(",").map((s) => s.trim()))
+      .refine((arr) => arr.length > 0, {
+        message: "At least one route must be defined",
+      }),
   },
 
   /**
@@ -53,6 +62,9 @@ export const env = createEnv({
     NEXT_PUBLIC_EVENT_YEAR: process.env.NEXT_PUBLIC_EVENT_YEAR,
     NEXT_PUBLIC_EVENT_DATE: process.env.NEXT_PUBLIC_EVENT_DATE,
     NEXT_PUBLIC_EVENT_START_TIME: process.env.NEXT_PUBLIC_EVENT_START_TIME,
+
+    // Route/Age Group Configuration
+    NEXT_PUBLIC_ROUTES: process.env.NEXT_PUBLIC_ROUTES,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

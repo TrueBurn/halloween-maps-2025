@@ -182,22 +182,26 @@ export function Navigation() {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">
-                  🗺️ Age Groups
-                </h3>
-                <p className="mb-2 text-sm">
-                  Different age groups have different starting points (marked with green houses):
-                </p>
-                <ul className="space-y-1 list-disc list-inside">
-                  <li><strong>Over 8:</strong> Full neighborhood route for older kids</li>
-                  <li><strong>Under 8:</strong> Shorter route for younger children</li>
-                  <li><strong>Toddlers:</strong> Brief route for little ones</li>
-                </ul>
-                <p className="mt-2 text-sm italic">
-                  Use the list view to filter locations by your age group.
-                </p>
-              </div>
+              {env.NEXT_PUBLIC_ROUTES.length > 1 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">
+                    🗺️ Age Groups
+                  </h3>
+                  <p className="mb-2 text-sm">
+                    Different age groups have different starting points (marked with green houses):
+                  </p>
+                  <ul className="space-y-1 list-disc list-inside">
+                    {env.NEXT_PUBLIC_ROUTES.map((route) => (
+                      <li key={route}>
+                        <strong>{route}:</strong> Designated route for this age group
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-2 text-sm italic">
+                    Use the list view to filter locations by your age group.
+                  </p>
+                </div>
+              )}
 
               <p className="text-sm text-center border-t-2 border-gray-700 pt-4">
                 Happy Halloween! 👻🍬

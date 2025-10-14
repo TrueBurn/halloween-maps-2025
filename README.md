@@ -139,7 +139,7 @@ npm run format       # Prettier (if configured)
 ### 🛠️ Development Tools
 
 Access development tools at `http://localhost:3000/dev` (dev mode only):
-- **Seed Locations** - Add 8 example locations around default coordinates
+- **Seed Locations** - Add example locations (starting points dynamically generated from `NEXT_PUBLIC_ROUTES`)
 - **Clear Example Locations** - Remove all example locations (prefix: "Example - ")
 - **Database Stats** - View location counts with auto-refresh
 
@@ -163,7 +163,7 @@ All dev endpoints are protected and only work in development mode.
 
 ✅ **Scalable Design**
 - Same codebase deployed multiple times
-- Configure via environment variables (coordinates, neighborhood name, Supabase credentials, optional PostHog)
+- Configure via environment variables (coordinates, neighborhood name, routes/age groups, Supabase credentials, optional PostHog)
 - No code changes needed for new neighborhoods
 
 ### Deployment Process

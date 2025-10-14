@@ -6,6 +6,7 @@ import { X, Loader2, MapPin } from 'lucide-react';
 import { createClient } from '~/lib/supabase/client';
 import type { Tables } from '~/types/database.types';
 import { usePostHog } from '~/providers/PostHogProvider';
+import { env } from '~/env';
 
 const CoordinatePicker = dynamic(
   () => import('./CoordinatePicker').then((mod) => ({ default: mod.CoordinatePicker })),
@@ -195,9 +196,11 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
               className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <option value="">Select Age Group</option>
-              <option value="Over 8">Over 8</option>
-              <option value="Under 8">Under 8</option>
-              <option value="Toddlers">Toddlers</option>
+              {env.NEXT_PUBLIC_ROUTES.map((route) => (
+                <option key={route} value={route}>
+                  {route}
+                </option>
+              ))}
             </select>
             {!formData.is_start && (
               <p className="text-xs text-text-secondary mt-1">

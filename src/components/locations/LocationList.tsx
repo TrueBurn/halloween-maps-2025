@@ -8,6 +8,7 @@ import { usePostHog } from '~/providers/PostHogProvider';
 import { LocationCard } from './LocationCard';
 import { calculateDistance } from '~/lib/utils/distance';
 import type { Tables } from '~/types/database.types';
+import { env } from '~/env';
 
 type Location = Tables<'locations'>;
 type LocationType = Location['location_type'];
@@ -213,9 +214,11 @@ export function LocationList() {
                   className="w-full px-3 py-2 text-sm bg-gray-900 text-text-primary border border-gray-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 >
                   <option value="All">All Age Groups</option>
-                  <option value="Over 8">Over 8</option>
-                  <option value="Under 8">Under 8</option>
-                  <option value="Toddlers">Toddlers</option>
+                  {env.NEXT_PUBLIC_ROUTES.map((route) => (
+                    <option key={route} value={route}>
+                      {route}
+                    </option>
+                  ))}
                   <option value="None">No Age Group</option>
                 </select>
               </div>

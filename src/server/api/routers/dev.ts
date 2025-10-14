@@ -6,41 +6,33 @@ import { createClient } from "~/lib/supabase/server";
 // Uses environment variable for center point
 import { env } from "~/env";
 
+// Generate starting points dynamically based on configured routes
+const generateStartingPoints = () => {
+  const offsets = [
+    { lat: 0.0000, lng: 0.0000 },
+    { lat: 0.0012, lng: -0.0008 },
+    { lat: -0.0010, lng: 0.0012 },
+  ];
+
+  return env.NEXT_PUBLIC_ROUTES.map((route, index) => {
+    const offset = offsets[index % offsets.length]!;
+    return {
+      latitude: env.NEXT_PUBLIC_DEFAULT_LAT + offset.lat,
+      longitude: env.NEXT_PUBLIC_DEFAULT_LNG + offset.lng,
+      address: `Example - Starting Point (${route})`,
+      is_start: true,
+      is_participating: true,
+      has_candy: false,
+      location_type: "House" as const,
+      route: route,
+      has_activity: false,
+    };
+  });
+};
+
 const EXAMPLE_LOCATIONS = [
-  // Starting Points (with age groups)
-  {
-    latitude: env.NEXT_PUBLIC_DEFAULT_LAT,
-    longitude: env.NEXT_PUBLIC_DEFAULT_LNG,
-    address: "Example - Starting Point (Over 8)",
-    is_start: true,
-    is_participating: true,
-    has_candy: false,
-    location_type: "House" as const,
-    route: "Over 8" as const,
-    has_activity: false,
-  },
-  {
-    latitude: env.NEXT_PUBLIC_DEFAULT_LAT + 0.0012,
-    longitude: env.NEXT_PUBLIC_DEFAULT_LNG - 0.0008,
-    address: "Example - Starting Point (Under 8)",
-    is_start: true,
-    is_participating: true,
-    has_candy: false,
-    location_type: "House" as const,
-    route: "Under 8" as const,
-    has_activity: false,
-  },
-  {
-    latitude: env.NEXT_PUBLIC_DEFAULT_LAT - 0.0010,
-    longitude: env.NEXT_PUBLIC_DEFAULT_LNG + 0.0012,
-    address: "Example - Starting Point (Toddlers)",
-    is_start: true,
-    is_participating: true,
-    has_candy: false,
-    location_type: "House" as const,
-    route: "Toddlers" as const,
-    has_activity: false,
-  },
+  // Starting Points (dynamically generated from env)
+  ...generateStartingPoints(),
   // Regular Participating Houses (no routes)
   {
     latitude: env.NEXT_PUBLIC_DEFAULT_LAT + 0.0007,
