@@ -1,6 +1,6 @@
 # Halloween Maps 2025 - Progress Summary
 
-## ✅ Completed (2025-10-08)
+## ✅ Completed (2025-10-21)
 
 ### Setup & Infrastructure
 - T3 App initialized (Next.js 14, TypeScript, Tailwind, tRPC)
@@ -25,8 +25,12 @@
   - `setup_rls_policies.sql`
   - `allow_anonymous_example_inserts.sql`
   - `allow_anonymous_example_deletes.sql`
-- **All migrations applied to both databases**
+  - `add_store_location_type.sql`
+  - `route_enum_to_text.sql`
+  - `fix_rls_select_policy_for_admin_updates.sql` - **Separate SELECT policies for public/authenticated users**
+- **All 8 migrations applied to both databases**
 - **Route field usage**: Only assigned to starting points (`is_start = true`) to indicate age group (Over 8, Under 8, Toddlers)
+- **RLS Policies**: Separate SELECT policies - public users see only participating locations, authenticated users see all
 
 ### Components Built
 - `Navigation.tsx` - Nav bar with Lucide icons + auto-opening info modal with cluster legend (React Portal, localStorage tracking)
@@ -325,7 +329,7 @@
 - Layout: `src/app/layout.tsx` (viewport-fit=cover for safe areas)
 - Styles: `src/styles/globals.css` (dark theme + Leaflet overrides + routing control)
 - Types: `src/types/database.types.ts`
-- Migrations: `supabase/migrations/` (5 SQL files)
+- Migrations: `supabase/migrations/` (8 SQL files)
 
 **Commands**:
 ```bash

@@ -6,8 +6,7 @@ This directory contains SQL migration files for the Halloween Maps database sche
 
 ### 1. `20250930075234_create_enums.sql`
 Creates the custom enum types:
-- `location_type`: House, Table, Car, Parking, Refreshments
-- `route`: Over 8, Under 8, Toddlers
+- `location_type`: House, Table, Car, Store, Parking, Refreshments
 
 ### 2. `20250930075249_create_locations_table.sql`
 Creates the main `locations` table with:
@@ -19,6 +18,33 @@ Creates the main `locations` table with:
 Sets up Row Level Security policies:
 - Public read access for participating locations
 - Admin-only write access (insert, update, delete)
+
+### 4. `20250930084725_allow_anonymous_example_inserts.sql`
+Adds RLS policy for development:
+- Allows anonymous users to insert example locations (address starts with "Example - ")
+- Used by dev tools for seeding test data
+
+### 5. `20250930085248_allow_anonymous_example_deletes.sql`
+Adds RLS policy for development:
+- Allows anonymous users to delete example locations (address starts with "Example - ")
+- Used by dev tools for clearing test data
+
+### 6. `20251009000000_add_store_location_type.sql`
+Extends the `location_type` enum:
+- Adds 'Store' as a new location type option
+
+### 7. `20251014000000_route_enum_to_text.sql`
+Converts route field from enum to text:
+- Drops the `route` enum type
+- Changes `route` column to `text` type
+- Enables dynamic route configuration via `NEXT_PUBLIC_ROUTES` environment variable
+
+### 8. `20251021000000_fix_rls_select_policy_for_admin_updates.sql`
+Fixes RLS SELECT policies for admin updates:
+- Drops single "Public locations are viewable by everyone" policy
+- Creates separate policy for public users (only participating locations)
+- Creates separate policy for authenticated users (all locations)
+- Fixes issue where admins couldn't update `is_participating` to false
 
 ## Running Migrations
 
@@ -34,6 +60,11 @@ Sets up Row Level Security policies:
    -- 1. 20250930075234_create_enums.sql
    -- 2. 20250930075249_create_locations_table.sql
    -- 3. 20250930075259_setup_rls_policies.sql
+   -- 4. 20250930084725_allow_anonymous_example_inserts.sql
+   -- 5. 20250930085248_allow_anonymous_example_deletes.sql
+   -- 6. 20251009000000_add_store_location_type.sql
+   -- 7. 20251014000000_route_enum_to_text.sql
+   -- 8. 20251021000000_fix_rls_select_policy_for_admin_updates.sql
    ```
 
 ### Using Supabase CLI
@@ -93,16 +124,18 @@ supabase db dump -f supabase/schema_backup.sql
 
 ```sql
 -- Drop all policies
-DROP POLICY IF EXISTS "Public locations are viewable by everyone" ON locations;
+DROP POLICY IF EXISTS "Public can view participating locations" ON locations;
+DROP POLICY IF EXISTS "Authenticated users can view all locations" ON locations;
 DROP POLICY IF EXISTS "Authenticated users can insert locations" ON locations;
 DROP POLICY IF EXISTS "Authenticated users can update locations" ON locations;
 DROP POLICY IF EXISTS "Authenticated users can delete locations" ON locations;
+DROP POLICY IF EXISTS "Allow anonymous inserts for example locations" ON locations;
+DROP POLICY IF EXISTS "Allow anonymous deletes for example locations" ON locations;
 
 -- Drop table
 DROP TABLE IF EXISTS locations;
 
--- Drop enums
-DROP TYPE IF EXISTS route;
+-- Drop enums (note: route enum was removed in migration 7)
 DROP TYPE IF EXISTS location_type;
 
 -- Then run migrations again

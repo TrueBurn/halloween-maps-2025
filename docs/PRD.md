@@ -116,21 +116,34 @@ CREATE TABLE locations (
 -- Row Level Security
 ALTER TABLE locations ENABLE ROW LEVEL SECURITY;
 
--- Public read access
-CREATE POLICY "Public locations are viewable by everyone"
+-- Public read access (anon users only see participating locations)
+CREATE POLICY "Public can view participating locations"
   ON locations FOR SELECT
+  TO anon
   USING (is_participating = true);
 
--- Update policy for authenticated users who own the location
-CREATE POLICY "Users can update their own locations"
+-- Authenticated users can view all locations (enables admin updates)
+CREATE POLICY "Authenticated users can view all locations"
+  ON locations FOR SELECT
+  TO authenticated
+  USING (true);
+
+-- Admin can manage all locations
+CREATE POLICY "Authenticated users can insert locations"
+  ON locations FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
+
+CREATE POLICY "Authenticated users can update locations"
   ON locations FOR UPDATE
-  USING (
-    auth.uid() IS NOT NULL
-    AND (
-      auth.jwt()->>'phone' = phone_number
-      OR auth.jwt()->>'email' = email
-    )
-  );
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Authenticated users can delete locations"
+  ON locations FOR DELETE
+  TO authenticated
+  USING (true);
 ```
 
 #### Custom Enums
