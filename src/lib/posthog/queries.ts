@@ -193,12 +193,12 @@ export function getGPSPermissionStatsQuery() {
     kind: 'HogQLQuery',
     query: `
       SELECT
-        properties.permission_status as status,
+        if(properties.granted = true, 'granted', 'denied') as status,
         count(DISTINCT person_id) as users
       FROM events
-      WHERE event = 'gps_permission'
+      WHERE event = 'map_user_location_enabled'
         AND properties.neighborhood = '${neighborhoodName}'
-      GROUP BY properties.permission_status
+      GROUP BY properties.granted
       ORDER BY users DESC
     `,
   };
