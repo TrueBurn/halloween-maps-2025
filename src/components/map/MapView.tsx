@@ -253,7 +253,10 @@ export function MapView() {
     });
 
     // Fit bounds if we have locations (only on initial load/location changes)
-    if (locations.length > 0) {
+    // Skip if URL params are present (user wants to view a specific location)
+    const hasUrlParams = searchParams.get('lat') && searchParams.get('lng');
+
+    if (locations.length > 0 && !hasUrlParams) {
       const points: [number, number][] = locations.map((loc) => [loc.latitude, loc.longitude]);
 
       // Include user location in bounds if available and within 5km of locations
@@ -278,7 +281,7 @@ export function MapView() {
       const bounds = L.latLngBounds(points);
       mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
     }
-  }, [locations, loading]);
+  }, [locations, loading, searchParams]);
 
   // Update user location marker
   useEffect(() => {
