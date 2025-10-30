@@ -94,8 +94,9 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Multi-neighborhood architecture** with separate Supabase databases
 - ✅ Database migrations (enums, tables, RLS policies)
 - ✅ Interactive map view with Leaflet
-- ✅ **Custom SVG location markers** (22 markers: 4 location types × 4 states + 2 static + shadow)
+- ✅ **Custom SVG location markers** (25 markers: 4 location types × 4 states + 3 static + shadow)
   - States: Normal (orange), Starting Point (green), Activity (pink), No Candy (purple)
+  - Static types: Parking, Refreshments, AnimalCharity
   - Priority rendering: No candy > Starting point > Activity > Normal
 - ✅ Walking directions with OSRM
 - ✅ GPS user location tracking

@@ -109,6 +109,17 @@ const EXAMPLE_LOCATIONS = [
     has_activity: true,
     activity_details: "Halloween games and prizes",
   },
+  {
+    latitude: env.NEXT_PUBLIC_DEFAULT_LAT - 0.0005,
+    longitude: env.NEXT_PUBLIC_DEFAULT_LNG - 0.0012,
+    address: "Example - Animal Shelter Donations",
+    is_start: false,
+    is_participating: true,
+    has_candy: false,
+    location_type: "AnimalCharity" as const,
+    has_activity: false,
+    activity_details: null,
+  },
 ];
 
 export const devRouter = createTRPCRouter({

@@ -181,6 +181,7 @@ export function LocationForm({ location, onClose, onSuccess }: LocationFormProps
               <option value="Store">Store</option>
               <option value="Parking">Parking</option>
               <option value="Refreshments">Refreshments</option>
+              <option value="AnimalCharity">Animal Charity</option>
             </select>
           </div>
 

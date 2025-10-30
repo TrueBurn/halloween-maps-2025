@@ -1,4 +1,4 @@
-import { Home, Coffee, Car, Square as SquareParking, Table, MapPin, Navigation, Store } from 'lucide-react';
+import { Home, Coffee, Car, Square as SquareParking, Table, MapPin, Navigation, Store, Heart } from 'lucide-react';
 import Link from 'next/link';
 import type { Tables } from '~/types/database.types';
 import { calculateDistance, formatDistance } from '~/lib/utils/distance';
@@ -28,6 +28,8 @@ function getIcon(locationType: Location['location_type']) {
       return <SquareParking {...iconProps} />;
     case 'Table':
       return <Table {...iconProps} />;
+    case 'AnimalCharity':
+      return <Heart {...iconProps} />;
     default:
       return <Home {...iconProps} />;
   }

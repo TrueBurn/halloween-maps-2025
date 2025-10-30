@@ -148,7 +148,7 @@ CREATE POLICY "Authenticated users can delete locations"
 
 #### Custom Enums
 ```sql
-CREATE TYPE location_type_enum AS ENUM ('House', 'Table', 'Car', 'Store', 'Parking', 'Refreshments');
+CREATE TYPE location_type_enum AS ENUM ('House', 'Table', 'Car', 'Store', 'Parking', 'Refreshments', 'AnimalCharity');
 CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');  -- Age groups for starting points
 ```
 
@@ -176,8 +176,10 @@ CREATE TYPE route_enum AS ENUM ('Over 8', 'Under 8', 'Toddlers');  -- Age groups
 - 🏠 House: Participating residence (62x62px)
 - 🍬 Table: Outdoor candy distribution (50x50px)
 - 🚗 Car: Mobile distribution point (50x50px)
+- 🏪 Store: Store giving out candy (50x50px)
 - 🅿️ Parking: Designated parking area (50x50px)
 - ☕ Refreshments: Food and drink station (58x58px)
+- ❤️ AnimalCharity: Animal shelter donation station (40x40px)
 
 ### 2. Location List View
 

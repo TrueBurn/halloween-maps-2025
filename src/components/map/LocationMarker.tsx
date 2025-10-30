@@ -4,12 +4,15 @@ import type { Tables } from '~/types/database.types';
 type Location = Tables<'locations'>;
 
 function getIconPath(location: Location): string {
-  // Parking and Refreshments are always static (no participation)
+  // Parking, Refreshments, and AnimalCharity are always static (no state variants)
   if (location.location_type === 'Parking') {
     return '/icons/parking.svg';
   }
   if (location.location_type === 'Refreshments') {
     return '/icons/refreshments.svg';
+  }
+  if (location.location_type === 'AnimalCharity') {
+    return '/icons/animal-charity.svg';
   }
 
   // Determine base icon shape by location type

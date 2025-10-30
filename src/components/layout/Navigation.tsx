@@ -239,6 +239,10 @@ export function Navigation() {
                         <img src="/icons/refreshments.svg" alt="Refreshments" className="w-7 h-7" />
                         <span className="text-sm"><strong>Refreshments:</strong> Drinks and snacks</span>
                       </div>
+                      <div className="flex items-center gap-3">
+                        <img src="/icons/animal-charity.svg" alt="Animal Charity" className="w-7 h-7" />
+                        <span className="text-sm"><strong>Animal Charity:</strong> Donation station</span>
+                      </div>
                     </div>
                   </div>
 

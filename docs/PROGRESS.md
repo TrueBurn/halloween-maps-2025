@@ -28,7 +28,8 @@
   - `add_store_location_type.sql`
   - `route_enum_to_text.sql`
   - `fix_rls_select_policy_for_admin_updates.sql` - **Separate SELECT policies for public/authenticated users**
-- **All 8 migrations applied to both databases**
+  - `add_animal_charity_location_type.sql` - **Add AnimalCharity for donation stations**
+- **All 9 migrations applied to both databases**
 - **Route field usage**: Only assigned to starting points (`is_start = true`) to indicate age group (Over 8, Under 8, Toddlers)
 - **RLS Policies**: Separate SELECT policies - public users see only participating locations, authenticated users see all
 

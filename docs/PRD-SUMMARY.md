@@ -149,7 +149,7 @@ Map View
    - **Address**: Text input (e.g., "123 Main Street")
    - **Latitude**: Number input (e.g., 0.0000000)
    - **Longitude**: Number input (e.g., 0.0000000)
-   - **Type**: Dropdown (House, Table, Car, Store, Parking, Refreshments)
+   - **Type**: Dropdown (House, Table, Car, Store, Parking, Refreshments, AnimalCharity)
    - **Route**: Dropdown (Over 8, Under 8, Toddlers)
    - **Starting Point**: Checkbox
    - **Has Candy**: Checkbox (default: checked)
@@ -206,7 +206,7 @@ interface LocationFormData {
   address: string
   latitude: number
   longitude: number
-  location_type: 'House' | 'Table' | 'Car' | 'Store' | 'Parking' | 'Refreshments'
+  location_type: 'House' | 'Table' | 'Car' | 'Store' | 'Parking' | 'Refreshments' | 'AnimalCharity'
   route?: 'Over 8' | 'Under 8' | 'Toddlers'
   is_start: boolean
   has_candy: boolean

@@ -1,0 +1,41 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Animal Charity location - Orange heart with paw prints -->
+  <g filter="url(#shadow)">
+    <!-- Heart background -->
+    <path d="M20 32C20 32 6 24 6 15C6 11.5 8.5 9 12 9C14.5 9 17 10.5 20 13C23 10.5 25.5 9 28 9C31.5 9 34 11.5 34 15C34 24 20 32 20 32Z" fill="#f59e0b" stroke="#78350f" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Paw print (left) -->
+    <g transform="translate(12, 16)">
+      <!-- Main pad -->
+      <ellipse cx="3" cy="4" rx="2.5" ry="3" fill="#0f0f0f"/>
+      <!-- Toe beans -->
+      <circle cx="1" cy="1" r="1" fill="#0f0f0f"/>
+      <circle cx="3" cy="0.5" r="1" fill="#0f0f0f"/>
+      <circle cx="5" cy="1" r="1" fill="#0f0f0f"/>
+    </g>
+
+    <!-- Paw print (right) -->
+    <g transform="translate(22, 16)">
+      <!-- Main pad -->
+      <ellipse cx="3" cy="4" rx="2.5" ry="3" fill="#0f0f0f"/>
+      <!-- Toe beans -->
+      <circle cx="1" cy="1" r="1" fill="#0f0f0f"/>
+      <circle cx="3" cy="0.5" r="1" fill="#0f0f0f"/>
+      <circle cx="5" cy="1" r="1" fill="#0f0f0f"/>
+    </g>
+  </g>
+
+  <defs>
+    <filter id="shadow" x="0" y="0" width="40" height="44" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
