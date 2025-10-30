@@ -114,7 +114,7 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Mobile browser compatibility** (safe area insets, dvh viewport height)
 - ✅ **Marker clustering** (Halloween-themed with 🦇🕷️👻 emojis)
 - ✅ **Social media sharing** (WhatsApp-optimized preview images, Open Graph tags)
-- ✅ **PostHog analytics (optional)** - Live visitor tracking, session stats, location popularity
+- ✅ **PostHog analytics (optional)** - Separate analytics dashboard at `/admin/analytics` with 12 cards (live users, sessions, GPS permission, popular locations, user journey, engagement, filters, events, recent activity)
 - ✅ **First-visit info modal** - Auto-opens event info with localStorage tracking
 - ✅ **Map location counter** - Shows only candy-giving locations (filters out parking/refreshments)
 

@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '~/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 import type { Tables } from '~/types/database.types';
-import { Loader2, LogOut, Plus, RefreshCw, Download } from 'lucide-react';
+import { Loader2, LogOut, Plus, RefreshCw, Download, BarChart3 } from 'lucide-react';
 import { LocationTable } from '~/components/admin/LocationTable';
 import { LocationForm } from '~/components/admin/LocationForm';
-import { AnalyticsDashboard } from '~/components/admin/analytics/AnalyticsDashboard';
 import { useAllLocations } from '~/lib/hooks/useAllLocations';
 import { exportToCSV, exportToJSON } from '~/lib/utils/export';
 import { usePostHog } from '~/providers/PostHogProvider';
+import Link from 'next/link';
 
 type Location = Tables<'locations'>;
 
@@ -188,18 +188,18 @@ export default function AdminPage() {
             <p className="text-sm text-text-secondary">Create a new trick-or-treat location</p>
           </button>
 
-          <button
-            onClick={handleResetCandy}
-            className="bg-surface p-6 rounded-lg shadow-lg border border-gray-800 hover:shadow-xl transition-shadow text-left"
+          <Link
+            href="/admin/analytics"
+            className="bg-surface p-6 rounded-lg shadow-lg border border-gray-800 hover:shadow-xl transition-shadow text-left block"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-success/20 rounded-lg">
-                <RefreshCw className="h-5 w-5 text-success" />
+              <div className="p-2 bg-secondary/20 rounded-lg">
+                <BarChart3 className="h-5 w-5 text-secondary" />
               </div>
-              <h3 className="font-semibold text-text-primary">Reset Candy</h3>
+              <h3 className="font-semibold text-text-primary">Analytics</h3>
             </div>
-            <p className="text-sm text-text-secondary">Reset all candy status to available</p>
-          </button>
+            <p className="text-sm text-text-secondary">View visitor insights and metrics</p>
+          </Link>
 
           <div className="relative">
             <button
@@ -249,9 +249,6 @@ export default function AdminPage() {
             <p className="text-sm text-text-secondary">Go to public map view</p>
           </a>
         </div>
-
-        {/* Analytics Dashboard */}
-        <AnalyticsDashboard />
 
         {/* Location Management */}
         <div>

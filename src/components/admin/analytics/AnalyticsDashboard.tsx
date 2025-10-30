@@ -7,9 +7,14 @@ import { LiveUsersCard } from './LiveUsersCard';
 import { LocationPermissionCard } from './LocationPermissionCard';
 import { StatsGrid } from './StatsGrid';
 import { PopularLocations } from './PopularLocations';
+import { UserJourneyCard } from './UserJourneyCard';
+import { LocationTypeCard } from './LocationTypeCard';
+import { EngagementCard } from './EngagementCard';
+import { FilterUsageCard } from './FilterUsageCard';
+import { EventBreakdownCard } from './EventBreakdownCard';
+import { RecentActivityFeed } from './RecentActivityFeed';
 
 export function AnalyticsDashboard() {
-  const [isExpanded, setIsExpanded] = useState(true);
   const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -22,28 +27,15 @@ export function AnalyticsDashboard() {
   };
 
   return (
-    <div className="mb-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="w-full bg-surface border border-gray-800 rounded-t-lg px-6 py-4 flex items-center justify-between">
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-        >
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <h2 className="text-lg font-bold text-text-primary">
-              Live Analytics
-            </h2>
-          </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           <span className="text-sm text-text-secondary">
             Real-time visitor metrics
           </span>
-          {isExpanded ? (
-            <ChevronUp className="h-5 w-5 text-text-secondary" />
-          ) : (
-            <ChevronDown className="h-5 w-5 text-text-secondary" />
-          )}
-        </button>
+        </div>
 
         {/* Refresh Button */}
         <button
@@ -57,45 +49,56 @@ export function AnalyticsDashboard() {
         </button>
       </div>
 
-      {/* Content */}
-      {isExpanded && (
-        <div className="bg-surface border border-t-0 border-gray-800 rounded-b-lg p-6 space-y-6">
-          {/* Diagnostics Toggle */}
-          <div className="flex justify-end">
-            <button
-              onClick={() => setShowDiagnostics(!showDiagnostics)}
-              className="text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2"
-            >
-              {showDiagnostics ? (
-                <>
-                  <ChevronUp className="h-4 w-4" />
-                  Hide Diagnostics
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="h-4 w-4" />
-                  Show Diagnostics
-                </>
-              )}
-            </button>
-          </div>
+      {/* Diagnostics Toggle */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => setShowDiagnostics(!showDiagnostics)}
+          className="text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2"
+        >
+          {showDiagnostics ? (
+            <>
+              <ChevronUp className="h-4 w-4" />
+              Hide Diagnostics
+            </>
+          ) : (
+            <>
+              <ChevronDown className="h-4 w-4" />
+              Show Diagnostics
+            </>
+          )}
+        </button>
+      </div>
 
-          {/* Diagnostics Panel */}
-          {showDiagnostics && <DiagnosticsPanel />}
+      {/* Diagnostics Panel */}
+      {showDiagnostics && <DiagnosticsPanel />}
 
-          {/* Live Users + Location Permission + Quick Stats */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-            <LiveUsersCard key={`live-${refreshKey}`} />
-            <LocationPermissionCard key={`permission-${refreshKey}`} />
-            <div className="lg:col-span-3">
-              <StatsGrid key={`stats-${refreshKey}`} />
-            </div>
-          </div>
-
-          {/* Popular Locations */}
-          <PopularLocations key={`popular-${refreshKey}`} />
+      {/* Live Users + Location Permission + Quick Stats */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+        <LiveUsersCard key={`live-${refreshKey}`} />
+        <LocationPermissionCard key={`permission-${refreshKey}`} />
+        <div className="lg:col-span-3">
+          <StatsGrid key={`stats-${refreshKey}`} />
         </div>
-      )}
+      </div>
+
+      {/* User Journey & Engagement */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <UserJourneyCard key={`journey-${refreshKey}`} />
+        <LocationTypeCard key={`location-type-${refreshKey}`} />
+        <EngagementCard key={`engagement-${refreshKey}`} />
+      </div>
+
+      {/* Popular Locations */}
+      <PopularLocations key={`popular-${refreshKey}`} />
+
+      {/* Filter Usage & Event Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <FilterUsageCard key={`filters-${refreshKey}`} />
+        <EventBreakdownCard key={`events-${refreshKey}`} />
+      </div>
+
+      {/* Recent Activity Feed */}
+      <RecentActivityFeed key={`activity-${refreshKey}`} />
     </div>
   );
 }

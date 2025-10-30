@@ -203,3 +203,87 @@ export function getGPSPermissionStatsQuery() {
     `,
   };
 }
+
+/**
+ * Get view mode breakdown (map vs list)
+ */
+export function getViewModeQuery() {
+  return {
+    kind: 'HogQLQuery',
+    query: `
+      SELECT
+        properties.mode as view_mode,
+        count(*) as views
+      FROM events
+      WHERE event = 'view_mode_opened'
+        AND properties.neighborhood = '${neighborhoodName}'
+        AND timestamp >= today()
+      GROUP BY properties.mode
+      ORDER BY views DESC
+    `,
+  };
+}
+
+/**
+ * Get location type performance
+ */
+export function getLocationTypePerformanceQuery() {
+  return {
+    kind: 'HogQLQuery',
+    query: `
+      SELECT
+        properties.location_type as location_type,
+        properties.has_candy as has_candy,
+        count(*) as views
+      FROM events
+      WHERE event = 'map_marker_clicked'
+        AND properties.neighborhood = '${neighborhoodName}'
+        AND timestamp >= today()
+      GROUP BY properties.location_type, properties.has_candy
+      ORDER BY views DESC
+    `,
+  };
+}
+
+/**
+ * Get user journey funnel
+ * Track: map opened → marker clicked → directions requested
+ */
+export function getUserJourneyQuery() {
+  return {
+    kind: 'HogQLQuery',
+    query: `
+      SELECT
+        countIf(event = 'view_mode_opened' AND properties.mode = 'map') as map_views,
+        countIf(event = 'view_mode_opened' AND properties.mode = 'list') as list_views,
+        countIf(event = 'map_marker_clicked') as marker_clicks,
+        countIf(event = 'map_directions_requested') as directions_requested,
+        count(DISTINCT person_id) as unique_users
+      FROM events
+      WHERE properties.neighborhood = '${neighborhoodName}'
+        AND timestamp >= today()
+    `,
+  };
+}
+
+/**
+ * Get engagement metrics
+ * Interactions per session, filter usage
+ */
+export function getEngagementMetricsQuery() {
+  return {
+    kind: 'HogQLQuery',
+    query: `
+      SELECT
+        count(*) as total_interactions,
+        count(DISTINCT person_id) as unique_users,
+        countIf(event = 'location_filter_applied') as filter_applications,
+        countIf(event = 'map_center_on_user') as recenter_actions,
+        countIf(event = 'map_cluster_clicked') as cluster_clicks
+      FROM events
+      WHERE properties.neighborhood = '${neighborhoodName}'
+        AND timestamp >= today()
+        AND event NOT LIKE '$%'
+    `,
+  };
+}

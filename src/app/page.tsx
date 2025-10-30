@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Navigation } from '~/components/layout/Navigation';
+import { usePostHog } from '~/providers/PostHogProvider';
 
 const MapView = dynamic(
   () => import('~/components/map/MapView').then((mod) => ({ default: mod.MapView })),
@@ -16,6 +18,15 @@ const MapView = dynamic(
 );
 
 export default function Home() {
+  const posthog = usePostHog();
+
+  useEffect(() => {
+    // Track map view opened
+    posthog?.capture('view_mode_opened', {
+      mode: 'map',
+    });
+  }, [posthog]);
+
   return (
     <div className="flex h-screen-dynamic flex-col bg-background">
       <Navigation />
