@@ -134,6 +134,7 @@ export function getEventCountsQuery() {
       WHERE timestamp >= today()
         AND properties.neighborhood = '${neighborhoodName}'
         AND event NOT LIKE '$%'
+        AND event != 'map_user_location_enabled'
       GROUP BY event
       ORDER BY count DESC
       LIMIT 20
@@ -156,6 +157,7 @@ export function getRecentActivityQuery(limit: number = 20) {
       FROM events
       WHERE properties.neighborhood = '${neighborhoodName}'
         AND event NOT LIKE '$%'
+        AND event != 'map_user_location_enabled'
         AND timestamp >= now() - INTERVAL 1 HOUR
       ORDER BY timestamp DESC
       LIMIT ${limit}
@@ -284,6 +286,7 @@ export function getEngagementMetricsQuery() {
       WHERE properties.neighborhood = '${neighborhoodName}'
         AND timestamp >= today()
         AND event NOT LIKE '$%'
+        AND event != 'map_user_location_enabled'
     `,
   };
 }

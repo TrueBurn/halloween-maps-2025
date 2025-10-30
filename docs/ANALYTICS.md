@@ -53,8 +53,9 @@ Located in the admin panel at `/admin`, the analytics dashboard provides:
 - `map_center_on_user` - User clicked "Center on me" button
 - `map_cluster_clicked` - User clicked a marker cluster
   - Properties: cluster_size
-- `map_user_location_enabled` - GPS permission status
+- `map_user_location_enabled` - GPS permission status (filtered from analytics)
   - Properties: granted (boolean), accuracy (if granted), error_code (if denied)
+  - **Note:** This event is excluded from Event Breakdown, Recent Activity, and Engagement metrics to prevent skewing numbers
 
 **Location List Interactions:**
 - `location_sorted` - User changed sort order
