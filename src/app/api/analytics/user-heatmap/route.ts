@@ -28,8 +28,10 @@ export async function GET() {
 
     // Transform results into heatmap-compatible format
     // Result format: [person_id, lat, lng, last_seen]
+    type LocationData = { lat: number; lng: number; last_seen: string } | null;
+
     const locations = (result.results ?? [])
-      .map((row: any[]) => {
+      .map((row: any[]): LocationData => {
         const lat = parseFloat(row[1]);
         const lng = parseFloat(row[2]);
         const lastSeen = row[3];
@@ -44,7 +46,7 @@ export async function GET() {
           last_seen: lastSeen,
         };
       })
-      .filter((loc): loc is { lat: number; lng: number; last_seen: string } => loc !== null);
+      .filter((loc: LocationData): loc is { lat: number; lng: number; last_seen: string } => loc !== null);
 
     return NextResponse.json({
       locations,
