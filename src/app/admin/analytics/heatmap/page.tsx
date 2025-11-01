@@ -60,9 +60,9 @@ export default function HeatmapPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-text-primary flex flex-col">
+    <div className="h-screen bg-background text-text-primary flex flex-col">
       {/* Header */}
-      <header className="bg-surface border-b border-gray-700 px-6 py-4">
+      <header className="bg-surface border-b border-gray-700 px-6 py-4 flex-shrink-0">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
             <Link
@@ -82,7 +82,7 @@ export default function HeatmapPage() {
       </header>
 
       {/* Full-screen heatmap */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 overflow-hidden">
         <div className="h-full max-w-7xl mx-auto">
           <UserLocationHeatmap />
         </div>
