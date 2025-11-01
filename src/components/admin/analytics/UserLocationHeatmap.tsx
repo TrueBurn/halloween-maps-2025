@@ -78,40 +78,73 @@ export function UserLocationHeatmap() {
 
   // Update heatmap layer when data changes
   useEffect(() => {
+    // Don't do anything if map isn't ready or we don't have data yet
     if (!mapInstance.current || !data) return;
 
     // Remove existing heat layer
     if (heatLayer.current) {
-      mapInstance.current.removeLayer(heatLayer.current);
+      try {
+        mapInstance.current.removeLayer(heatLayer.current);
+      } catch (error) {
+        console.warn('[Heatmap] Error removing old layer:', error);
+      }
       heatLayer.current = null;
     }
 
-    // Create new heat layer ONLY if we have locations
-    if (data.locations.length > 0) {
-      // Convert to leaflet.heat format: [lat, lng, intensity]
-      const heatData = data.locations.map((loc) => [loc.lat, loc.lng, 1.0]);
+    // Create new heat layer ONLY if we have valid location data
+    if (data.locations && data.locations.length > 0) {
+      try {
+        // Convert to leaflet.heat format: [lat, lng, intensity]
+        const heatData = data.locations.map((loc) => [loc.lat, loc.lng, 1.0]);
 
-      // Create heatmap layer with Halloween-themed gradient
-      heatLayer.current = (L as any).heatLayer(heatData, {
-        radius: 25,
-        blur: 15,
-        maxZoom: 17,
-        gradient: {
-          0.0: '#6366f1',  // Primary (indigo)
-          0.5: '#ec4899',  // Secondary (pink)
-          1.0: '#f59e0b',  // Warning (orange)
-        },
-      }).addTo(mapInstance.current);
+        console.log('[Heatmap] Creating heat layer with data:', {
+          locationCount: data.locations.length,
+          heatDataPoints: heatData.length,
+          firstPoint: heatData[0],
+        });
 
-      // Fit bounds to show all user locations
-      const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
-      mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+        // Validate we have valid data
+        if (heatData.length === 0) {
+          console.warn('[Heatmap] No valid heat data points');
+          return;
+        }
+
+        // Create heatmap layer with Halloween-themed gradient
+        console.log('[Heatmap] Initializing leaflet.heat...');
+        heatLayer.current = (L as any).heatLayer(heatData, {
+          radius: 25,
+          blur: 15,
+          maxZoom: 17,
+          minOpacity: 0.5,
+          max: 1.0,
+          gradient: {
+            0.0: '#6366f1',  // Primary (indigo)
+            0.5: '#ec4899',  // Secondary (pink)
+            1.0: '#f59e0b',  // Warning (orange)
+          },
+        });
+
+        console.log('[Heatmap] Heat layer created, adding to map...');
+        // Add to map
+        if (heatLayer.current && mapInstance.current) {
+          heatLayer.current.addTo(mapInstance.current);
+          console.log('[Heatmap] Heat layer added successfully');
+
+          // Fit bounds to show all user locations
+          const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
+          mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+        }
+      } catch (error) {
+        console.error('[Heatmap] Error creating heat layer:', error);
+      }
     } else {
       // Reset to default view when no data
-      mapInstance.current.setView(
-        [env.NEXT_PUBLIC_DEFAULT_LAT, env.NEXT_PUBLIC_DEFAULT_LNG],
-        env.NEXT_PUBLIC_DEFAULT_ZOOM
-      );
+      if (mapInstance.current) {
+        mapInstance.current.setView(
+          [env.NEXT_PUBLIC_DEFAULT_LAT, env.NEXT_PUBLIC_DEFAULT_LNG],
+          env.NEXT_PUBLIC_DEFAULT_ZOOM
+        );
+      }
     }
   }, [data]);
 
