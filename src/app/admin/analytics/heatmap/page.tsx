@@ -1,21 +1,50 @@
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft } from 'lucide-react';
-import { createClient } from '~/lib/supabase/server';
+import { ChevronLeft, Loader2 } from 'lucide-react';
+import { createClient } from '~/lib/supabase/client';
+import type { User } from '@supabase/supabase-js';
 import { UserLocationHeatmap } from '~/components/admin/analytics/UserLocationHeatmap';
 
-export const metadata = {
-  title: 'User Location Heatmap | Admin',
-};
+export default function HeatmapPage() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const supabase = createClient();
 
-export default async function HeatmapPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  useEffect(() => {
+    // Check current auth session
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) {
+        router.push('/admin/login');
+      } else {
+        setUser(user);
+        setLoading(false);
+      }
+    });
 
-  if (!user) {
-    redirect('/admin/login');
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session?.user) {
+        router.push('/admin/login');
+      } else {
+        setUser(session.user);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router, supabase.auth]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
   }
 
   return (
