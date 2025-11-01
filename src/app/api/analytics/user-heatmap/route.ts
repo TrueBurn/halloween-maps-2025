@@ -26,6 +26,13 @@ export async function GET() {
     // Query PostHog for recent user locations (last 5 minutes)
     const result = await queryPostHog(getRecentUserLocationsQuery(5));
 
+    // Debug logging
+    console.log('[Heatmap API] PostHog result:', {
+      hasResults: !!result.results,
+      resultCount: result.results?.length ?? 0,
+      firstRow: result.results?.[0],
+    });
+
     // Transform results into heatmap-compatible format
     // Result format: [person_id, lat, lng, last_seen]
     type LocationData = { lat: number; lng: number; last_seen: string } | null;

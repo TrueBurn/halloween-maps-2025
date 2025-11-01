@@ -86,7 +86,7 @@ export function UserLocationHeatmap() {
       heatLayer.current = null;
     }
 
-    // Create new heat layer if we have locations
+    // Create new heat layer ONLY if we have locations
     if (data.locations.length > 0) {
       // Convert to leaflet.heat format: [lat, lng, intensity]
       const heatData = data.locations.map((loc) => [loc.lat, loc.lng, 1.0]);
@@ -106,6 +106,12 @@ export function UserLocationHeatmap() {
       // Fit bounds to show all user locations
       const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
       mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+    } else {
+      // Reset to default view when no data
+      mapInstance.current.setView(
+        [env.NEXT_PUBLIC_DEFAULT_LAT, env.NEXT_PUBLIC_DEFAULT_LNG],
+        env.NEXT_PUBLIC_DEFAULT_ZOOM
+      );
     }
   }, [data]);
 

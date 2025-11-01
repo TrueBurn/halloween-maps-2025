@@ -20,11 +20,17 @@ export function MapView() {
   const markersLayer = useRef<L.MarkerClusterGroup | null>(null);
   const userMarker = useRef<L.Marker | null>(null);
   const routingControl = useRef<L.Routing.Control | null>(null);
+  const userLocationRef = useRef<{ latitude: number; longitude: number } | null>(null);
   const searchParams = useSearchParams();
 
   const { locations, loading, error } = useLocations();
   const { location: userLocation } = useUserLocation();
   const posthog = usePostHog();
+
+  // Keep userLocationRef in sync with userLocation
+  useEffect(() => {
+    userLocationRef.current = userLocation;
+  }, [userLocation]);
 
   // Center map on user location
   const centerOnUser = () => {
@@ -163,13 +169,14 @@ export function MapView() {
     }).addTo(map);
 
     // Track cluster clicks
+    // Use userLocationRef to always get latest user location
     markersLayer.current.on('clusterclick', function(e: any) {
       const cluster = e.layer;
       const childCount = cluster.getChildCount();
       posthog?.capture('map_cluster_clicked', {
         cluster_size: childCount,
-        user_lat: userLocation?.latitude,
-        user_lng: userLocation?.longitude,
+        user_lat: userLocationRef.current?.latitude,
+        user_lng: userLocationRef.current?.longitude,
       });
     });
 
