@@ -25,10 +25,10 @@ Halloween Maps helps neighborhoods coordinate trick-or-treating by displaying:
 - **Styling**: Tailwind CSS v4
 - **Database**: Supabase (PostgreSQL)
 - **Authentication**: Supabase Auth
-- **Maps**: Leaflet.js + Leaflet.markercluster + OpenStreetMap
+- **Maps**: Leaflet.js + Leaflet.markercluster + Leaflet.heat + OpenStreetMap
 - **Icons**: Custom SVG (map markers) + Lucide React (UI elements)
 - **State**: TanStack Query + tRPC
-- **Analytics**: PostHog (optional, for visitor insights)
+- **Analytics**: PostHog (optional, for visitor insights + real-time heatmap)
 
 ## 📚 Documentation
 
@@ -115,6 +115,7 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Marker clustering** (Halloween-themed with 🦇🕷️👻 emojis)
 - ✅ **Social media sharing** (WhatsApp-optimized preview images, Open Graph tags)
 - ✅ **PostHog analytics (optional)** - Separate analytics dashboard at `/admin/analytics` with 12 cards (live users, sessions, GPS permission, popular locations, user journey, engagement, filters, events, recent activity)
+- ✅ **Real-time user location heatmap** - Admin-only heatmap showing active users with GPS enabled (last 5 minutes, blurred heat density visualization, manual refresh)
 - ✅ **First-visit info modal** - Auto-opens event info with localStorage tracking
 - ✅ **Map location counter** - Shows only candy-giving locations (filters out parking/refreshments)
 
@@ -199,6 +200,7 @@ See [LICENSE](./LICENSE) file for details.
 - Built with [Create T3 App](https://create.t3.gg/)
 - Maps powered by [Leaflet](https://leafletjs.com/) and [OpenStreetMap](https://www.openstreetmap.org/)
 - Marker clustering by [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
+- Heatmap visualization by [Leaflet.heat](https://github.com/Leaflet/Leaflet.heat)
 - Routing via [Leaflet Routing Machine](https://www.liedman.net/leaflet-routing-machine/) and [OSRM](http://project-osrm.org/)
 - UI icons from [Lucide](https://lucide.dev/)
 - Database and authentication by [Supabase](https://supabase.com/)

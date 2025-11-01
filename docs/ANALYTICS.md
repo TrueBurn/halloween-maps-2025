@@ -32,6 +32,30 @@ Located in the admin panel at `/admin`, the analytics dashboard provides:
 - Dark Halloween theme
 - Loading states and error handling
 
+### Real-Time User Location Heatmap (Admin Only)
+
+Located at `/admin/analytics/heatmap`, the heatmap provides a privacy-focused visualization of active users:
+
+**Features:**
+- 🗺️ **Heat Density Visualization** - Blurred heatmap showing user concentration
+- 🎨 **Halloween-Themed Gradient** - Indigo → Pink → Orange color scheme
+- 🔒 **Privacy-First Design** - 5-minute time window, admin-only access, anonymized clusters
+- 🔄 **Manual Refresh** - Click to update (no auto-polling)
+- 📊 **Active User Count** - Shows number of users with GPS enabled
+- 🎯 **Auto-Fit Bounds** - Map automatically centers on user locations
+
+**Preview Card on Dashboard:**
+- Shows current active user count
+- Links to full-screen heatmap
+- Refreshes with dashboard
+
+**Technical Details:**
+- Uses `leaflet.heat` plugin for smooth visualization
+- Queries PostHog for user coordinates from last 5 minutes
+- Groups by person_id to show one location per user (most recent)
+- Radius: 25px, Blur: 15px, Max zoom: 17
+- API endpoint: `/api/analytics/user-heatmap`
+
 ---
 
 ## Event Tracking
@@ -47,12 +71,13 @@ Located in the admin panel at `/admin`, the analytics dashboard provides:
 
 **Map Interactions:**
 - `map_marker_clicked` - User clicked a location marker
-  - Properties: location_id, location_type, has_candy, is_start, address
+  - Properties: location_id, location_type, has_candy, is_start, address, user_lat, user_lng
 - `map_directions_requested` - User requested walking directions
   - Properties: from_lat, from_lng, to_lat, to_lng
 - `map_center_on_user` - User clicked "Center on me" button
+  - Properties: user_lat, user_lng
 - `map_cluster_clicked` - User clicked a marker cluster
-  - Properties: cluster_size
+  - Properties: cluster_size, user_lat, user_lng
 - `map_user_location_enabled` - GPS permission status (filtered from analytics)
   - Properties: granted (boolean), accuracy (if granted), error_code (if denied)
   - **Note:** This event is excluded from Event Breakdown, Recent Activity, and Engagement metrics to prevent skewing numbers

@@ -1,0 +1,178 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import L from 'leaflet';
+import 'leaflet.heat';
+import { RefreshCw, Users, Loader2 } from 'lucide-react';
+import { env } from '~/env';
+
+interface HeatmapLocation {
+  lat: number;
+  lng: number;
+  last_seen: string;
+}
+
+interface HeatmapData {
+  locations: HeatmapLocation[];
+  count: number;
+  time_window_minutes: number;
+  neighborhood: string;
+  last_updated: string;
+}
+
+export function UserLocationHeatmap() {
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const mapInstance = useRef<L.Map | null>(null);
+  const heatLayer = useRef<any>(null);
+
+  const [data, setData] = useState<HeatmapData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch heatmap data
+  const fetchHeatmapData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/analytics/user-heatmap');
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result: HeatmapData = await response.json();
+      setData(result);
+    } catch (err) {
+      console.error('Error fetching heatmap data:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load heatmap data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initialize map
+  useEffect(() => {
+    if (mapInstance.current || !mapContainer.current) return;
+
+    const map = L.map(mapContainer.current, {
+      center: [env.NEXT_PUBLIC_DEFAULT_LAT, env.NEXT_PUBLIC_DEFAULT_LNG],
+      zoom: env.NEXT_PUBLIC_DEFAULT_ZOOM,
+      zoomControl: true,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    mapInstance.current = map;
+
+    return () => {
+      if (mapInstance.current) {
+        mapInstance.current.remove();
+        mapInstance.current = null;
+      }
+    };
+  }, []);
+
+  // Update heatmap layer when data changes
+  useEffect(() => {
+    if (!mapInstance.current || !data) return;
+
+    // Remove existing heat layer
+    if (heatLayer.current) {
+      mapInstance.current.removeLayer(heatLayer.current);
+      heatLayer.current = null;
+    }
+
+    // Create new heat layer if we have locations
+    if (data.locations.length > 0) {
+      // Convert to leaflet.heat format: [lat, lng, intensity]
+      const heatData = data.locations.map((loc) => [loc.lat, loc.lng, 1.0]);
+
+      // Create heatmap layer with Halloween-themed gradient
+      heatLayer.current = (L as any).heatLayer(heatData, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17,
+        gradient: {
+          0.0: '#6366f1',  // Primary (indigo)
+          0.5: '#ec4899',  // Secondary (pink)
+          1.0: '#f59e0b',  // Warning (orange)
+        },
+      }).addTo(mapInstance.current);
+
+      // Fit bounds to show all user locations
+      const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
+      mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+    }
+  }, [data]);
+
+  // Initial data fetch
+  useEffect(() => {
+    void fetchHeatmapData();
+  }, []);
+
+  return (
+    <div className="relative h-full w-full bg-surface rounded-lg overflow-hidden border border-gray-700">
+      {/* Map container */}
+      <div ref={mapContainer} className="absolute inset-0" />
+
+      {/* Loading overlay */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background/90 z-[1000]">
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-sm text-text-secondary">Loading heatmap...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Error message */}
+      {error && !loading && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-error text-white px-4 py-2 rounded-lg shadow-lg z-[1000] max-w-md">
+          <p className="text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* Stats and refresh control */}
+      {!loading && data && (
+        <div className="absolute top-4 left-4 right-4 z-[1000]">
+          <div className="bg-surface px-4 py-3 rounded-lg shadow-md border border-gray-700">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Users className="h-5 w-5 text-primary" />
+                <div>
+                  <p className="text-sm font-medium text-text-primary">
+                    {data.count} Active {data.count === 1 ? 'User' : 'Users'}
+                  </p>
+                  <p className="text-xs text-text-secondary">
+                    Last {data.time_window_minutes} minutes
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => void fetchHeatmapData()}
+                className="flex items-center gap-2 px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                disabled={loading}
+              >
+                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                Refresh
+              </button>
+            </div>
+
+            {data.count === 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-700">
+                <p className="text-sm text-text-secondary">
+                  No active users with GPS enabled in the last {data.time_window_minutes} minutes.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

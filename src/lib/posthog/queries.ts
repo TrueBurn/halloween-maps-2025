@@ -290,3 +290,29 @@ export function getEngagementMetricsQuery() {
     `,
   };
 }
+
+/**
+ * Get recent user locations for heatmap (last N minutes)
+ * Returns unique user locations with coordinates
+ * Groups by person_id to show one location per user (most recent)
+ */
+export function getRecentUserLocationsQuery(minutes: number = 5) {
+  return {
+    kind: 'HogQLQuery',
+    query: `
+      SELECT
+        person_id,
+        argMax(properties.user_lat, timestamp) as lat,
+        argMax(properties.user_lng, timestamp) as lng,
+        max(timestamp) as last_seen
+      FROM events
+      WHERE timestamp >= now() - INTERVAL ${minutes} MINUTE
+        AND properties.neighborhood = '${neighborhoodName}'
+        AND properties.user_lat IS NOT NULL
+        AND properties.user_lng IS NOT NULL
+      GROUP BY person_id
+      HAVING lat IS NOT NULL AND lng IS NOT NULL
+      ORDER BY last_seen DESC
+    `,
+  };
+}

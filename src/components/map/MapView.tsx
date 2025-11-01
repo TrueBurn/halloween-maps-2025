@@ -29,7 +29,10 @@ export function MapView() {
   // Center map on user location
   const centerOnUser = () => {
     if (mapInstance.current && userLocation) {
-      posthog?.capture('map_center_on_user');
+      posthog?.capture('map_center_on_user', {
+        user_lat: userLocation.latitude,
+        user_lng: userLocation.longitude,
+      });
       mapInstance.current.setView([userLocation.latitude, userLocation.longitude], 17, {
         animate: true,
         duration: 0.5,
@@ -165,6 +168,8 @@ export function MapView() {
       const childCount = cluster.getChildCount();
       posthog?.capture('map_cluster_clicked', {
         cluster_size: childCount,
+        user_lat: userLocation?.latitude,
+        user_lng: userLocation?.longitude,
       });
     });
 
@@ -201,6 +206,8 @@ export function MapView() {
           has_candy: location.has_candy,
           is_start: location.is_start,
           address: location.address,
+          user_lat: userLocation?.latitude,
+          user_lng: userLocation?.longitude,
         });
 
         const distance = userLocation
