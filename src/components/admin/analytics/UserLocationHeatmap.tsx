@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet.heat';
-import { RefreshCw, Users, Loader2 } from 'lucide-react';
+import { RefreshCw, Users, Loader2, Clock } from 'lucide-react';
 import { env } from '~/env';
 
 interface HeatmapLocation {
@@ -20,6 +20,15 @@ interface HeatmapData {
   last_updated: string;
 }
 
+const PRESET_TIME_RANGES = [
+  { label: '5 minutes', value: 5 },
+  { label: '15 minutes', value: 15 },
+  { label: '30 minutes', value: 30 },
+  { label: '1 hour', value: 60 },
+  { label: '24 hours', value: 1440 },
+  { label: 'Custom...', value: -1 },
+] as const;
+
 export function UserLocationHeatmap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<L.Map | null>(null);
@@ -28,6 +37,9 @@ export function UserLocationHeatmap() {
   const [data, setData] = useState<HeatmapData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedMinutes, setSelectedMinutes] = useState<number>(5);
+  const [showCustomInput, setShowCustomInput] = useState(false);
+  const [customMinutes, setCustomMinutes] = useState<string>('30');
 
   // Fetch heatmap data
   const fetchHeatmapData = async () => {
@@ -35,7 +47,8 @@ export function UserLocationHeatmap() {
     setError(null);
 
     try {
-      const response = await fetch('/api/analytics/user-heatmap');
+      const url = `/api/analytics/user-heatmap?minutes=${selectedMinutes}`;
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -48,6 +61,31 @@ export function UserLocationHeatmap() {
       setError(err instanceof Error ? err.message : 'Failed to load heatmap data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Handle time range selection
+  const handleTimeRangeChange = (value: number) => {
+    if (value === -1) {
+      // Custom option selected
+      setShowCustomInput(true);
+      const custom = parseInt(customMinutes, 10);
+      if (!isNaN(custom) && custom >= 1 && custom <= 1440) {
+        setSelectedMinutes(custom);
+      }
+    } else {
+      // Preset option selected
+      setShowCustomInput(false);
+      setSelectedMinutes(value);
+    }
+  };
+
+  // Handle custom minutes input
+  const handleCustomMinutesChange = (value: string) => {
+    setCustomMinutes(value);
+    const parsed = parseInt(value, 10);
+    if (!isNaN(parsed) && parsed >= 1 && parsed <= 1440) {
+      setSelectedMinutes(parsed);
     }
   };
 
@@ -209,7 +247,7 @@ export function UserLocationHeatmap() {
                     {data.count} Active {data.count === 1 ? 'User' : 'Users'}
                   </p>
                   <p className="text-xs text-text-secondary">
-                    Last {data.time_window_minutes} minutes
+                    Last {data.time_window_minutes} {data.time_window_minutes === 1 ? 'minute' : 'minutes'}
                   </p>
                 </div>
               </div>
@@ -224,10 +262,52 @@ export function UserLocationHeatmap() {
               </button>
             </div>
 
+            {/* Time Range Selector */}
+            <div className="mt-3 pt-3 border-t border-gray-700">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-text-secondary" />
+                  <label htmlFor="time-range" className="text-sm font-medium text-text-secondary">
+                    Time Range:
+                  </label>
+                </div>
+                <div className="flex flex-col gap-2 flex-1">
+                  <select
+                    id="time-range"
+                    value={showCustomInput ? -1 : selectedMinutes}
+                    onChange={(e) => handleTimeRangeChange(parseInt(e.target.value, 10))}
+                    className="px-3 py-2 bg-background border border-gray-700 rounded-lg text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    {PRESET_TIME_RANGES.map((range) => (
+                      <option key={range.value} value={range.value}>
+                        {range.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  {/* Custom input field */}
+                  {showCustomInput && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        min="1"
+                        max="1440"
+                        value={customMinutes}
+                        onChange={(e) => handleCustomMinutesChange(e.target.value)}
+                        placeholder="Enter minutes (1-1440)"
+                        className="flex-1 px-3 py-2 bg-background border border-gray-700 rounded-lg text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <span className="text-xs text-text-secondary">minutes</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {data.count === 0 && (
               <div className="mt-3 pt-3 border-t border-gray-700">
                 <p className="text-sm text-text-secondary">
-                  No active users with GPS enabled in the last {data.time_window_minutes} minutes.
+                  No active users with GPS enabled in the last {data.time_window_minutes} {data.time_window_minutes === 1 ? 'minute' : 'minutes'}.
                 </p>
                 <p className="text-xs text-text-secondary mt-2">
                   Users must open the map with location permissions enabled for their location to appear here.

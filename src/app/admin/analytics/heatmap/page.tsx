@@ -76,7 +76,7 @@ export default function HeatmapPage() {
             <h1 className="text-2xl font-bold">User Location Heatmap</h1>
           </div>
           <p className="text-sm text-text-secondary mt-2">
-            Real-time visualization of active users with GPS enabled (last 5 minutes)
+            Real-time visualization of active users with GPS enabled
           </p>
         </div>
       </header>

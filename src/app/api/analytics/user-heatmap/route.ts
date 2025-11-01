@@ -7,11 +7,14 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/analytics/user-heatmap
- * Get recent user locations for heatmap visualization (last 5 minutes)
+ * Get recent user locations for heatmap visualization
  * Returns anonymized coordinate clusters for admin-only heatmap
  * Requires authentication
+ *
+ * Query Parameters:
+ * - minutes: Number of minutes to look back (default: 5, max: 1440)
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
     // Check authentication
     const supabase = await createClient();
@@ -23,8 +26,24 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Query PostHog for recent user locations (last 5 minutes)
-    const result = await queryPostHog(getRecentUserLocationsQuery(5));
+    // Parse and validate time window parameter
+    const { searchParams } = new URL(request.url);
+    const minutesParam = searchParams.get('minutes');
+    let minutes = 5; // Default to 5 minutes
+
+    if (minutesParam) {
+      const parsed = parseInt(minutesParam, 10);
+      if (isNaN(parsed) || parsed < 1 || parsed > 1440) {
+        return NextResponse.json(
+          { error: 'Invalid minutes parameter. Must be between 1 and 1440.' },
+          { status: 400 }
+        );
+      }
+      minutes = parsed;
+    }
+
+    // Query PostHog for recent user locations
+    const result = await queryPostHog(getRecentUserLocationsQuery(minutes));
 
     // Debug logging
     console.log('[Heatmap API] PostHog result:', {
@@ -58,7 +77,7 @@ export async function GET() {
     return NextResponse.json({
       locations,
       count: locations.length,
-      time_window_minutes: 5,
+      time_window_minutes: minutes,
       neighborhood: process.env.NEXT_PUBLIC_NEIGHBORHOOD_NAME,
       last_updated: new Date().toISOString(),
     });
