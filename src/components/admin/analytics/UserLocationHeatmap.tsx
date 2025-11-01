@@ -26,7 +26,7 @@ export function UserLocationHeatmap() {
   const heatLayer = useRef<any>(null);
 
   const [data, setData] = useState<HeatmapData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch heatmap data
