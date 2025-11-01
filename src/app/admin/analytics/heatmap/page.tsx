@@ -2,11 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ChevronLeft, Loader2 } from 'lucide-react';
 import { createClient } from '~/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
-import { UserLocationHeatmap } from '~/components/admin/analytics/UserLocationHeatmap';
+
+const UserLocationHeatmap = dynamic(
+  () => import('~/components/admin/analytics/UserLocationHeatmap').then((mod) => ({ default: mod.UserLocationHeatmap })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full w-full items-center justify-center bg-surface rounded-lg border border-gray-700">
+        <div className="text-text-secondary">Loading heatmap...</div>
+      </div>
+    ),
+  }
+);
 
 export default function HeatmapPage() {
   const [user, setUser] = useState<User | null>(null);
