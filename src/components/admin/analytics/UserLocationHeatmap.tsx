@@ -68,6 +68,13 @@ export function UserLocationHeatmap() {
 
     mapInstance.current = map;
 
+    // Force invalidate size after a short delay to ensure container has dimensions
+    setTimeout(() => {
+      if (mapInstance.current) {
+        mapInstance.current.invalidateSize();
+      }
+    }, 100);
+
     return () => {
       if (mapInstance.current) {
         mapInstance.current.remove();
@@ -125,22 +132,28 @@ export function UserLocationHeatmap() {
         });
 
         console.log('[Heatmap] Heat layer created, adding to map...');
-        // Add to map - use whenReady to ensure map is fully initialized
+        // Add to map after ensuring map has proper dimensions
         if (heatLayer.current && mapInstance.current) {
-          mapInstance.current.whenReady(() => {
+          // Single timeout to ensure map container is fully rendered
+          setTimeout(() => {
             if (heatLayer.current && mapInstance.current) {
-              // Invalidate size to ensure proper dimensions
-              mapInstance.current.invalidateSize();
+              try {
+                // Ensure map has proper size
+                mapInstance.current.invalidateSize();
 
-              // Add heat layer
-              heatLayer.current.addTo(mapInstance.current);
-              console.log('[Heatmap] Heat layer added successfully');
+                console.log('[Heatmap] Adding heat layer to map...');
+                // Add heat layer
+                heatLayer.current.addTo(mapInstance.current);
+                console.log('[Heatmap] Heat layer added successfully');
 
-              // Fit bounds to show all user locations
-              const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
-              mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+                // Fit bounds to show all user locations
+                const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
+                mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+              } catch (err) {
+                console.error('[Heatmap] Error adding heat layer:', err);
+              }
             }
-          });
+          }, 200);
         }
       } catch (error) {
         console.error('[Heatmap] Error creating heat layer:', error);
@@ -156,10 +169,11 @@ export function UserLocationHeatmap() {
     }
   }, [data]);
 
-  // Initial data fetch
-  useEffect(() => {
-    void fetchHeatmapData();
-  }, []);
+  // Don't auto-fetch on mount - let user click refresh
+  // This allows the empty state to show
+  // useEffect(() => {
+  //   void fetchHeatmapData();
+  // }, []);
 
   return (
     <div className="relative h-full w-full bg-surface rounded-lg overflow-hidden border border-gray-700">
