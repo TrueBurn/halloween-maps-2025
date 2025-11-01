@@ -125,14 +125,22 @@ export function UserLocationHeatmap() {
         });
 
         console.log('[Heatmap] Heat layer created, adding to map...');
-        // Add to map
+        // Add to map - use whenReady to ensure map is fully initialized
         if (heatLayer.current && mapInstance.current) {
-          heatLayer.current.addTo(mapInstance.current);
-          console.log('[Heatmap] Heat layer added successfully');
+          mapInstance.current.whenReady(() => {
+            if (heatLayer.current && mapInstance.current) {
+              // Invalidate size to ensure proper dimensions
+              mapInstance.current.invalidateSize();
 
-          // Fit bounds to show all user locations
-          const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
-          mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+              // Add heat layer
+              heatLayer.current.addTo(mapInstance.current);
+              console.log('[Heatmap] Heat layer added successfully');
+
+              // Fit bounds to show all user locations
+              const bounds = L.latLngBounds(data.locations.map((loc) => [loc.lat, loc.lng]));
+              mapInstance.current.fitBounds(bounds, { padding: [50, 50] });
+            }
+          });
         }
       } catch (error) {
         console.error('[Heatmap] Error creating heat layer:', error);
@@ -207,8 +215,30 @@ export function UserLocationHeatmap() {
                 <p className="text-sm text-text-secondary">
                   No active users with GPS enabled in the last {data.time_window_minutes} minutes.
                 </p>
+                <p className="text-xs text-text-secondary mt-2">
+                  Users must open the map with location permissions enabled for their location to appear here.
+                </p>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* No data state - show when not loading and no data fetched yet */}
+      {!loading && !data && (
+        <div className="absolute inset-0 flex items-center justify-center z-[1000] bg-background/50">
+          <div className="bg-surface px-6 py-4 rounded-lg shadow-md border border-gray-700 max-w-md text-center">
+            <Users className="h-12 w-12 text-text-secondary mx-auto mb-3" />
+            <p className="text-sm text-text-secondary mb-4">
+              Click refresh to load user location data
+            </p>
+            <button
+              onClick={() => void fetchHeatmapData()}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium mx-auto"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Load Heatmap Data
+            </button>
           </div>
         </div>
       )}
