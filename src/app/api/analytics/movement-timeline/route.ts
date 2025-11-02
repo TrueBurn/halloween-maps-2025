@@ -123,17 +123,17 @@ export async function GET(request: Request) {
     const allUsers = new Set<string>();
     let peakUserCount = 0;
     let peakTimeBucket = '';
-    let minTimestamp: Date | null = null;
-    let maxTimestamp: Date | null = null;
+    let minTimestamp: string | null = null;
+    let maxTimestamp: string | null = null;
 
     // Track actual min/max timestamps from raw results
     (result.results ?? []).forEach((row: any[]) => {
-      const timestamp = new Date(row[0] as string); // time_bucket is first column
-      if (!minTimestamp || timestamp < minTimestamp) {
-        minTimestamp = timestamp;
+      const timeBucket = row[0] as string; // time_bucket is first column (ISO string)
+      if (!minTimestamp || timeBucket < minTimestamp) {
+        minTimestamp = timeBucket;
       }
-      if (!maxTimestamp || timestamp > maxTimestamp) {
-        maxTimestamp = timestamp;
+      if (!maxTimestamp || timeBucket > maxTimestamp) {
+        maxTimestamp = timeBucket;
       }
     });
 
@@ -150,8 +150,8 @@ export async function GET(request: Request) {
       total_intervals: timeline.length,
       peak_user_count: peakUserCount,
       peak_time: peakTimeBucket,
-      event_start: minTimestamp?.toISOString() ?? null,
-      event_end: maxTimestamp?.toISOString() ?? null,
+      event_start: minTimestamp,
+      event_end: maxTimestamp,
       date: dateParam,
       neighborhood: neighborhoodName,
     };
