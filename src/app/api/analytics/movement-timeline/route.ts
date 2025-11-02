@@ -50,7 +50,7 @@ export async function GET(request: Request) {
           toFloat(properties.user_lng) as lng,
           person_id
         FROM events
-        WHERE date(timestamp) = '${dateParam}'
+        WHERE toDate(timestamp) = toDate('${dateParam}')
           AND properties.neighborhood = '${neighborhoodName}'
           AND properties.user_lat IS NOT NULL
           AND properties.user_lng IS NOT NULL
