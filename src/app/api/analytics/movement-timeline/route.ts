@@ -41,6 +41,11 @@ export async function GET(request: Request) {
     }
 
     // Query PostHog for user locations grouped by 5-minute intervals
+    // Use a broader time range to account for timezone differences
+    // Query from 6 hours before to 6 hours after the event date in UTC
+    const startDate = `${dateParam} 00:00:00`;
+    const endDate = `${dateParam} 23:59:59`;
+
     const query = {
       kind: 'HogQLQuery',
       query: `
@@ -50,7 +55,8 @@ export async function GET(request: Request) {
           toFloat(properties.user_lng) as lng,
           person_id
         FROM events
-        WHERE toDate(timestamp) = toDate('${dateParam}')
+        WHERE timestamp >= toDateTime('${startDate}') - INTERVAL 6 HOUR
+          AND timestamp <= toDateTime('${endDate}') + INTERVAL 6 HOUR
           AND properties.neighborhood = '${neighborhoodName}'
           AND properties.user_lat IS NOT NULL
           AND properties.user_lng IS NOT NULL
@@ -69,6 +75,8 @@ export async function GET(request: Request) {
       hasResults: !!result.results,
       resultCount: result.results?.length ?? 0,
       firstRow: result.results?.[0],
+      lastRow: result.results?.[result.results?.length - 1],
+      sampleRows: result.results?.slice(0, 5),
     });
 
     // Transform results into timeline format
@@ -155,6 +163,15 @@ export async function GET(request: Request) {
       date: dateParam,
       neighborhood: neighborhoodName,
     };
+
+    console.log('[Movement Timeline API] Summary calculated:', {
+      totalIntervals: timeline.length,
+      uniqueUsers: allUsers.size,
+      minTimestamp,
+      maxTimestamp,
+      peakTime: peakTimeBucket,
+      peakCount: peakUserCount,
+    });
 
     return NextResponse.json({
       timeline,
