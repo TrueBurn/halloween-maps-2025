@@ -119,78 +119,86 @@ export default function MovementTimelinePage() {
 
   return (
     <div className="h-screen bg-background text-text-primary flex flex-col">
-      {/* Header */}
-      <header className="bg-surface border-b border-gray-700 px-6 py-4 flex-shrink-0">
+      {/* Header - compact */}
+      <header className="bg-surface border-b border-gray-700 px-6 py-2 flex-shrink-0">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/admin/analytics"
-              className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors"
-            >
-              <ChevronLeft className="h-5 w-5" />
-              <span className="text-sm font-medium">Back to Analytics</span>
-            </Link>
-            <div className="h-6 w-px bg-gray-700" />
-            <h1 className="text-2xl font-bold">Movement Timeline</h1>
-            {data && (
-              <span className="text-sm text-text-secondary">
-                Halloween {data.summary.date}
-              </span>
-            )}
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <Link
+                href="/admin/analytics"
+                className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors"
+              >
+                <ChevronLeft className="h-5 w-5" />
+                <span className="text-sm font-medium">Back to Analytics</span>
+              </Link>
+              <div className="h-6 w-px bg-gray-700" />
+              <h1 className="text-xl font-bold">Movement Timeline</h1>
+              {data && (
+                <span className="text-sm text-text-secondary">
+                  Halloween {data.summary.date}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-text-secondary hidden sm:block">
+              Animated replay of user movement patterns during the event
+            </p>
           </div>
-          <p className="text-sm text-text-secondary mt-2">
-            Animated replay of user movement patterns during the event
-          </p>
         </div>
       </header>
 
-      {/* Summary Stats */}
+      {/* Summary Stats - compact */}
       {data && !error && (
-        <div className="bg-background px-6 py-4 border-b border-gray-700 flex-shrink-0">
+        <div className="bg-background px-6 py-2 border-b border-gray-700 flex-shrink-0">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {/* Total Users */}
-              <div className="bg-surface px-4 py-3 rounded-lg border border-gray-700">
-                <div className="flex items-center gap-2 mb-1">
+              <div className="bg-surface px-3 py-2 rounded-lg border border-gray-700">
+                <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-primary" />
-                  <p className="text-xs text-text-secondary">Total Users</p>
+                  <div>
+                    <p className="text-xs text-text-secondary">Total Users</p>
+                    <p className="text-lg font-bold text-text-primary">{data.summary.total_unique_users}</p>
+                  </div>
                 </div>
-                <p className="text-xl font-bold text-text-primary">{data.summary.total_unique_users}</p>
               </div>
 
               {/* Total Intervals */}
-              <div className="bg-surface px-4 py-3 rounded-lg border border-gray-700">
-                <div className="flex items-center gap-2 mb-1">
+              <div className="bg-surface px-3 py-2 rounded-lg border border-gray-700">
+                <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-secondary" />
-                  <p className="text-xs text-text-secondary">Time Intervals</p>
+                  <div>
+                    <p className="text-xs text-text-secondary">Time Intervals</p>
+                    <p className="text-lg font-bold text-text-primary">{data.summary.total_intervals}</p>
+                  </div>
                 </div>
-                <p className="text-xl font-bold text-text-primary">{data.summary.total_intervals}</p>
-                <p className="text-xs text-text-secondary">5-min periods</p>
               </div>
 
               {/* Peak Activity */}
-              <div className="bg-surface px-4 py-3 rounded-lg border border-gray-700">
-                <div className="flex items-center gap-2 mb-1">
+              <div className="bg-surface px-3 py-2 rounded-lg border border-gray-700">
+                <div className="flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-warning" />
-                  <p className="text-xs text-text-secondary">Peak Activity</p>
+                  <div>
+                    <p className="text-xs text-text-secondary">Peak Activity</p>
+                    <p className="text-lg font-bold text-text-primary">
+                      {data.summary.peak_user_count} @ {data.summary.peak_time ? formatTime(data.summary.peak_time) : 'N/A'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xl font-bold text-text-primary">{data.summary.peak_user_count}</p>
-                <p className="text-xs text-text-secondary">
-                  {data.summary.peak_time ? formatTime(data.summary.peak_time) : 'N/A'}
-                </p>
               </div>
 
               {/* Event Duration */}
-              <div className="bg-surface px-4 py-3 rounded-lg border border-gray-700">
-                <div className="flex items-center gap-2 mb-1">
+              <div className="bg-surface px-3 py-2 rounded-lg border border-gray-700">
+                <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-success" />
-                  <p className="text-xs text-text-secondary">Event Duration</p>
+                  <div>
+                    <p className="text-xs text-text-secondary">Event Duration</p>
+                    <p className="text-sm font-bold text-text-primary">
+                      {data.summary.event_start && data.summary.event_end
+                        ? `${formatTime(data.summary.event_start)} - ${formatTime(data.summary.event_end)}`
+                        : 'N/A'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xl font-bold text-text-primary">
-                  {data.summary.event_start && data.summary.event_end
-                    ? `${formatTime(data.summary.event_start)} - ${formatTime(data.summary.event_end)}`
-                    : 'N/A'}
-                </p>
               </div>
             </div>
           </div>

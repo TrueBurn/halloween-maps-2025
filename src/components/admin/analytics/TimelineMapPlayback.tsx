@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet.heat';
-import { Play, Pause, SkipBack, SkipForward, Loader2 } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Loader2, Lock, Unlock } from 'lucide-react';
 import { env } from '~/env';
 
 interface TimelineLocation {
@@ -54,6 +54,7 @@ export function TimelineMapPlayback({ data }: TimelineMapPlaybackProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1); // Index into PLAYBACK_SPEEDS
+  const [lockView, setLockView] = useState(false); // Lock map view to prevent auto-fitting
 
   const currentInterval = data.timeline[currentIndex];
   const totalIntervals = data.timeline.length;
@@ -131,8 +132,11 @@ export function TimelineMapPlayback({ data }: TimelineMapPlaybackProps) {
               heatLayer.current.addTo(mapInstance.current);
 
               // Fit bounds to show all locations in current interval
-              const bounds = L.latLngBounds(currentInterval.locations.map((loc) => [loc.lat, loc.lng]));
-              mapInstance.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+              // Only auto-fit bounds if view is not locked
+              if (!lockView) {
+                const bounds = L.latLngBounds(currentInterval.locations.map((loc) => [loc.lat, loc.lng]));
+                mapInstance.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+              }
             } catch (err) {
               console.error('[Timeline] Error adding heat layer:', err);
             }
@@ -150,7 +154,7 @@ export function TimelineMapPlayback({ data }: TimelineMapPlaybackProps) {
         );
       }
     }
-  }, [currentIndex, currentInterval]);
+  }, [currentIndex, currentInterval, lockView]);
 
   // Animation playback
   useEffect(() => {
@@ -234,26 +238,24 @@ export function TimelineMapPlayback({ data }: TimelineMapPlaybackProps) {
       {/* Map container */}
       <div ref={mapContainer} className="absolute inset-0" />
 
-      {/* Playback controls overlay */}
-      <div className="absolute bottom-4 left-4 right-4 z-[1000]">
-        <div className="bg-surface px-4 py-3 rounded-lg shadow-md border border-gray-700">
-          {/* Current interval info */}
-          <div className="flex items-center justify-between gap-4 mb-3">
-            <div>
+      {/* Playback controls overlay - compact design */}
+      <div className="absolute bottom-2 left-2 right-2 z-[1000]">
+        <div className="bg-surface/95 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg border border-gray-700">
+          {/* Current interval info - single line */}
+          <div className="flex items-center justify-between gap-4 mb-2">
+            <div className="flex items-center gap-4">
               <p className="text-sm font-medium text-text-primary">
                 👥 {currentInterval.user_count} Active {currentInterval.user_count === 1 ? 'User' : 'Users'}
               </p>
               <p className="text-xs text-text-secondary">{getTimeRange()}</p>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-text-secondary">
-                Interval {currentIndex + 1} / {totalIntervals}
-              </p>
-            </div>
+            <p className="text-xs text-text-secondary">
+              {currentIndex + 1} / {totalIntervals}
+            </p>
           </div>
 
           {/* Progress slider */}
-          <div className="mb-3">
+          <div className="mb-2">
             <input
               type="range"
               min="0"
@@ -310,6 +312,18 @@ export function TimelineMapPlayback({ data }: TimelineMapPlaybackProps) {
               title="Playback speed"
             >
               {PLAYBACK_SPEEDS[playbackSpeed]?.label ?? '1x'}
+            </button>
+
+            <button
+              onClick={() => setLockView(!lockView)}
+              className={`ml-2 p-2 rounded-lg transition-colors ${
+                lockView
+                  ? 'bg-primary text-white hover:bg-primary/90'
+                  : 'bg-gray-700 text-white hover:bg-gray-600'
+              }`}
+              title={lockView ? 'Unlock view (map will auto-fit each interval)' : 'Lock view (prevent map from jumping)'}
+            >
+              {lockView ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
             </button>
           </div>
         </div>

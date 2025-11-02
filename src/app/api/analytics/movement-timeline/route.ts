@@ -40,47 +40,55 @@ export async function GET(request: Request) {
       );
     }
 
-    // Query PostHog for user locations grouped by 5-minute intervals
-    // Use a broader time range to account for timezone differences
-    // Query from 6 hours before to 6 hours after the event date in UTC
-    const startDate = `${dateParam} 00:00:00`;
-    const endDate = `${dateParam} 23:59:59`;
+    // Calculate event time window in UTC
+    // IMPORTANT: PostHog stores all timestamps in UTC
+    // NEXT_PUBLIC_EVENT_START_TIME is in local time (GMT+2 for South Africa)
+    // We need to convert to UTC for the query
 
+    // For South Africa (GMT+2): 16:00 local = 14:00 UTC
+    // Subtract 2 hours to convert local time to UTC
+    const eventStartTimeLocal = process.env.NEXT_PUBLIC_EVENT_START_TIME ?? '16:00';
+    const timeParts = eventStartTimeLocal.split(':').map(Number);
+    const localHour = timeParts[0] ?? 16;
+    const localMinute = timeParts[1] ?? 0;
+
+    // Convert to UTC (South Africa is UTC+2)
+    const utcHour = localHour - 2; // Adjust for GMT+2 timezone
+    const eventStartUTC = `${dateParam} ${String(utcHour).padStart(2, '0')}:${String(localMinute).padStart(2, '0')}:00`;
+
+    // Query PostHog: Aggregate locations by time_bucket and person_id
+    // This gives us one average location per user per 5-minute interval
+    // Much more efficient than fetching every single event
     const query = {
       kind: 'HogQLQuery',
       query: `
         SELECT
           toStartOfInterval(timestamp, INTERVAL 5 MINUTE) as time_bucket,
-          toFloat(properties.user_lat) as lat,
-          toFloat(properties.user_lng) as lng,
-          person_id
+          person_id,
+          avg(toFloat(properties.user_lat)) as lat,
+          avg(toFloat(properties.user_lng)) as lng,
+          count() as event_count
         FROM events
-        WHERE timestamp >= toDateTime('${startDate}') - INTERVAL 6 HOUR
-          AND timestamp <= toDateTime('${endDate}') + INTERVAL 6 HOUR
+        WHERE timestamp >= toDateTime('${eventStartUTC}') - INTERVAL 30 MINUTE
+          AND timestamp <= toDateTime('${eventStartUTC}') + INTERVAL 4 HOUR
           AND properties.neighborhood = '${neighborhoodName}'
           AND properties.user_lat IS NOT NULL
           AND properties.user_lng IS NOT NULL
-          AND lat IS NOT NULL
+        GROUP BY time_bucket, person_id
+        HAVING lat IS NOT NULL
           AND lng IS NOT NULL
           AND lat >= -90 AND lat <= 90
           AND lng >= -180 AND lng <= 180
         ORDER BY time_bucket, person_id
+        LIMIT 10000
       `,
     };
 
     const result = await queryPostHog(query);
 
-    // Debug logging
-    console.log('[Movement Timeline API] PostHog result:', {
-      hasResults: !!result.results,
-      resultCount: result.results?.length ?? 0,
-      firstRow: result.results?.[0],
-      lastRow: result.results?.[result.results?.length - 1],
-      sampleRows: result.results?.slice(0, 5),
-    });
-
     // Transform results into timeline format
-    // Result format: [time_bucket, lat, lng, person_id]
+    // Result format: [time_bucket, person_id, lat, lng, event_count]
+    // Data is already aggregated per user per interval
     interface TimelineInterval {
       time_bucket: string;
       locations: Array<{ lat: number; lng: number }>;
@@ -93,9 +101,10 @@ export async function GET(request: Request) {
 
     (result.results ?? []).forEach((row: any[]) => {
       const timeBucket = row[0] as string;
-      const lat = parseFloat(row[1]);
-      const lng = parseFloat(row[2]);
-      const personId = row[3] as string;
+      const personId = row[1] as string;
+      const lat = parseFloat(row[2]);
+      const lng = parseFloat(row[3]);
+      // row[4] is event_count (number of events aggregated for this user in this bucket)
 
       // Validate coordinates
       if (isNaN(lat) || isNaN(lng)) return;
@@ -163,15 +172,6 @@ export async function GET(request: Request) {
       date: dateParam,
       neighborhood: neighborhoodName,
     };
-
-    console.log('[Movement Timeline API] Summary calculated:', {
-      totalIntervals: timeline.length,
-      uniqueUsers: allUsers.size,
-      minTimestamp,
-      maxTimestamp,
-      peakTime: peakTimeBucket,
-      peakCount: peakUserCount,
-    });
 
     return NextResponse.json({
       timeline,

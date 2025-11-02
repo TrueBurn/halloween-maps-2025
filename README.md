@@ -115,7 +115,8 @@ See [docs/PROGRESS.md](./docs/PROGRESS.md) for detailed setup and migration stat
 - ✅ **Marker clustering** (Halloween-themed with 🦇🕷️👻 emojis)
 - ✅ **Social media sharing** (WhatsApp-optimized preview images, Open Graph tags)
 - ✅ **PostHog analytics (optional)** - Separate analytics dashboard at `/admin/analytics` with 12 cards (live users, sessions, GPS permission, popular locations, user journey, engagement, filters, events, recent activity)
-- ✅ **Real-time user location heatmap** - Admin-only heatmap showing active users with GPS enabled (last 5 minutes, blurred heat density visualization, manual refresh)
+- ✅ **Real-time user location heatmap** - Admin-only heatmap showing active users with GPS enabled (configurable time range, blurred heat density visualization, manual refresh)
+- ✅ **Movement timeline playback** - Admin-only animated heatmap showing user movement patterns during Halloween event (5-minute intervals, play/pause controls, multiple playback speeds, map lock feature)
 - ✅ **First-visit info modal** - Auto-opens event info with localStorage tracking
 - ✅ **Map location counter** - Shows only candy-giving locations (filters out parking/refreshments)
 

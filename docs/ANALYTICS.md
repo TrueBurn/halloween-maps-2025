@@ -39,22 +39,51 @@ Located at `/admin/analytics/heatmap`, the heatmap provides a privacy-focused vi
 **Features:**
 - 🗺️ **Heat Density Visualization** - Blurred heatmap showing user concentration
 - 🎨 **Halloween-Themed Gradient** - Indigo → Pink → Orange color scheme
-- 🔒 **Privacy-First Design** - 5-minute time window, admin-only access, anonymized clusters
+- 🔒 **Privacy-First Design** - Configurable time window (5-1440 minutes), admin-only access, anonymized clusters
+- ⏱️ **Time Range Selector** - Preset options (5min, 15min, 30min, 1hr, 24hr) plus custom input
 - 🔄 **Manual Refresh** - Click to update (no auto-polling)
 - 📊 **Active User Count** - Shows number of users with GPS enabled
 - 🎯 **Auto-Fit Bounds** - Map automatically centers on user locations
 
 **Preview Card on Dashboard:**
-- Shows current active user count
+- Shows current active user count (last 5 minutes)
 - Links to full-screen heatmap
 - Refreshes with dashboard
 
 **Technical Details:**
 - Uses `leaflet.heat` plugin for smooth visualization
-- Queries PostHog for user coordinates from last 5 minutes
+- Queries PostHog for user coordinates from configurable time window
 - Groups by person_id to show one location per user (most recent)
 - Radius: 25px, Blur: 15px, Max zoom: 17
-- API endpoint: `/api/analytics/user-heatmap`
+- API endpoint: `/api/analytics/user-heatmap?minutes=<1-1440>`
+
+### Movement Timeline Playback (Admin Only)
+
+Located at `/admin/analytics/movement-timeline`, the timeline provides an animated visualization of user movement patterns during the Halloween event:
+
+**Features:**
+- 🎬 **Animated Playback** - Watch user clusters move in 5-minute intervals
+- ⏯️ **Full Playback Controls** - Play/pause, previous/next, speed adjustment (0.5x, 1x, 2x, 4x)
+- 🔒 **Map Lock Toggle** - Prevent view jumping when users move far away
+- 📊 **Summary Statistics** - Total users, time intervals, peak activity time, event duration
+- 🎨 **Halloween-Themed Heatmap** - Indigo → Pink → Orange gradient
+- 🗓️ **Date Selection** - Analyze specific dates (defaults to event date)
+- 📏 **Compact UI** - Maximizes map viewing area with semi-transparent controls
+
+**Preview Card on Dashboard:**
+- Shows quick stats when data is available
+- Links to full-screen timeline playback
+- Event-specific (only shows data for event date)
+
+**Technical Details:**
+- Uses `leaflet.heat` plugin for smooth visualization
+- Queries PostHog for movement data during event window (30min before to 4hr after event start)
+- Groups by person_id and 5-minute time buckets for efficient aggregation
+- Database-level aggregation with LIMIT 10000 for performance
+- Timezone-aware: converts local event time (GMT+2) to UTC for accurate PostHog queries
+- API endpoint: `/api/analytics/movement-timeline?date=YYYY-MM-DD`
+- Slider control for scrubbing through timeline
+- Auto-stops at end of timeline
 
 ---
 

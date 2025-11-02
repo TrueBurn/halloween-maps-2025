@@ -223,11 +223,32 @@
   - Top 10 most-clicked locations with view counts
   - Collapsible dashboard with dark Halloween theme
   - **Built-in diagnostics tool** for troubleshooting PostHog configuration
+- ✅ **Real-Time User Location Heatmap**
+  - Admin-only full-screen heatmap at `/admin/analytics/heatmap`
+  - Blurred heat density visualization with Halloween gradient (indigo → pink → orange)
+  - **Configurable time range**: Preset options (5min, 15min, 30min, 1hr, 24hr) + custom input
+  - Privacy-focused: admin-only, anonymized clusters
+  - Manual refresh (no auto-polling)
+  - Preview card on analytics dashboard
+  - Uses leaflet.heat plugin
+  - API: `/api/analytics/user-heatmap?minutes=<1-1440>`
+- ✅ **Movement Timeline Playback**
+  - Admin-only animated timeline at `/admin/analytics/movement-timeline`
+  - Visualizes user movement patterns during Halloween event (5-minute intervals)
+  - **Full playback controls**: play/pause, previous/next, speed adjustment (0.5x-4x)
+  - **Map lock toggle**: prevents view jumping when users move far away
+  - **Summary statistics**: total users, time intervals, peak activity time, event duration
+  - Compact UI design maximizes map viewing area
+  - Timezone-aware queries (converts GMT+2 local time to UTC)
+  - Database-level aggregation for efficiency (LIMIT 10000)
+  - Preview card on analytics dashboard showing quick stats
+  - API: `/api/analytics/movement-timeline?date=YYYY-MM-DD`
 - ✅ **Automatic Event Tracking**
   - Map interactions (marker clicks, directions, GPS, clusters)
   - Location list (filters, sorting, card clicks)
   - Admin actions (CRUD operations, bulk actions, exports)
   - GPS permission status tracking
+  - User coordinates added to all map events (for heatmap/timeline)
 - ✅ **Multi-Neighborhood Support**
   - Single PostHog project for both neighborhoods
   - Automatic neighborhood property on all events
@@ -237,14 +258,20 @@
   - `/api/analytics/live` - Active users
   - `/api/analytics/today` - Daily statistics
   - `/api/analytics/popular-locations` - Top clicked locations
+  - `/api/analytics/user-heatmap` - Real-time user locations
+  - `/api/analytics/movement-timeline` - Historical movement data
   - All routes require admin authentication
-  - 30-second response caching
+  - 30-60 second response caching
 - ✅ **Components Created**
   - `AnalyticsDashboard` - Main container with collapse
   - `DiagnosticsPanel` - Configuration troubleshooting tool
   - `LiveUsersCard` - Real-time active users widget
   - `StatsGrid` - Daily metrics cards
   - `PopularLocations` - Top 10 locations list
+  - `UserLocationHeatmap` - Full-screen heatmap component
+  - `UserHeatmapPreviewCard` - Heatmap preview card
+  - `TimelineMapPlayback` - Animated timeline playback component
+  - `MovementTimelineCard` - Movement timeline preview card
   - HogQL query helpers with neighborhood filtering
 - ✅ **Documentation**
   - `docs/ANALYTICS.md` - Comprehensive analytics guide
