@@ -14,6 +14,7 @@ import { FilterUsageCard } from './FilterUsageCard';
 import { EventBreakdownCard } from './EventBreakdownCard';
 import { RecentActivityFeed } from './RecentActivityFeed';
 import { UserHeatmapPreviewCard } from './UserHeatmapPreviewCard';
+import { MovementTimelineCard } from './MovementTimelineCard';
 
 export function AnalyticsDashboard() {
   const [showDiagnostics, setShowDiagnostics] = useState(false);
@@ -84,6 +85,9 @@ export function AnalyticsDashboard() {
 
       {/* User Location Heatmap Preview */}
       <UserHeatmapPreviewCard key={`heatmap-${refreshKey}`} />
+
+      {/* Movement Timeline */}
+      <MovementTimelineCard />
 
       {/* User Journey & Engagement */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
