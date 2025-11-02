@@ -46,8 +46,8 @@ export async function GET(request: Request) {
       query: `
         SELECT
           toStartOfInterval(timestamp, INTERVAL 5 MINUTE) as time_bucket,
-          toFloat64(properties.user_lat) as lat,
-          toFloat64(properties.user_lng) as lng,
+          toFloat(properties.user_lat) as lat,
+          toFloat(properties.user_lng) as lng,
           person_id
         FROM events
         WHERE date(timestamp) = '${dateParam}'
