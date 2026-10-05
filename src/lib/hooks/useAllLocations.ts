@@ -56,7 +56,7 @@ export function useAllLocations() {
 
     // Subscribe to real-time changes
     const channel = supabase
-      .channel('admin-locations-changes')
+      .channel(`admin-locations-changes-${crypto.randomUUID()}`) // unique per instance: same-named channels are shared and throw on .on() after subscribe
       .on(
         'postgres_changes',
         {
