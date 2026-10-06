@@ -7,6 +7,14 @@ import type { Tables } from '~/types/database.types';
 
 type Location = Tables<'locations'>;
 
+const statusFilters = {
+  all: { label: 'All statuses', test: () => true },
+  participating: { label: 'Participating', test: (l: Location) => l.is_participating },
+  notParticipating: { label: 'Not participating', test: (l: Location) => !l.is_participating },
+  activity: { label: 'Activity', test: (l: Location) => l.has_activity },
+  noCandy: { label: 'No candy', test: (l: Location) => !l.has_candy },
+};
+
 interface LocationTableProps {
   onEdit: (location: Location) => void;
   onDelete: (location: Location) => void;
@@ -16,9 +24,15 @@ interface LocationTableProps {
 export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps) {
   const { locations, loading, error, refreshing, refresh } = useAllLocations();
   const [filter, setFilter] = useState('');
+  const [status, setStatus] = useState<keyof typeof statusFilters>('all');
+  const [type, setType] = useState('');
 
-  const filteredLocations = locations.filter((loc) =>
-    loc.address.toLowerCase().includes(filter.toLowerCase())
+  const types = [...new Set(locations.map((loc) => loc.location_type))].sort();
+  const filteredLocations = locations.filter(
+    (loc) =>
+      loc.address.toLowerCase().includes(filter.toLowerCase()) &&
+      statusFilters[status].test(loc) &&
+      (!type || loc.location_type === type)
   );
 
   if (loading) {
@@ -51,6 +65,25 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
               className="w-full px-3 py-2 bg-background border border-gray-700 rounded-lg text-text-primary placeholder:text-text-secondary focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as keyof typeof statusFilters)}
+            className="px-3 py-2 bg-background border border-gray-700 rounded-lg text-text-primary focus:ring-2 focus:ring-primary focus:border-primary"
+          >
+            {Object.entries(statusFilters).map(([key, { label }]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="px-3 py-2 bg-background border border-gray-700 rounded-lg text-text-primary focus:ring-2 focus:ring-primary focus:border-primary"
+          >
+            <option value="">All types</option>
+            {types.map((t) => (
+              <option key={t} value={t}>{t}</option>
+            ))}
+          </select>
           <button
             onClick={refresh}
             disabled={refreshing}
@@ -96,7 +129,7 @@ export function LocationTable({ onEdit, onDelete, onCreate }: LocationTableProps
             {filteredLocations.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-4 py-8 text-center text-text-secondary">
-                  {filter ? 'No locations match your search' : 'No locations yet'}
+                  {filter || status !== 'all' || type ? 'No locations match your filters' : 'No locations yet'}
                 </td>
               </tr>
             ) : (
