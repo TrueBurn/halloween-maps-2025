@@ -17,7 +17,8 @@ export default function LocationsPage() {
       user_lat: userLocation?.latitude,
       user_lng: userLocation?.longitude,
     });
-  }, [posthog, userLocation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per page open, not on every GPS update
+  }, [posthog]);
 
   return (
     <div className="flex h-screen-dynamic flex-col">

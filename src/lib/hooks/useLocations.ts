@@ -30,7 +30,6 @@ export function useLocations() {
     // Fetch locations
     async function fetchLocations() {
       try {
-        setLoading(true);
         const { data, error: fetchError } = await supabase
           .from('locations')
           .select('*')

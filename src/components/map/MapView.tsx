@@ -20,6 +20,7 @@ export function MapView() {
   const markersLayer = useRef<L.MarkerClusterGroup | null>(null);
   const userMarker = useRef<L.Marker | null>(null);
   const routingControl = useRef<L.Routing.Control | null>(null);
+  const hasFitBounds = useRef(false);
   const userLocationRef = useRef<{ latitude: number; longitude: number } | null>(null);
   const searchParams = useSearchParams();
 
@@ -206,6 +207,7 @@ export function MapView() {
       const popup = L.popup();
 
       popup.on('add', () => {
+        const userLocation = userLocationRef.current;
         // Track marker click
         posthog?.capture('map_marker_clicked', {
           location_id: location.id,
@@ -270,7 +272,8 @@ export function MapView() {
     // Skip if URL params are present (user wants to view a specific location)
     const hasUrlParams = searchParams.get('lat') && searchParams.get('lng');
 
-    if (locations.length > 0 && !hasUrlParams) {
+    if (locations.length > 0 && !hasUrlParams && !hasFitBounds.current) {
+      hasFitBounds.current = true;
       const points: [number, number][] = locations.map((loc) => [loc.latitude, loc.longitude]);
 
       // Include user location in bounds if available and within 5km of locations
@@ -366,7 +369,7 @@ export function MapView() {
         >
           <div className="flex items-center gap-2 text-sm">
             <MapPin className="h-4 w-4 text-primary" />
-            <span className="font-medium text-text-primary">{locations.filter(loc => loc.has_candy).length} locations</span>
+            <span className="font-medium text-text-primary">{locations.filter(loc => loc.has_candy && !['Parking', 'Refreshments', 'AnimalCharity'].includes(loc.location_type)).length} locations</span>
           </div>
         </div>
       )}
