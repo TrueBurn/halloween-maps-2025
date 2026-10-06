@@ -9,98 +9,107 @@ export interface UserLocation {
 
 const USER_LOCATION_KEY = 'halloween-maps-user-location';
 
-export function useUserLocation() {
-  const [location, setLocation] = useState<UserLocation | null>(() => {
-    // Try to load cached location from localStorage
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem(USER_LOCATION_KEY);
-      if (cached) {
-        try {
-          return JSON.parse(cached) as UserLocation;
-        } catch {
-          return null;
-        }
-      }
-    }
-    return null;
-  });
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+type LocationState = { location: UserLocation | null; error: string | null; loading: boolean };
 
-  useEffect(() => {
-    // Check if geolocation is available
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      setLoading(false);
-      return;
-    }
+// One shared watch for the whole app: every hook instance used to call watchPosition itself,
+// so a page with two consumers (page + map/list) triggered two permission requests on iOS.
+// ponytail: watch is never cleared; it lives as long as the tab, which is what the map wants anyway.
+let state: LocationState | null = null;
+const listeners = new Set<(s: LocationState) => void>();
+let watching = false;
 
-    // Success callback
-    const handleSuccess = (position: GeolocationPosition) => {
-      const newLocation = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        accuracy: position.coords.accuracy,
-      };
-      setLocation(newLocation);
-      setError(null);
-      setLoading(false);
+function setState(patch: Partial<LocationState>) {
+  state = { ...state!, ...patch };
+  listeners.forEach((l) => l(state!));
+}
 
-      // Cache location in localStorage
-      localStorage.setItem(USER_LOCATION_KEY, JSON.stringify(newLocation));
+function startWatching() {
+  if (watching) return;
+  watching = true;
 
-      // Track GPS permission granted
-      const posthog = getPostHogClient();
-      posthog?.capture('map_user_location_enabled', {
+  if (!navigator.geolocation) {
+    setState({ error: 'Geolocation is not supported by your browser', loading: false });
+    return;
+  }
+
+  const handleSuccess = (position: GeolocationPosition) => {
+    const newLocation = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+      accuracy: position.coords.accuracy,
+    };
+    const firstFix = state!.loading || state!.error !== null;
+    setState({ location: newLocation, error: null, loading: false });
+
+    // Cache location in localStorage
+    localStorage.setItem(USER_LOCATION_KEY, JSON.stringify(newLocation));
+
+    // Track GPS permission granted (once, not on every position update)
+    if (firstFix) {
+      getPostHogClient()?.capture('map_user_location_enabled', {
         granted: true,
         accuracy: position.coords.accuracy,
       });
-    };
+    }
+  };
 
-    // Error callback
-    const handleError = (err: GeolocationPositionError) => {
-      let errorMessage = 'Failed to get your location';
+  const handleError = (err: GeolocationPositionError) => {
+    let errorMessage = 'Failed to get your location';
 
-      switch (err.code) {
-        case err.PERMISSION_DENIED:
-          errorMessage = 'Location permission denied';
-          break;
-        case err.POSITION_UNAVAILABLE:
-          errorMessage = 'Location information unavailable';
-          break;
-        case err.TIMEOUT:
-          errorMessage = 'Location request timed out';
-          break;
-      }
+    switch (err.code) {
+      case err.PERMISSION_DENIED:
+        errorMessage = 'Location permission denied';
+        break;
+      case err.POSITION_UNAVAILABLE:
+        errorMessage = 'Location information unavailable';
+        break;
+      case err.TIMEOUT:
+        errorMessage = 'Location request timed out';
+        break;
+    }
 
-      setError(errorMessage);
-      setLoading(false);
+    setState({ error: errorMessage, loading: false });
 
-      // Track GPS permission denied or error
-      const posthog = getPostHogClient();
-      posthog?.capture('map_user_location_enabled', {
-        granted: false,
-        error_code: err.code,
-        error_message: errorMessage,
-      });
-    };
+    // Track GPS permission denied or error
+    getPostHogClient()?.capture('map_user_location_enabled', {
+      granted: false,
+      error_code: err.code,
+      error_message: errorMessage,
+    });
+  };
 
-    // Watch position for continuous updates
-    const watchId = navigator.geolocation.watchPosition(
-      handleSuccess,
-      handleError,
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 60000, // Allow cached position up to 60 seconds old
-      }
-    );
+  navigator.geolocation.watchPosition(handleSuccess, handleError, {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 60000, // Allow cached position up to 60 seconds old
+  });
+}
 
-    // Cleanup
+function initialState(): LocationState {
+  // Try to load cached location from localStorage
+  let location: UserLocation | null = null;
+  if (typeof window !== 'undefined') {
+    try {
+      const cached = localStorage.getItem(USER_LOCATION_KEY);
+      if (cached) location = JSON.parse(cached) as UserLocation;
+    } catch {
+      location = null;
+    }
+  }
+  return { location, error: null, loading: true };
+}
+
+export function useUserLocation() {
+  const [current, setCurrent] = useState<LocationState>(() => (state ??= initialState()));
+
+  useEffect(() => {
+    listeners.add(setCurrent);
+    setCurrent(state!);
+    startWatching();
     return () => {
-      navigator.geolocation.clearWatch(watchId);
+      listeners.delete(setCurrent);
     };
   }, []);
 
-  return { location, error, loading };
+  return current;
 }
