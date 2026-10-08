@@ -49,3 +49,4 @@ yarn-error.log*
 .claude
 .mcp.json
 claude.md
+CLAUDE.local.md
