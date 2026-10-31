@@ -74,9 +74,10 @@ export default function MovementTimelinePage() {
     return () => subscription.unsubscribe();
   }, [router, supabase.auth]);
 
-  // Fetch timeline data
+  // Fetch timeline data once per signed-in user; keying on the user object refetched on every auth event (token refresh, tab focus)
+  const userId = user?.id;
   useEffect(() => {
-    if (!user) return;
+    if (!userId) return;
 
     const fetchTimelineData = async () => {
       setLoading(true);
@@ -101,7 +102,7 @@ export default function MovementTimelinePage() {
     };
 
     void fetchTimelineData();
-  }, [user]);
+  }, [userId]);
 
   // Format time for display
   const formatTime = (isoString: string) => {
