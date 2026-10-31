@@ -49,9 +49,9 @@ export function MovementTimelineCard() {
             <div className="flex items-start gap-3">
               <Calendar className="h-5 w-5 text-success mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-text-primary">Halloween 2025</p>
+                <p className="text-sm font-medium text-text-primary">Halloween {process.env.NEXT_PUBLIC_EVENT_YEAR}</p>
                 <p className="text-xs text-text-secondary mt-1">
-                  Analyze yesterday's event
+                  Event night playback
                 </p>
               </div>
             </div>
